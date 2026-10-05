@@ -1,0 +1,27 @@
+IMÁGENES DE LA PÁGINA
+=====================
+
+Pon aquí tus fotos y tu logo. Sugerencias de nombre y medidas:
+
+LOGO
+  archivo sugerido:  logo.png   (de preferencia PNG con fondo transparente)
+  tamaño:            cuadrado, aprox. 200x200 px
+  luego en index.html, en CONFIG:  LOGO_IMG = "assets/logo.png"
+
+FOTO GRANDE (HERO, la de arriba)
+  archivo sugerido:  hero.jpg
+  tamaño:            horizontal, aprox. 1200x1000 px, buena luz, flor protagonista
+  luego en CONFIG:   HERO_IMG = "assets/hero.jpg"
+
+FOTOS DE ARREGLOS (catálogo)
+  archivos sugeridos: arreglo-1.jpg, arreglo-2.jpg, ...
+  proporción:         vertical 4:5 (ej. 800x1000 px)
+  fondo neutro, misma proporción en todas para que el catálogo se vea parejo
+  luego en cada arreglo del catálogo, pon la ruta en "img":
+      img:"assets/arreglo-1.jpg"
+
+CONSEJOS
+  - Fotos reales del negocio, NO de internet (stock).
+  - Comprime las imágenes para que carguen rápido en celular
+    (puedes pedirle a Claude Code: "optimiza las imágenes de assets").
+  - Entre mejor luz natural, mejor se ven las flores.
