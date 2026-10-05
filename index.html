@@ -193,6 +193,19 @@
   body{padding-bottom:calc(74px + var(--safe-bot))}
   @media(min-width:900px){body{padding-bottom:var(--safe-bot)}}
   .hidden{display:none !important}
+  .tabs{border-top:1px solid var(--color-borde)}
+  .tabs .wrap{display:flex;gap:6px;overflow-x:auto;padding-block:8px;scrollbar-width:none}
+  .tabs .wrap::-webkit-scrollbar{display:none}
+  .tabs a{flex:none;padding:8px 15px;border-radius:999px;text-decoration:none;font-weight:700;font-size:14px;color:var(--color-texto)}
+  .tabs a[aria-current="page"]{background:var(--color-acento);color:#fff}
+  @media(min-width:900px){.tabs{display:none}}
+  .nav-links a[aria-current="page"]{color:var(--color-acento);opacity:1;box-shadow:0 2px 0 var(--dorado)}
+  .ver-todo{margin:28px 0 0;text-align:center}
+  footer.mini{padding:22px 0;font-size:13px;color:var(--color-suave);border-top:1px solid var(--color-borde)}
+  footer.mini a{color:var(--color-suave)}
+  .vista-in{animation:vistaIn .35s ease both}
+  @keyframes vistaIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion: reduce){.vista-in{animation:none}}
 
   .arma-grid{display:grid;gap:24px;align-items:start}
   @media(min-width:900px){.arma-grid{grid-template-columns:1.3fr 1fr;gap:36px}}
@@ -276,19 +289,20 @@
       </svg>
       <span id="brandText" style="line-height:1.05"><b id="brandName">Gema Flowers</b><span class="sub">FLORERÍA</span></span>
     </a>
-    <nav class="nav-links">
-      <a href="#ocasiones">Ocasiones</a>
+    <nav class="nav-links" aria-label="Principal">
+      <a href="#inicio">Inicio</a>
       <a href="#catalogo">Catálogo</a>
-      <a href="#arma">Arma tu ramo</a>
+      <a href="#arma">Cotizar</a>
       <a href="#nosotros">Nosotros</a>
       <a href="#pedir">Cómo pedir</a>
       <a href="#contacto">Contacto</a>
     </nav>
     <a class="btn nav-cta" href="#catalogo">Ver catálogo</a>
   </div>
+  <nav class="tabs" aria-label="Secciones"><div class="wrap"><a href="#inicio">Inicio</a><a href="#catalogo">Catálogo</a><a href="#arma">Cotizar</a><a href="#nosotros">Nosotros</a><a href="#pedir">Cómo pedir</a><a href="#contacto">Contacto</a></div></nav>
 </header>
 
-<section class="hero" id="inicio" style="padding:0">
+<section class="hero" id="inicio" data-vista="inicio" style="padding:0">
   <div class="wrap hero-in">
     <div>
       <div class="hero-eyebrow">Florería en línea · Durango</div>
@@ -321,7 +335,7 @@
   </div>
 </section>
 
-<section class="ocas" id="ocasiones">
+<section class="ocas" id="ocasiones" data-vista="inicio">
   <div class="wrap">
     <div class="sec-head">
       <div class="kicker">Para cada momento</div>
@@ -340,12 +354,23 @@
   </div>
 </section>
 
-<section id="catalogo">
+<section id="destacados" data-vista="inicio">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">Para empezar</div>
+      <h2>Algunos de nuestros ramos</h2>
+    </div>
+    <div class="cat-grid" id="destGrid"></div>
+    <p class="ver-todo"><a class="btn btn-ghost" href="#catalogo">Ver todo el catálogo</a></p>
+  </div>
+</section>
+
+<section id="catalogo" data-vista="catalogo">
   <div class="wrap">
     <div class="sec-head">
       <div class="kicker">Nuestros arreglos</div>
       <h2>Catálogo</h2>
-      <p>Flor fresca, armado a mano. Toca “Pedir” y te abrimos WhatsApp con el arreglo ya escrito — solo nos dices la fecha y la dirección.</p>
+      <p>Flor fresca, armado a mano. Los ramos de rosas los armas a tu medida (cantidad, color y detalles); los demás los pides directo por WhatsApp, con el arreglo ya escrito.</p>
     </div>
     <div class="filtros" id="filtros">
       <button class="chip on" data-f="todos">Todos</button>
@@ -361,7 +386,7 @@
   </div>
 </section>
 
-<section id="arma" class="arma">
+<section id="arma" class="arma" data-vista="arma">
   <div class="wrap">
     <div class="sec-head">
       <div class="kicker">A tu medida</div>
@@ -391,7 +416,7 @@
   </div>
 </section>
 
-<section id="galeria">
+<section id="galeria" data-vista="nosotros">
   <div class="wrap">
     <div class="sec-head">
       <div class="kicker">Nuestro trabajo</div>
@@ -408,7 +433,7 @@
   </div>
 </section>
 
-<section id="nosotros" class="nosotros">
+<section id="nosotros" class="nosotros" data-vista="nosotros">
   <div class="wrap">
     <div class="sec-head"><div class="kicker">Quiénes somos</div><h2>Gema Flowers</h2></div>
     <div class="mv">
@@ -422,7 +447,7 @@
   </div>
 </section>
 
-<section class="pasos" id="pedir">
+<section class="pasos" id="pedir" data-vista="pedir">
   <div class="wrap">
     <div class="sec-head"><div class="kicker">Fácil y rápido</div><h2>Cómo pedir</h2></div>
     <div class="pasos-grid">
@@ -440,7 +465,7 @@
 
 <!-- Reseñas: agregar cuando haya testimonios reales de clientes (destacada "Referencias" de Instagram) -->
 
-<footer class="contacto" id="contacto">
+<footer class="contacto" id="contacto" data-vista="contacto">
   <div class="wrap" style="padding:58px 20px">
     <div class="sec-head"><div class="kicker">Estamos para ti</div><h2>Contacto</h2><p>Escríbenos y con gusto te ayudamos a elegir el arreglo perfecto.</p></div>
     <div class="cont-grid">
@@ -465,6 +490,10 @@
       <span>Hecho con cariño 💐</span>
     </div>
   </div>
+</footer>
+
+<footer class="mini" data-vista="inicio catalogo arma nosotros pedir">
+  <div class="wrap">© <span id="yr2"></span> <span class="brandName2">Florería Gema Flowers</span> · Durango, Dgo. · <a href="https://www.instagram.com/gema_flowers_/" target="_blank" rel="noopener">@gema_flowers_</a></div>
 </footer>
 
 <a class="wa-float" id="wa-float" href="#" target="_blank" rel="noopener" aria-label="Pedir por WhatsApp">
@@ -526,12 +555,7 @@
     </svg>`;
   const bg = (c) => `radial-gradient(130% 120% at 68% 18%, ${c.f2}55 0%, #f3e6e1 55%, #ead9d7 100%)`;
 
-  let filtroActual = "todos";
-  function render(filtro=filtroActual){
-    filtroActual = filtro;
-    const grid = document.getElementById("catGrid");
-    const lista = filtro==="todos" ? arreglos : arreglos.filter(a=>a.o.includes(filtro));
-    grid.innerHTML = lista.map(a=>{
+  function cardHTML(a){
       const tarjeta = document.getElementById("msgTarjeta").value.trim();
       const msg = `Hola Florería ${NEGOCIO} 🌸, me interesa el arreglo "${a.n}"${a.p?` ($${a.p})`:""}.${tarjeta?` Mensaje para la tarjeta: "${tarjeta}".`:""} ¿Me ayudan?`;
       const media = a.img
@@ -551,7 +575,14 @@
           </div>
         </div>
       </article>`;
-    }).join("");
+  }
+
+  let filtroActual = "todos";
+  function render(filtro=filtroActual){
+    filtroActual = filtro;
+    const grid = document.getElementById("catGrid");
+    const lista = filtro==="todos" ? arreglos : arreglos.filter(a=>a.o.includes(filtro));
+    grid.innerHTML = lista.map(cardHTML).join("");
     if(!lista.length){grid.innerHTML=`<p style="color:var(--color-suave);grid-column:1/-1">Pronto más arreglos para esta ocasión. Escríbenos y te lo armamos a tu medida.</p>`;}
   }
   document.getElementById("msgTarjeta").addEventListener("input", e=>{
@@ -559,6 +590,7 @@
     render(); armaResumen();
   });
   render();
+  document.getElementById("destGrid").innerHTML = arreglos.slice(0,3).map(cardHTML).join("");
 
   /* ---- Arma tu ramo ---- */
   const $ = id => document.getElementById(id);
@@ -597,10 +629,10 @@
   $("arma").addEventListener("click", e=>{
     if(e.target.id==="quitaEstilo"){ armar.estilo = null; armaResumen(); }
   });
-  $("catGrid").addEventListener("click", e=>{
+  document.addEventListener("click", e=>{
     const b = e.target.closest("[data-arma]"); if(!b) return;
     armar.estilo = arreglos[+b.dataset.arma]; armaResumen();
-    $("arma").scrollIntoView();
+    location.hash = "#arma";
   });
   // Oculta ocasiones (chips y accesos) que todavía no tienen arreglos
   const conArreglos = new Set(arreglos.flatMap(a=>a.o));
@@ -637,7 +669,27 @@
     const art = document.getElementById("heroArt");
     art.innerHTML = `<img src="${HERO_IMG}" alt="Ramo grande de rosas rojas con listones, de Gema Flowers">`;
   }
-  document.getElementById("yr").textContent = new Date().getFullYear();
+  document.getElementById("yr").textContent = document.getElementById("yr2").textContent = new Date().getFullYear();
+
+  /* ---- Vistas: cada botón del menú abre su propia "página" ---- */
+  const VISTAS = ["inicio","catalogo","arma","nosotros","pedir","contacto"];
+  function ruta(){
+    const h = (location.hash||"#inicio").slice(1);
+    const v = VISTAS.includes(h) ? h : "inicio";
+    document.querySelectorAll("[data-vista]").forEach(el=>{
+      const mostrar = el.dataset.vista.split(" ").includes(v);
+      el.classList.toggle("hidden", !mostrar);
+      el.classList.toggle("vista-in", mostrar);
+    });
+    document.querySelectorAll(".nav-links a, .tabs a").forEach(a=>{
+      if(a.getAttribute("href")==="#"+v) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current");
+    });
+    const tab = document.querySelector('.tabs a[href="#'+v+'"]');
+    if(tab) tab.parentElement.scrollTo({left: tab.offsetLeft-16});
+    window.scrollTo(0,0);
+  }
+  window.addEventListener("hashchange", ruta);
+  ruta();
 </script>
 </body>
 </html>

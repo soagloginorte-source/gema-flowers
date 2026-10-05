@@ -21,6 +21,11 @@ Resumen de lo intocable:
 - Antes de tocar algo: analiza lo actual, conserva lo que funciona, cambia solo
   lo necesario. Pregunta guía: *¿esto acerca a la persona a hacer el pedido?*
 
+## Estructura del sitio
+Un solo `index.html` con **vistas** (una "página" por botón del menú, vía `#hash`): Inicio, Catálogo,
+Cotizar (`#arma`), Nosotros, Cómo pedir y Contacto. Cada sección lleva `data-vista="…"`; el router está
+al final del `<script>` (`ruta()`). En móvil el menú son pestañas bajo el encabezado.
+
 ## Dónde se edita el contenido
 Todo lo editable está en el bloque **CONFIG** al inicio del `<script>` en `index.html`:
 - `NEGOCIO` — nombre de la florería ("Gema Flowers").
