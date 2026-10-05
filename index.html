@@ -193,6 +193,52 @@
   body{padding-bottom:calc(74px + var(--safe-bot))}
   @media(min-width:900px){body{padding-bottom:var(--safe-bot)}}
   .hidden{display:none !important}
+
+  .arma-grid{display:grid;gap:24px;align-items:start}
+  @media(min-width:900px){.arma-grid{grid-template-columns:1.3fr 1fr;gap:36px}}
+  .arma-opc{display:grid;gap:26px}
+  .arma fieldset{border:0;padding:0;margin:0;min-width:0}
+  .arma legend{font-family:var(--serif);font-size:19px;margin-bottom:12px;padding:0}
+  .arma legend span{font-family:var(--sans);font-size:14px;color:var(--color-suave)}
+  .opts{display:flex;flex-wrap:wrap;gap:10px}
+  .opt{position:relative;cursor:pointer}
+  .opt input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+  .opt span{display:flex;align-items:center;gap:9px;border:1.5px solid var(--color-borde);background:var(--superficie);border-radius:999px;padding:11px 18px;font-weight:600;font-size:15px;transition:all .18s ease}
+  .opt span b{font-weight:700;color:var(--color-suave);font-size:14px}
+  .opt:hover span{border-color:var(--color-acento)}
+  .opt input:checked + span{background:var(--color-acento);border-color:var(--color-acento);color:#fff}
+  .opt input:checked + span b{color:#fff}
+  .opt input:focus-visible + span{outline:2px solid var(--color-acento);outline-offset:3px}
+  .dot{width:16px;height:16px;border-radius:50%;border:1px solid rgba(42,34,36,.25);flex:none}
+  .arma-res{background:var(--superficie);border:1px solid var(--color-borde);border-radius:20px;padding:24px;display:grid;gap:14px;box-shadow:var(--sombra)}
+  @media(min-width:900px){.arma-res{position:sticky;top:96px}}
+  .arma-res h3{font-size:24px}
+  .estilo{display:flex;gap:12px;align-items:center;background:var(--rosa-claro);border-radius:14px;padding:10px}
+  .estilo img{width:56px;height:70px;object-fit:cover;border-radius:10px;flex:none}
+  .estilo small{display:block;color:var(--color-suave);font-size:12px}
+  .estilo b{display:block;font-family:var(--serif);font-weight:500;font-size:16px;line-height:1.2}
+  .estilo button{background:none;border:0;padding:4px 0 0;color:var(--color-acento);font:inherit;font-size:13px;font-weight:700;text-decoration:underline;cursor:pointer}
+  .arma-res ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+  .arma-res li{display:flex;justify-content:space-between;gap:12px;font-size:15px;border-bottom:1px dashed var(--color-borde);padding-bottom:8px}
+  .arma-res li b{font-variant-numeric:tabular-nums}
+  .total{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-weight:700}
+  .total b{font-family:var(--serif);font-size:32px;color:var(--color-acento);font-variant-numeric:tabular-nums}
+  .arma-res .nota{font-size:13px;color:var(--color-suave)}
+  .arma-res .btn{width:100%}
+
+  .galeria-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  @media(min-width:720px){.galeria-grid{grid-template-columns:repeat(3,1fr);gap:18px}}
+  .galeria-grid img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:18px;display:block}
+
+  .nosotros{background:var(--rosa-claro);border-top:1px solid var(--color-borde);border-bottom:1px solid var(--color-borde)}
+  .mv{display:grid;gap:18px}
+  @media(min-width:760px){.mv{grid-template-columns:1fr 1fr;gap:24px}}
+  .mv article{background:var(--superficie);border:1px solid var(--color-borde);border-radius:20px;padding:26px}
+  .mv h3{font-size:26px;color:var(--color-acento);margin-bottom:10px}
+  .mv p{font-size:17px}
+  .eventos{margin-top:26px;display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;border-top:1px solid var(--color-borde);padding-top:24px}
+  .eventos h3{font-size:22px}
+  .eventos p{color:var(--color-suave);margin-top:4px;max-width:34em}
   .brand .mark.logo{width:auto;height:46px;mix-blend-mode:multiply}
   .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 </style>
@@ -233,6 +279,8 @@
     <nav class="nav-links">
       <a href="#ocasiones">Ocasiones</a>
       <a href="#catalogo">Catálogo</a>
+      <a href="#arma">Arma tu ramo</a>
+      <a href="#nosotros">Nosotros</a>
       <a href="#pedir">Cómo pedir</a>
       <a href="#contacto">Contacto</a>
     </nav>
@@ -299,11 +347,6 @@
       <h2>Catálogo</h2>
       <p>Flor fresca, armado a mano. Toca “Pedir” y te abrimos WhatsApp con el arreglo ya escrito — solo nos dices la fecha y la dirección.</p>
     </div>
-    <div class="tarjeta">
-      <label for="msgTarjeta">Mensaje para la tarjeta <span>(opcional, va en tu pedido)</span></label>
-      <input id="msgTarjeta" type="text" maxlength="120" placeholder="Ej. Feliz cumpleaños, mamá. Te quiero mucho">
-      <small id="msgCont">0/120</small>
-    </div>
     <div class="filtros" id="filtros">
       <button class="chip on" data-f="todos">Todos</button>
       <button class="chip" data-f="amor">Amor</button>
@@ -318,11 +361,72 @@
   </div>
 </section>
 
+<section id="arma" class="arma">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">A tu medida</div>
+      <h2>Arma tu ramo</h2>
+      <p>Elige cuántas rosas, el color y los detalles. Ves el total al momento y lo mandas por WhatsApp con todo escrito.</p>
+    </div>
+    <div class="arma-grid">
+      <div class="arma-opc">
+        <fieldset><legend>1. ¿Cuántas rosas?</legend><div class="opts" id="optRosas"></div></fieldset>
+        <fieldset><legend>2. Color</legend><div class="opts" id="optColor"></div></fieldset>
+        <fieldset><legend>3. Detalles extra <span>(opcional)</span></legend><div class="opts" id="optExtras"></div></fieldset>
+    <div class="tarjeta">
+      <label for="msgTarjeta">Mensaje para la tarjeta <span>(opcional, va en tu pedido)</span></label>
+      <input id="msgTarjeta" type="text" maxlength="120" placeholder="Ej. Feliz cumpleaños, mamá. Te quiero mucho">
+      <small id="msgCont">0/120</small>
+    </div>
+      </div>
+      <aside class="arma-res" aria-live="polite">
+        <h3>Tu ramo</h3>
+        <div id="resEstilo"></div>
+        <ul id="resLista"></ul>
+        <div class="total"><span>Total estimado</span><b id="resTotal"></b></div>
+        <p class="nota">Son precios de referencia. Te confirmamos el total y la fecha por WhatsApp.</p>
+        <a class="btn" id="resWa" href="#" target="_blank" rel="noopener">Pedir este ramo por WhatsApp</a>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section id="galeria">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">Nuestro trabajo</div>
+      <h2>Más de nuestros ramos</h2>
+    </div>
+    <div class="galeria-grid">
+      <img src="assets/galeria-rosas-con-mariposas.webp" alt="Ramo de rosas rojas y rosadas con mariposas doradas" loading="lazy">
+      <img src="assets/galeria-rosas-lila-y-rosa.webp" alt="Ramo de rosas lila y rosa en papel morado" loading="lazy">
+      <img src="assets/galeria-rosas-blancas-y-rosas.webp" alt="Ramo de rosas blancas y rosadas" loading="lazy">
+      <img src="assets/galeria-rosas-rojas-papel-transparente.webp" alt="Ramo de rosas rojas en papel transparente" loading="lazy">
+      <img src="assets/galeria-rosas-rojas-y-rosas.webp" alt="Ramo de rosas rojas y rosadas con borde dorado" loading="lazy">
+      <img src="assets/galeria-rosas-rojas-y-blancas.webp" alt="Ramo de rosas rojas y blancas" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<section id="nosotros" class="nosotros">
+  <div class="wrap">
+    <div class="sec-head"><div class="kicker">Quiénes somos</div><h2>Gema Flowers</h2></div>
+    <div class="mv">
+      <article><h3>Misión</h3><p>Ofrecer a nuestros clientes una experiencia única y accesible de compra de flores en línea, combinando diseño personalizado, calidad y entrega puntual, y llegar a ser la florería digital preferida en Durango capital.</p></article>
+      <article><h3>Visión</h3><p>Consolidar la tienda en línea y posicionarse en el mercado local de la ciudad de Durango, como una opción confiable y moderna para la compra de flores con entrega a domicilio, asimismo, incorporar alianzas con eventos y empresas, y optimizar la logística y personalización de productos mediante tecnología para crear momentos inolvidables.</p></article>
+    </div>
+    <div class="eventos">
+      <div><h3>Eventos y empresas</h3><p>¿Tienes un evento o buscas flores para tu empresa? Cuéntanos qué necesitas y te cotizamos.</p></div>
+      <a class="btn btn-ghost" id="wa-eventos" href="#" target="_blank" rel="noopener">Cotizar por WhatsApp</a>
+    </div>
+  </div>
+</section>
+
 <section class="pasos" id="pedir">
   <div class="wrap">
     <div class="sec-head"><div class="kicker">Fácil y rápido</div><h2>Cómo pedir</h2></div>
     <div class="pasos-grid">
-      <div class="paso"><div class="n">1</div><div><h3>Elige tu arreglo</h3><p>Mira el catálogo y toca el que te gustó. O cuéntanos tu idea y lo armamos a tu medida.</p></div></div>
+      <div class="paso"><div class="n">1</div><div><h3>Elige o arma tu ramo</h3><p>Mira el catálogo o arma el tuyo: rosas, color y detalles. O cuéntanos tu idea y lo hacemos a tu medida.</p></div></div>
       <div class="paso"><div class="n">2</div><div><h3>Escríbenos por WhatsApp</h3><p>Nos llega el arreglo ya escrito. Solo agregas la fecha, la dirección y el mensaje que quieres en la tarjeta.</p></div></div>
       <div class="paso"><div class="n">3</div><div><h3>Nosotros lo entregamos</h3><p>Lo preparamos fresco y lo llevamos a domicilio. Te confirmamos cuando llegue.</p></div></div>
     </div>
@@ -382,24 +486,30 @@
   const CIUDAD    = "Durango";        // ciudad
   const WA_NUMERO = "526183199067";        // 52 + 10 dígitos (única línea de atención según su Instagram)
   const LOGO_IMG  = "assets/logo.png";                    // ej. "assets/logo.png" (vacío = usa el ícono dibujado)
-  const HERO_IMG  = "assets/ramo-rosas-rojas-listones.webp";                    // ej. "assets/hero.jpg" (vacío = usa la ilustración)
+  const HERO_IMG  = "assets/ramo-rosas-rojas-listones.webp";
+
+  /* Precios de su historia "Bouquet's Rosas" de Instagram (confirmar que siguen vigentes). */
+  const ROSAS = [{n:12,p:350},{n:24,p:650},{n:50,p:1100},{n:100,p:2100}];
+  const COLORES = [{id:"roja",n:"Roja",o:"rojo",c:"#b3202f"},{id:"rosa",n:"Rosa",o:"rosa",c:"#e8a0b0"},{id:"blanca",n:"Blanca",o:"blanco",c:"#f4efe9"},{id:"lila",n:"Lila",o:"lila",c:"#a98bc4"}];
+  const EXTRAS = [{n:"3 mariposas",p:60},{n:"Corona",p:130},{n:"Luz led",p:60},{n:"Moño",p:50},{n:"Jarrón",p:100}];                    // ej. "assets/hero.jpg" (vacío = usa la ilustración)
 
   /* Catálogo. Para usar foto real agrega  img:"assets/arreglo-1.jpg"
      Si no hay img, se dibuja una ilustración con los colores de abajo. */
   const arreglos = [
-    {n:"Ramo rosas rojas con listones", p:null, t:"", o:["amor","aniversario"], et:"Favorito", img:"assets/ramo-rosas-rojas-listones.webp", alt:"Ramo grande de rosas rojas con listones y papel crema con borde dorado", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Rosas rojas en papel crema con listones, ramo grande de regalo."},
-    {n:"Ramo rosas rojas con gypsophila", p:null, t:"", o:["amor","aniversario"], et:"", img:"assets/ramo-rosas-rojas-gypsophila.webp", alt:"Ramo grande de rosas rojas rodeado de gypsophila en papel negro", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Rosas rojas con nube de gypsophila en papel negro."},
-    {n:"Ramo rosas rojas y rosadas", p:null, t:"", o:["amor","cumpleaños"], et:"", img:"assets/ramo-rosas-rojas-y-rosadas.webp", alt:"Ramo de rosas rojas y rosadas en papel oscuro", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Mezcla de rosas rojas y rosadas en papel envolvente."},
-    {n:"Ramo con corona y mariposa", p:null, t:"", o:["amor","cumpleaños","porquesí"], et:"Detalle especial", img:"assets/ramo-corona-mariposa.webp", alt:"Ramo de rosas rojas con corona dorada y mariposa sobre papel negro", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Rosas rojas en papel negro con corona y mariposa dorada."},
+    {n:"Ramo rosas rojas con listones", p:null, rosas:true, t:"", o:["amor","aniversario"], et:"Favorito", img:"assets/ramo-rosas-rojas-listones.webp", alt:"Ramo grande de rosas rojas con listones y papel crema con borde dorado", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Rosas rojas en papel crema con listones, ramo grande de regalo."},
+    {n:"Ramo rosas rojas con gypsophila", p:null, rosas:true, t:"", o:["amor","aniversario"], et:"", img:"assets/ramo-rosas-rojas-gypsophila.webp", alt:"Ramo grande de rosas rojas rodeado de gypsophila en papel negro", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Rosas rojas con nube de gypsophila en papel negro."},
+    {n:"Ramo rosas rojas y rosadas", p:null, rosas:true, t:"", o:["amor","cumpleaños"], et:"", img:"assets/ramo-rosas-rojas-y-rosadas.webp", alt:"Ramo de rosas rojas y rosadas en papel oscuro", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Mezcla de rosas rojas y rosadas en papel envolvente."},
+    {n:"Ramo con corona y mariposa", p:null, rosas:true, t:"", o:["amor","cumpleaños","porquesí"], et:"Detalle especial", img:"assets/ramo-corona-mariposa.webp", alt:"Ramo de rosas rojas con corona dorada y mariposa sobre papel negro", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Rosas rojas en papel negro con corona y mariposa dorada."},
     {n:"Caja de rosas fucsia", p:null, t:"", o:["amor","cumpleaños","porquesí"], et:"", img:"assets/caja-rosas-fucsia-mariposas.webp", alt:"Caja negra con rosas fucsia y mariposas doradas", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Rosas fucsia en caja negra con mariposas doradas."},
-    {n:"Ramo rosas rosadas y blancas", p:null, t:"", o:["amor","cumpleaños","gracias"], et:"", img:"assets/ramo-rosas-rosadas-y-blancas.webp", alt:"Ramo grande de rosas rosadas y blancas", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Rosas rosadas y blancas, suaves y delicadas."},
-    {n:"Ramo rosas fucsia y rosa", p:null, t:"", o:["amor","cumpleaños","gracias"], et:"", img:"assets/ramo-rosas-fucsia-y-rosa.webp", alt:"Ramo de rosas fucsia y rosa pálido", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Rosas fucsia y rosa pálido en papel traslúcido."},
-    {n:"Ramo de rosas rojo intenso", p:null, t:"", o:["amor","aniversario"], et:"", img:"assets/ramo-rosas-rojo-intenso.webp", alt:"Ramo redondo de rosas de rojo intenso en papel negro", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Rosas de un rojo intenso en papel negro."},
+    {n:"Ramo rosas rosadas y blancas", p:null, rosas:true, t:"", o:["amor","cumpleaños","gracias"], et:"", img:"assets/ramo-rosas-rosadas-y-blancas.webp", alt:"Ramo grande de rosas rosadas y blancas", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Rosas rosadas y blancas, suaves y delicadas."},
+    {n:"Ramo de rosas blancas con moño", p:null, rosas:true, t:"", o:["amor","aniversario","gracias"], et:"", img:"assets/ramo-rosas-blancas-mono.webp", alt:"Ramo de rosas blancas con un moño fucsia", c:{f1:"#f4f0e9",f2:"#ffffff",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Rosas blancas con moño fucsia, elegante y delicado."},
+    {n:"Ramo rosas fucsia y rosa", p:null, rosas:true, t:"", o:["amor","cumpleaños","gracias"], et:"", img:"assets/ramo-rosas-fucsia-y-rosa.webp", alt:"Ramo de rosas fucsia y rosa pálido", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Rosas fucsia y rosa pálido en papel traslúcido."},
+    {n:"Ramo de rosas rojo intenso", p:null, rosas:true, t:"", o:["amor","aniversario"], et:"", img:"assets/ramo-rosas-rojo-intenso.webp", alt:"Ramo redondo de rosas de rojo intenso en papel negro", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Rosas de un rojo intenso en papel negro."},
     {n:"Ramo con chocolates", p:null, t:"", o:["cumpleaños","gracias","porquesí"], et:"", img:"assets/ramo-chocolates-ferrero.webp", alt:"Ramo con chocolates y flores en papel morado", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Rosas y chocolates en papel morado."},
     {n:"Ramo de gerberas", p:null, t:"", o:["cumpleaños","gracias","porquesí"], et:"", img:"assets/ramo-gerberas-rosas.webp", alt:"Ramo de gerberas rosas con papel rosa", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Gerberas rosas en papel rosa."},
     {n:"Ramo de lirios y rosas", p:null, t:"", o:["cumpleaños","gracias"], et:"", img:"assets/ramo-lirios-rosas.webp", alt:"Ramo de lirios y flores rosadas", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Lirios y rosas en tonos rosados."},
     {n:"Ramo de girasoles", p:null, t:"", o:["cumpleaños","gracias","porquesí"], et:"", img:"assets/ramo-girasoles.webp", alt:"Ramo de girasoles con flores rosas y eucalipto", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Girasoles y flores rosadas con eucalipto."},
-    {n:"Ramo fucsia pequeño", p:null, t:"", o:["gracias","porquesí"], et:"", img:"assets/ramo-fucsia-pequeno.webp", alt:"Ramo pequeño de rosas fucsia envuelto en papel rosa", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Ramo pequeño de rosas fucsia, un detalle sencillo."},
+    {n:"Ramo fucsia pequeño", p:null, rosas:true, t:"", o:["gracias","porquesí"], et:"", img:"assets/ramo-fucsia-pequeno.webp", alt:"Ramo pequeño de rosas fucsia envuelto en papel rosa", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Ramo pequeño de rosas fucsia, un detalle sencillo."},
     {n:"Corazón de rosas", p:null, t:"", o:["amor","aniversario"], et:"", img:"assets/ramo-corazon-naranja.webp", alt:"Arreglo de rosas en forma de corazón sobre papel rosa", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Arreglo en forma de corazón con rosas."},
   ];
   /* ====================  fin de la zona editable  ==================== */
@@ -436,8 +546,8 @@
           <h3>${a.n}</h3>
           <p class="meta">${a.d}</p>
           <div class="row">
-            <span class="price">${a.p?`$${a.p}`:`<small>Cotiza tu ramo</small>`}${a.p&&a.t?` <small>· ${a.t}</small>`:""}</span>
-            <a class="btn" href="${waLink(msg)}" target="_blank" rel="noopener">Pedir</a>
+            <span class="price">${a.rosas?`<small>Desde</small> $${ROSAS[0].p}`:a.p?`$${a.p}`:`<small>Cotiza tu ramo</small>`}</span>
+            ${a.rosas?`<button type="button" class="btn" data-arma="${arreglos.indexOf(a)}">Armar este ramo</button>`:`<a class="btn" href="${waLink(msg)}" target="_blank" rel="noopener">Pedir</a>`}
           </div>
         </div>
       </article>`;
@@ -446,9 +556,52 @@
   }
   document.getElementById("msgTarjeta").addEventListener("input", e=>{
     document.getElementById("msgCont").textContent = e.target.value.length+"/120";
-    render();
+    render(); armaResumen();
   });
   render();
+
+  /* ---- Arma tu ramo ---- */
+  const $ = id => document.getElementById(id);
+  const peso = n => "$"+n.toLocaleString("es-MX");
+  const armar = {r:1, color:"roja", extras:new Set(), estilo:null};
+  function armaOpciones(){
+    $("optRosas").innerHTML = ROSAS.map((o,i)=>`<label class="opt"><input type="radio" name="rosas" value="${i}" ${i===armar.r?"checked":""}><span>${o.n} rosas <b>${peso(o.p)}</b></span></label>`).join("");
+    $("optColor").innerHTML = COLORES.map(c=>`<label class="opt"><input type="radio" name="color" value="${c.id}" ${c.id===armar.color?"checked":""}><span><i class="dot" style="background:${c.c}"></i>${c.n}</span></label>`).join("");
+    $("optExtras").innerHTML = EXTRAS.map((e,i)=>`<label class="opt"><input type="checkbox" name="extra" value="${i}"><span>${e.n} <b>+${peso(e.p)}</b></span></label>`).join("");
+  }
+  function armaResumen(){
+    const o = ROSAS[armar.r], col = COLORES.find(c=>c.id===armar.color);
+    const ex = [...armar.extras].sort().map(i=>EXTRAS[i]);
+    const total = o.p + ex.reduce((t,e)=>t+e.p,0);
+    const tarjeta = $("msgTarjeta").value.trim();
+    $("resEstilo").innerHTML = armar.estilo
+      ? `<div class="estilo"><img src="${armar.estilo.img}" alt=""><div><small>Estilo que elegiste</small><b>${armar.estilo.n}</b><button type="button" id="quitaEstilo">Quitar</button></div></div>` : "";
+    $("resLista").innerHTML = `<li><span>${o.n} rosas · color ${col.o}</span><b>${peso(o.p)}</b></li>` + ex.map(e=>`<li><span>${e.n}</span><b>${peso(e.p)}</b></li>`).join("");
+    $("resTotal").textContent = peso(total);
+    const msg = `Hola Florería ${NEGOCIO} 🌸, quiero armar un ramo:\n• ${o.n} rosas, color ${col.o} (${peso(o.p)})`
+      + (armar.estilo ? `\n• Estilo: ${armar.estilo.n}` : "")
+      + (ex.length ? `\n• Extras: ${ex.map(e=>`${e.n} (${peso(e.p)})`).join(", ")}` : "")
+      + `\n• Total estimado: ${peso(total)}`
+      + (tarjeta ? `\n• Mensaje para la tarjeta: "${tarjeta}"` : "")
+      + `\n¿Me ayudan?`;
+    $("resWa").href = waLink(msg);
+  }
+  armaOpciones(); armaResumen();
+  $("arma").addEventListener("change", e=>{
+    const t = e.target;
+    if(t.name==="rosas") armar.r = +t.value;
+    else if(t.name==="color") armar.color = t.value;
+    else if(t.name==="extra") t.checked ? armar.extras.add(+t.value) : armar.extras.delete(+t.value);
+    armaResumen();
+  });
+  $("arma").addEventListener("click", e=>{
+    if(e.target.id==="quitaEstilo"){ armar.estilo = null; armaResumen(); }
+  });
+  $("catGrid").addEventListener("click", e=>{
+    const b = e.target.closest("[data-arma]"); if(!b) return;
+    armar.estilo = arreglos[+b.dataset.arma]; armaResumen();
+    $("arma").scrollIntoView();
+  });
   // Oculta ocasiones (chips y accesos) que todavía no tienen arreglos
   const conArreglos = new Set(arreglos.flatMap(a=>a.o));
   document.querySelectorAll("#filtros .chip:not([data-f='todos']), .ocas-card").forEach(el=>{
@@ -471,6 +624,7 @@
   ["wa-hero","wa-float","wa-bar","wa-cont","wa-footer"].forEach(id=>{
     const el=document.getElementById(id); if(el) el.href=waLink(msgGen);
   });
+  $("wa-eventos").href = waLink(`Hola Florería ${NEGOCIO} 🌸, me interesa cotizar flores para un evento o empresa.`);
 
   // Aplica nombre, logo y hero si se configuraron
   document.getElementById("brandName").textContent = NEGOCIO;
