@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Gema Flowers · florería en línea en Durango</title>
+<meta name="description" content="Gema Flowers, florería en línea en Durango. Ramos de rosas y regalos hechos a mano, con entrega a domicilio. Pide por WhatsApp.">
+<meta name="theme-color" content="#8c1c2e">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Gema Flowers · florería en línea en Durango">
+<meta property="og:description" content="Ramos de rosas y regalos hechos a mano, con entrega a domicilio en Durango. Pide por WhatsApp.">
+<meta property="og:image" content="https://soagloginorte-source.github.io/gema-flowers/assets/og.jpg">
+<link rel="icon" href="assets/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -104,13 +111,18 @@
 
   .ocas{background:var(--superficie);border-top:1px solid var(--color-borde);border-bottom:1px solid var(--color-borde)}
   .ocas-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-  @media(min-width:620px){.ocas-grid{grid-template-columns:repeat(4,1fr)}}
-  @media(min-width:980px){.ocas-grid{grid-template-columns:repeat(7,1fr)}}
+  @media(min-width:620px){.ocas-grid{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}}
   .ocas-card{border:1px solid var(--color-borde);border-radius:16px;background:var(--fondo-crema);padding:18px 12px;text-align:center;cursor:pointer;text-decoration:none;color:inherit;transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease}
   .ocas-card:hover{transform:translateY(-3px);box-shadow:var(--sombra);border-color:var(--color-acento)}
   .ocas-card .ic{width:40px;height:40px;margin:0 auto 9px}
   .ocas-card b{font-family:var(--serif);font-weight:500;font-size:16px;display:block}
 
+  .tarjeta{display:grid;gap:6px;margin-bottom:22px;max-width:34em}
+  .tarjeta label{font-weight:700;font-size:15px}
+  .tarjeta label span{font-weight:500;color:var(--color-suave)}
+  .tarjeta input{font:inherit;font-size:16px;padding:12px 16px;border:1.5px solid var(--color-borde);border-radius:14px;background:var(--superficie);color:var(--color-texto)}
+  .tarjeta input:focus{outline:2px solid var(--color-acento);outline-offset:1px;border-color:var(--color-acento)}
+  .tarjeta small{color:var(--color-suave);font-size:13px;justify-self:end}
   .filtros{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:28px}
   .chip{border:1.5px solid var(--color-borde);background:var(--superficie);color:var(--color-texto);border-radius:999px;padding:9px 17px;font-family:var(--sans);font-weight:600;font-size:14px;cursor:pointer;transition:all .18s ease}
   .chip:hover{border-color:var(--color-acento)}
@@ -287,6 +299,11 @@
       <h2>Catálogo</h2>
       <p>Flor fresca, armado a mano. Toca “Pedir” y te abrimos WhatsApp con el arreglo ya escrito — solo nos dices la fecha y la dirección.</p>
     </div>
+    <div class="tarjeta">
+      <label for="msgTarjeta">Mensaje para la tarjeta <span>(opcional, va en tu pedido)</span></label>
+      <input id="msgTarjeta" type="text" maxlength="120" placeholder="Ej. Feliz cumpleaños, mamá. Te quiero mucho">
+      <small id="msgCont">0/120</small>
+    </div>
     <div class="filtros" id="filtros">
       <button class="chip on" data-f="todos">Todos</button>
       <button class="chip" data-f="amor">Amor</button>
@@ -399,11 +416,14 @@
     </svg>`;
   const bg = (c) => `radial-gradient(130% 120% at 68% 18%, ${c.f2}55 0%, #f3e6e1 55%, #ead9d7 100%)`;
 
-  function render(filtro="todos"){
+  let filtroActual = "todos";
+  function render(filtro=filtroActual){
+    filtroActual = filtro;
     const grid = document.getElementById("catGrid");
     const lista = filtro==="todos" ? arreglos : arreglos.filter(a=>a.o.includes(filtro));
     grid.innerHTML = lista.map(a=>{
-      const msg = `Hola Florería ${NEGOCIO} 🌸, me interesa el arreglo "${a.n}"${a.p?` ($${a.p})`:""}. ¿Me ayudan?`;
+      const tarjeta = document.getElementById("msgTarjeta").value.trim();
+      const msg = `Hola Florería ${NEGOCIO} 🌸, me interesa el arreglo "${a.n}"${a.p?` ($${a.p})`:""}.${tarjeta?` Mensaje para la tarjeta: "${tarjeta}".`:""} ¿Me ayudan?`;
       const media = a.img
         ? `<img src="${a.img}" alt="${a.alt||a.n}" loading="lazy">`
         : bloomSVG(a.c);
@@ -424,6 +444,10 @@
     }).join("");
     if(!lista.length){grid.innerHTML=`<p style="color:var(--color-suave);grid-column:1/-1">Pronto más arreglos para esta ocasión. Escríbenos y te lo armamos a tu medida.</p>`;}
   }
+  document.getElementById("msgTarjeta").addEventListener("input", e=>{
+    document.getElementById("msgCont").textContent = e.target.value.length+"/120";
+    render();
+  });
   render();
   // Oculta ocasiones (chips y accesos) que todavía no tienen arreglos
   const conArreglos = new Set(arreglos.flatMap(a=>a.o));
