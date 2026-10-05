@@ -3,39 +3,41 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Florería Azahar · flores frescas en Montemorelos</title>
+<title>Gema Flowers · florería en línea en Durango</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --crema:#faf6f0;
-    --blanco:#ffffff;
-    --texto:#33382f;
-    --suave:#7a7366;
-    --borde:#e8e0d6;
-    --salvia:#6f8f6a;
-    --salvia-osc:#5c7a58;
-    --rosa:#c98b86;
-    --dorado:#c9a24b;
+    --fondo-crema:#faf5f2;
+    --superficie:#ffffff;
+    --color-texto:#2a2224;     /* negro cálido del papel de los ramos */
+    --color-suave:#6e6064;
+    --color-borde:#ead9d7;
+    --color-acento:#8c1c2e;    /* rojo vino de las rosas: único acento y acción */
+    --acento-osc:#6f1424;
+    --vino-profundo:#3b1119;   /* bloques oscuros (contacto) */
+    --color-rosa:#d98a95;      /* rosa empolvado de las rosas */
+    --rosa-claro:#f4e3e1;
+    --dorado:#b99440;          /* mariposas y coronas: solo detalles finos */
     --agotado:#9a938a;
     --serif:"Fraunces",Georgia,"Times New Roman",serif;
     --sans:"Mulish",system-ui,-apple-system,sans-serif;
-    --sombra:0 6px 24px rgba(51,56,47,.08);
-    --sombra-alta:0 14px 36px rgba(51,56,47,.14);
+    --sombra:0 6px 24px rgba(42,34,36,.08);
+    --sombra-alta:0 14px 36px rgba(42,34,36,.14);
     --safe-top:env(safe-area-inset-top,0px);
     --safe-bot:env(safe-area-inset-bottom,0px);
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-      --crema:#faf6f0;--blanco:#ffffff;--texto:#33382f;--suave:#7a7366;--borde:#e8e0d6;
+      --fondo-crema:#faf5f2;--superficie:#ffffff;--color-texto:#2a2224;--color-suave:#6e6064;--color-borde:#ead9d7;
     }
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth;scroll-padding-top:calc(72px + var(--safe-top))}
   @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
   body{
-    margin:0;background:var(--crema);color:var(--texto);
+    margin:0;background:var(--fondo-crema);color:var(--color-texto);
     font-family:var(--sans);font-size:17px;line-height:1.6;
     padding-bottom:var(--safe-bot);-webkit-font-smoothing:antialiased;
   }
@@ -46,28 +48,28 @@
   .wrap{width:100%;max-width:1120px;margin:0 auto;padding:0 20px}
   .btn{
     display:inline-flex;align-items:center;gap:9px;justify-content:center;
-    background:var(--salvia);color:#fff;border:none;border-radius:999px;
+    background:var(--color-acento);color:#fff;border:none;border-radius:999px;
     padding:14px 26px;font-family:var(--sans);font-weight:700;font-size:16px;
     cursor:pointer;text-decoration:none;transition:background .2s ease, transform .2s ease;
   }
-  .btn:hover{background:var(--salvia-osc);transform:translateY(-1px)}
-  .btn-ghost{background:transparent;color:var(--salvia-osc);border:1.5px solid var(--salvia)}
-  .btn-ghost:hover{background:rgba(111,143,106,.08);transform:translateY(-1px)}
+  .btn:hover{background:var(--acento-osc);transform:translateY(-1px)}
+  .btn-ghost{background:transparent;color:var(--acento-osc);border:1.5px solid var(--color-acento)}
+  .btn-ghost:hover{background:rgba(140,28,46,.08);transform:translateY(-1px)}
   .wa-ico{width:19px;height:19px;flex:none}
 
   header.nav{
-    position:sticky;top:0;z-index:40;background:rgba(250,246,240,.9);
-    backdrop-filter:blur(10px);border-bottom:1px solid var(--borde);
+    position:sticky;top:0;z-index:40;background:rgba(250,245,242,.9);
+    backdrop-filter:blur(10px);border-bottom:1px solid var(--color-borde);
     padding-top:var(--safe-top);
   }
   .nav-in{display:flex;align-items:center;justify-content:space-between;height:72px}
   .brand{display:flex;align-items:center;gap:11px;text-decoration:none}
   .brand .mark{width:36px;height:36px;flex:none;object-fit:contain}
   .brand b{font-family:var(--serif);font-weight:600;font-size:21px;letter-spacing:.2px}
-  .brand .sub{display:block;font-size:11px;color:var(--suave);letter-spacing:2.5px;margin-top:-2px}
+  .brand .sub{display:block;font-size:11px;color:var(--color-suave);letter-spacing:2.5px;margin-top:-2px}
   .nav-links{display:none;gap:30px;align-items:center}
-  .nav-links a{text-decoration:none;font-weight:600;font-size:15px;color:var(--texto);opacity:.85}
-  .nav-links a:hover{opacity:1;color:var(--salvia-osc)}
+  .nav-links a{text-decoration:none;font-weight:600;font-size:15px;color:var(--color-texto);opacity:.85}
+  .nav-links a:hover{opacity:1;color:var(--acento-osc)}
   .nav .btn{padding:11px 20px;font-size:15px}
   .nav-cta{display:none}
   @media(min-width:900px){.nav-links{display:flex}.nav-cta{display:inline-flex}}
@@ -75,87 +77,82 @@
   .hero{position:relative;overflow:hidden}
   .hero-in{display:grid;gap:30px;padding:46px 0 54px;align-items:center}
   @media(min-width:860px){.hero-in{grid-template-columns:1.05fr 1fr;gap:50px;padding:70px 0 80px}}
-  .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--salvia-osc);font-weight:700;font-size:14px;margin-bottom:18px}
-  .hero-eyebrow::before{content:"";width:26px;height:1.5px;background:var(--rosa)}
+  .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--acento-osc);font-weight:700;font-size:14px;margin-bottom:18px}
+  .hero-eyebrow::before{content:"";width:26px;height:1.5px;background:var(--dorado)}
   .hero h1{font-size:clamp(38px,7vw,62px);letter-spacing:-.5px}
-  .hero h1 em{font-style:italic;color:var(--salvia-osc)}
-  .hero .lead{margin:22px 0 30px;font-size:19px;color:var(--suave);max-width:30em}
+  .hero h1 em{font-style:italic;color:var(--color-acento)}
+  .hero .lead{margin:22px 0 30px;font-size:19px;color:var(--color-suave);max-width:30em}
   .hero-actions{display:flex;flex-wrap:wrap;gap:13px}
-  .hero-trust{display:flex;flex-wrap:wrap;gap:22px;margin-top:30px;font-size:14px;color:var(--suave)}
-  .hero-trust b{color:var(--texto);font-family:var(--serif);font-size:22px;display:block;line-height:1}
+  .hero-trust{display:flex;flex-wrap:wrap;gap:22px;margin-top:30px;font-size:14px;color:var(--color-suave)}
+  .hero-trust b{color:var(--color-texto);font-family:var(--serif);font-size:22px;display:block;line-height:1}
   .hero-art{
     position:relative;border-radius:26px;overflow:hidden;min-height:360px;
-    background:radial-gradient(130% 120% at 70% 15%, #fbe7e4 0%, #f3ead9 48%, #e7eadd 100%);
+    background:radial-gradient(130% 120% at 70% 15%, #f8e3e1 0%, #f3e6e1 48%, #ead9d7 100%);
     box-shadow:var(--sombra-alta);display:grid;place-items:center;
   }
   @media(min-width:860px){.hero-art{min-height:500px}}
   .hero-art > img{width:100%;height:100%;object-fit:cover}
   .hero-art .tag{position:absolute;left:18px;bottom:18px;background:rgba(255,255,255,.92);border-radius:14px;padding:11px 16px;font-size:13px;box-shadow:var(--sombra)}
-  .hero-art .tag b{display:block;font-family:var(--serif);font-size:16px;color:var(--texto)}
-  .hero-art .tag span{color:var(--salvia-osc);font-weight:700}
+  .hero-art .tag b{display:block;font-family:var(--serif);font-size:16px;color:var(--color-texto)}
+  .hero-art .tag span{color:var(--acento-osc);font-weight:700}
 
   section{padding:58px 0}
   .sec-head{max-width:34em;margin-bottom:34px}
-  .sec-head .kicker{color:var(--rosa);font-weight:700;font-size:14px;letter-spacing:.5px;margin-bottom:10px}
+  .sec-head .kicker{color:var(--color-acento);font-weight:700;font-size:14px;letter-spacing:.5px;margin-bottom:10px}
   .sec-head h2{font-size:clamp(28px,4.4vw,40px)}
-  .sec-head p{color:var(--suave);margin-top:12px;font-size:17px}
+  .sec-head p{color:var(--color-suave);margin-top:12px;font-size:17px}
 
-  .ocas{background:var(--blanco);border-top:1px solid var(--borde);border-bottom:1px solid var(--borde)}
+  .ocas{background:var(--superficie);border-top:1px solid var(--color-borde);border-bottom:1px solid var(--color-borde)}
   .ocas-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
   @media(min-width:620px){.ocas-grid{grid-template-columns:repeat(4,1fr)}}
   @media(min-width:980px){.ocas-grid{grid-template-columns:repeat(7,1fr)}}
-  .ocas-card{border:1px solid var(--borde);border-radius:16px;background:var(--crema);padding:18px 12px;text-align:center;cursor:pointer;text-decoration:none;color:inherit;transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease}
-  .ocas-card:hover{transform:translateY(-3px);box-shadow:var(--sombra);border-color:var(--salvia)}
+  .ocas-card{border:1px solid var(--color-borde);border-radius:16px;background:var(--fondo-crema);padding:18px 12px;text-align:center;cursor:pointer;text-decoration:none;color:inherit;transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease}
+  .ocas-card:hover{transform:translateY(-3px);box-shadow:var(--sombra);border-color:var(--color-acento)}
   .ocas-card .ic{width:40px;height:40px;margin:0 auto 9px}
   .ocas-card b{font-family:var(--serif);font-weight:500;font-size:16px;display:block}
 
   .filtros{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:28px}
-  .chip{border:1.5px solid var(--borde);background:var(--blanco);color:var(--texto);border-radius:999px;padding:9px 17px;font-family:var(--sans);font-weight:600;font-size:14px;cursor:pointer;transition:all .18s ease}
-  .chip:hover{border-color:var(--salvia)}
-  .chip.on{background:var(--salvia);border-color:var(--salvia);color:#fff}
+  .chip{border:1.5px solid var(--color-borde);background:var(--superficie);color:var(--color-texto);border-radius:999px;padding:9px 17px;font-family:var(--sans);font-weight:600;font-size:14px;cursor:pointer;transition:all .18s ease}
+  .chip:hover{border-color:var(--color-acento)}
+  .chip.on{background:var(--color-acento);border-color:var(--color-acento);color:#fff}
   .cat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
   @media(min-width:720px){.cat-grid{grid-template-columns:repeat(3,1fr);gap:24px}}
-  .card{background:var(--blanco);border:1px solid var(--borde);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;transition:transform .22s ease, box-shadow .22s ease}
+  .card{background:var(--superficie);border:1px solid var(--color-borde);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;transition:transform .22s ease, box-shadow .22s ease}
   .card:hover{transform:translateY(-4px);box-shadow:var(--sombra-alta)}
   .card .ph{aspect-ratio:4/5;display:grid;place-items:center;position:relative;overflow:hidden}
   .card .ph svg,.card .ph img{width:100%;height:100%;transition:transform .35s ease}
   .card .ph svg{width:70%;height:70%}
   .card .ph img{object-fit:cover}
   .card:hover .ph svg,.card:hover .ph img{transform:scale(1.06)}
-  .card .badge{position:absolute;top:12px;left:12px;background:rgba(255,255,255,.92);color:var(--salvia-osc);font-weight:700;font-size:12px;padding:5px 11px;border-radius:999px;z-index:2}
+  .card .badge{position:absolute;top:12px;left:12px;background:rgba(255,255,255,.92);color:var(--acento-osc);font-weight:700;font-size:12px;padding:5px 11px;border-radius:999px;z-index:2}
   .card .body{padding:16px 16px 18px;display:flex;flex-direction:column;gap:6px;flex:1}
   .card h3{font-size:20px}
-  .card .meta{color:var(--suave);font-size:14px;flex:1}
+  .card .meta{color:var(--color-suave);font-size:14px;flex:1}
   .card .row{display:flex;align-items:center;justify-content:space-between;margin-top:10px;gap:10px}
-  .price{font-family:var(--serif);font-size:23px;color:var(--texto)}
-  .price small{font-size:13px;color:var(--suave);font-family:var(--sans)}
+  .price{font-family:var(--serif);font-size:23px;color:var(--color-acento)}
+  .price small{font-size:13px;color:var(--color-suave);font-family:var(--sans)}
   .card .btn{padding:10px 16px;font-size:14px}
+  @media(max-width:719px){.card .row{flex-direction:column;align-items:stretch;gap:8px}.card .btn{width:100%}.card .body{padding:14px 14px 16px}.card h3{font-size:18px}}
 
-  .pasos{background:var(--blanco);border-top:1px solid var(--borde);border-bottom:1px solid var(--borde)}
+  .pasos{background:var(--superficie);border-top:1px solid var(--color-borde);border-bottom:1px solid var(--color-borde)}
   .pasos-grid{display:grid;gap:22px}
   @media(min-width:760px){.pasos-grid{grid-template-columns:repeat(3,1fr);gap:28px}}
   .paso{display:flex;gap:16px;align-items:flex-start}
-  .paso .n{width:42px;height:42px;flex:none;border-radius:50%;background:var(--crema);border:1.5px solid var(--salvia);color:var(--salvia-osc);display:grid;place-items:center;font-family:var(--serif);font-size:20px;font-weight:600}
+  .paso .n{width:42px;height:42px;flex:none;border-radius:50%;background:var(--fondo-crema);border:1.5px solid var(--color-acento);color:var(--acento-osc);display:grid;place-items:center;font-family:var(--serif);font-size:20px;font-weight:600}
   .paso h3{font-size:19px;margin-bottom:5px}
-  .paso p{color:var(--suave);font-size:15px}
+  .paso p{color:var(--color-suave);font-size:15px}
   .entrega{display:grid;gap:14px;margin-top:40px}
   @media(min-width:680px){.entrega{grid-template-columns:repeat(3,1fr)}}
-  .entrega .e{background:var(--crema);border:1px solid var(--borde);border-radius:16px;padding:20px}
+  .entrega .e{background:var(--fondo-crema);border:1px solid var(--color-borde);border-radius:16px;padding:20px}
   .entrega .e b{font-family:var(--serif);font-size:18px;display:flex;align-items:center;gap:9px}
-  .entrega .e p{color:var(--suave);font-size:15px;margin-top:7px}
+  .entrega .e p{color:var(--color-suave);font-size:15px;margin-top:7px}
 
-  .reseñas-grid{display:grid;gap:18px}
-  @media(min-width:760px){.reseñas-grid{grid-template-columns:repeat(3,1fr)}}
-  .reseña{background:var(--blanco);border:1px solid var(--borde);border-radius:18px;padding:24px}
-  .stars{color:var(--dorado);font-size:16px;letter-spacing:2px;margin-bottom:10px}
-  .reseña p{font-size:16px}
-  .reseña .who{margin-top:14px;font-weight:700;font-size:14px}
-  .reseña .who span{display:block;color:var(--suave);font-weight:500;font-size:13px}
+  
 
-  .contacto{background:var(--texto);color:#f4efe7}
+  .contacto{background:var(--vino-profundo);color:#f4efe7}
   .contacto a{color:#f4efe7}
   .contacto .sec-head h2{color:#fff}
-  .contacto .sec-head .kicker{color:var(--rosa)}
+  .contacto .sec-head .kicker{color:var(--color-rosa)}
   .contacto .sec-head p{color:#cbc4b7}
   .cont-grid{display:grid;gap:34px}
   @media(min-width:800px){.cont-grid{grid-template-columns:1.2fr 1fr}}
@@ -168,21 +165,24 @@
   .cont-cta{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:28px}
   .cont-cta h3{color:#fff;font-size:24px;margin-bottom:10px}
   .cont-cta p{color:#cbc4b7;margin-bottom:20px}
+  .cont-cta .aviso{font-size:14px;margin:-6px 0 20px;border-left:2px solid var(--dorado);padding-left:12px}
   .mapa-btn{display:inline-flex;align-items:center;gap:9px;margin-top:8px;color:#fff;text-decoration:underline;text-underline-offset:3px;font-weight:600;font-size:15px}
   footer .fine{border-top:1px solid rgba(255,255,255,.12);margin-top:34px;padding-top:22px;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;color:#9a948a;font-size:13px}
 
-  .wa-float{position:fixed;right:18px;bottom:calc(84px + var(--safe-bot));z-index:50;width:56px;height:56px;border-radius:50%;background:#25D366;display:grid;place-items:center;box-shadow:0 8px 22px rgba(37,211,102,.4);transition:transform .2s ease}
+  .wa-float{position:fixed;right:18px;bottom:calc(84px + var(--safe-bot));z-index:50;width:56px;height:56px;border-radius:50%;background:#25D366;display:none;place-items:center;box-shadow:0 8px 22px rgba(37,211,102,.4);transition:transform .2s ease}
   .wa-float:hover{transform:scale(1.07)}
   .wa-float svg{width:30px;height:30px}
-  .mbar{position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--blanco);border-top:1px solid var(--borde);padding:10px 16px calc(10px + var(--safe-bot));display:flex;gap:12px;align-items:center;box-shadow:0 -6px 20px rgba(51,56,47,.08)}
+  .mbar{position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--superficie);border-top:1px solid var(--color-borde);padding:10px 16px calc(10px + var(--safe-bot));display:flex;gap:12px;align-items:center;box-shadow:0 -6px 20px rgba(42,34,36,.08)}
   .mbar .txt{flex:1;line-height:1.2}
   .mbar .txt b{font-family:var(--serif);font-size:16px;display:block}
-  .mbar .txt span{font-size:12px;color:var(--suave)}
+  .mbar .txt span{font-size:12px;color:var(--color-suave)}
   .mbar .btn{flex:none}
-  @media(min-width:900px){.wa-float{bottom:calc(24px + var(--safe-bot))}.mbar{display:none}}
+  @media(min-width:900px){.wa-float{display:grid;bottom:calc(24px + var(--safe-bot))}.mbar{display:none}}
   body{padding-bottom:calc(74px + var(--safe-bot))}
   @media(min-width:900px){body{padding-bottom:var(--safe-bot)}}
   .hidden{display:none !important}
+  .brand .mark.logo{width:auto;height:46px;mix-blend-mode:multiply}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 </style>
 </head>
 <body>
@@ -216,7 +216,7 @@
         <use href="#leaf" x="58" y="30" width="34" height="34" transform="rotate(30 75 47)"/>
         <use href="#bloom" x="28" y="20" width="44" height="44"/>
       </svg>
-      <span style="line-height:1.05"><b id="brandName">Azahar</b><span class="sub">FLORERÍA</span></span>
+      <span id="brandText" style="line-height:1.05"><b id="brandName">Gema Flowers</b><span class="sub">FLORERÍA</span></span>
     </a>
     <nav class="nav-links">
       <a href="#ocasiones">Ocasiones</a>
@@ -231,23 +231,20 @@
 <section class="hero" id="inicio" style="padding:0">
   <div class="wrap hero-in">
     <div>
-      <div class="hero-eyebrow">Flores frescas en Montemorelos</div>
+      <div class="hero-eyebrow">Florería en línea · Durango</div>
       <h1>Flores que dicen lo que <em>a veces no se alcanza a decir.</em></h1>
-      <p class="lead">Arreglos hechos a mano el mismo día, con flor fresca de temporada. Entrega a domicilio en la ciudad. Pides en un minuto por WhatsApp.</p>
+      <p class="lead">Ramos y regalos hechos a mano, con flor fresca. Entrega a domicilio en Durango. Pídelo en un minuto por WhatsApp.</p>
       <div class="hero-actions">
-        <a class="btn" href="#catalogo">
-          <svg class="wa-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
-          Ver catálogo
-        </a>
-        <a class="btn btn-ghost" id="wa-hero" href="#" target="_blank" rel="noopener">
+        <a class="btn" id="wa-hero" href="#" target="_blank" rel="noopener">
           <svg class="wa-ico" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.945C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 018.413 3.488 11.82 11.82 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.82 9.82 0 001.516 5.26l-.999 3.648 3.973-1.607z"/></svg>
           Pedir por WhatsApp
         </a>
+        <a class="btn btn-ghost" href="#catalogo">Ver catálogo</a>
       </div>
       <div class="hero-trust">
-        <div><b>Mismo día</b>Pedidos antes de las 4pm</div>
-        <div><b>100%</b>Flor fresca de temporada</div>
-        <div><b>+500</b>Entregas felices</div>
+        <div><b>A tu medida</b>Ramos y regalos personalizados</div>
+        <div><b>Fresca</b>Flor seleccionada</div>
+        <div><b>Durango</b>Entrega a domicilio · costo y horario al pedir</div>
       </div>
     </div>
     <div class="hero-art" id="heroArt" role="img" aria-label="Ramo de flores frescas">
@@ -260,8 +257,7 @@
         <g style="--f1:#d9a24b;--f2:#ecc87e;--ctr:#8a6a2a"><use href="#bloom" x="170" y="110" width="88" height="88"/></g>
         <path d="M150 230 L135 290 M150 230 L165 290" stroke="#6f8f6a" stroke-width="5" fill="none" stroke-linecap="round"/>
       </svg>
-      <div class="tag"><b>Ramo de temporada</b><span>desde $320</span></div>
-    </div>
+      </div>
   </div>
 </section>
 
@@ -274,12 +270,12 @@
     </div>
     <div class="ocas-grid">
       <a class="ocas-card" href="#catalogo" data-ocas="amor"><svg class="ic" viewBox="0 0 24 24" fill="#c98b86"><path d="M12 21s-7-4.35-9.5-8.5C.5 9 2.5 5 6 5c2 0 3 1 4 2 1-1 2-2 4-2 3.5 0 5.5 4 3.5 7.5C19 16.65 12 21 12 21z"/></svg><b>Amor</b></a>
-      <a class="ocas-card" href="#catalogo" data-ocas="cumpleaños"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#6f8f6a" stroke-width="1.8"><path d="M4 16h16v5H4zM6 16v-5h12v5M12 11V7M12 4v1"/></svg><b>Cumpleaños</b></a>
-      <a class="ocas-card" href="#catalogo" data-ocas="aniversario"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#c9a24b" stroke-width="1.8"><circle cx="12" cy="14" r="7"/><path d="M9 4h6M12 4v3"/></svg><b>Aniversario</b></a>
-      <a class="ocas-card" href="#catalogo" data-ocas="condolencias"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#7a7366" stroke-width="1.8"><path d="M12 3v18M5 10c0-4 3-7 7-7M19 10c0-4-3-7-7-7"/></svg><b>Condolencias</b></a>
-      <a class="ocas-card" href="#catalogo" data-ocas="bebé"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#c98b86" stroke-width="1.8"><circle cx="12" cy="9" r="4"/><path d="M5 21c0-4 3-6 7-6s7 2 7 6"/></svg><b>Nuevo bebé</b></a>
-      <a class="ocas-card" href="#catalogo" data-ocas="gracias"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#6f8f6a" stroke-width="1.8"><path d="M12 3l2.5 5 5.5.8-4 3.9 1 5.5-5-2.7-5 2.7 1-5.5-4-3.9 5.5-.8z"/></svg><b>Gracias</b></a>
-      <a class="ocas-card" href="#catalogo" data-ocas="porquesí"><svg class="ic" viewBox="0 0 24 24" fill="#d9a24b"><circle cx="12" cy="12" r="4"/><g stroke="#d9a24b" stroke-width="1.8"><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></g></svg><b>Solo porque sí</b></a>
+      <a class="ocas-card" href="#catalogo" data-ocas="cumpleaños"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#8c1c2e" stroke-width="1.8"><path d="M4 16h16v5H4zM6 16v-5h12v5M12 11V7M12 4v1"/></svg><b>Cumpleaños</b></a>
+      <a class="ocas-card" href="#catalogo" data-ocas="aniversario"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#8c1c2e" stroke-width="1.8"><circle cx="12" cy="14" r="7"/><path d="M9 4h6M12 4v3"/></svg><b>Aniversario</b></a>
+      <a class="ocas-card" href="#catalogo" data-ocas="condolencias"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#8c1c2e" stroke-width="1.8"><path d="M12 3v18M5 10c0-4 3-7 7-7M19 10c0-4-3-7-7-7"/></svg><b>Condolencias</b></a>
+      <a class="ocas-card" href="#catalogo" data-ocas="bebé"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#8c1c2e" stroke-width="1.8"><circle cx="12" cy="9" r="4"/><path d="M5 21c0-4 3-6 7-6s7 2 7 6"/></svg><b>Nuevo bebé</b></a>
+      <a class="ocas-card" href="#catalogo" data-ocas="gracias"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#8c1c2e" stroke-width="1.8"><path d="M12 3l2.5 5 5.5.8-4 3.9 1 5.5-5-2.7-5 2.7 1-5.5-4-3.9 5.5-.8z"/></svg><b>Gracias</b></a>
+      <a class="ocas-card" href="#catalogo" data-ocas="porquesí"><svg class="ic" viewBox="0 0 24 24" fill="#8c1c2e"><circle cx="12" cy="12" r="4"/><g stroke="#8c1c2e" stroke-width="1.8"><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></g></svg><b>Solo porque sí</b></a>
     </div>
   </div>
 </section>
@@ -310,42 +306,33 @@
     <div class="sec-head"><div class="kicker">Fácil y rápido</div><h2>Cómo pedir</h2></div>
     <div class="pasos-grid">
       <div class="paso"><div class="n">1</div><div><h3>Elige tu arreglo</h3><p>Mira el catálogo y toca el que te gustó. O cuéntanos tu idea y lo armamos a tu medida.</p></div></div>
-      <div class="paso"><div class="n">2</div><div><h3>Escríbenos por WhatsApp</h3><p>Nos llega el arreglo ya escrito. Solo agregas la fecha, la dirección y un mensaje para la tarjeta.</p></div></div>
+      <div class="paso"><div class="n">2</div><div><h3>Escríbenos por WhatsApp</h3><p>Nos llega el arreglo ya escrito. Solo agregas la fecha, la dirección y el mensaje que quieres en la tarjeta.</p></div></div>
       <div class="paso"><div class="n">3</div><div><h3>Nosotros lo entregamos</h3><p>Lo preparamos fresco y lo llevamos a domicilio. Te confirmamos cuando llegue.</p></div></div>
     </div>
     <div class="entrega">
-      <div class="e"><b><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6f8f6a" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Entrega el mismo día</b><p>Pedidos confirmados antes de las 4:00 pm se entregan hoy mismo.</p></div>
-      <div class="e"><b><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6f8f6a" stroke-width="2"><path d="M12 21s-7-5-7-11a7 7 0 1114 0c0 6-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg> Cobertura</b><p>Montemorelos y zonas cercanas. Pregúntanos por tu colonia.</p></div>
-      <div class="e"><b><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6f8f6a" stroke-width="2"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg> Pago fácil</b><p>Transferencia, tarjeta o efectivo contra entrega.</p></div>
+      <div class="e"><b><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8c1c2e" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Entrega a domicilio</b><p>Trabajamos con agenda: pide con anticipación y te confirmamos fecha y hora por WhatsApp.</p></div>
+      <div class="e"><b><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8c1c2e" stroke-width="2"><path d="M12 21s-7-5-7-11a7 7 0 1114 0c0 6-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg> Cobertura</b><p>Durango capital. Pregúntanos por tu colonia, el costo de envío y el pick up.</p></div>
+      <div class="e"><b><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8c1c2e" stroke-width="2"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg> Formas de pago</b><p>Te las compartimos por WhatsApp al confirmar tu pedido.</p></div>
     </div>
   </div>
 </section>
 
-<section id="reseñas">
-  <div class="wrap">
-    <div class="sec-head"><div class="kicker">Lo que dicen</div><h2>Clientes felices</h2></div>
-    <div class="reseñas-grid">
-      <div class="reseña"><div class="stars">★★★★★</div><p>“Pedí un ramo para mi mamá y llegó hermoso y fresquísimo. El trato por WhatsApp súper rápido.”</p><div class="who">Daniela R.<span>Cumpleaños</span></div></div>
-      <div class="reseña"><div class="stars">★★★★★</div><p>“Me resolvieron un arreglo de último momento el mismo día. Quedó precioso, mil gracias.”</p><div class="who">Jorge M.<span>Aniversario</span></div></div>
-      <div class="reseña"><div class="stars">★★★★★</div><p>“Las flores duraron más de una semana. Se nota que son de buena calidad. Vuelvo a pedir seguro.”</p><div class="who">Ana L.<span>Solo porque sí</span></div></div>
-    </div>
-  </div>
-</section>
+<!-- Reseñas: agregar cuando haya testimonios reales de clientes (destacada "Referencias" de Instagram) -->
 
 <footer class="contacto" id="contacto">
   <div class="wrap" style="padding:58px 20px">
     <div class="sec-head"><div class="kicker">Estamos para ti</div><h2>Contacto</h2><p>Escríbenos y con gusto te ayudamos a elegir el arreglo perfecto.</p></div>
     <div class="cont-grid">
       <div class="cont-list">
-        <div class="cont-item"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="#25D366"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.945C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 018.413 3.488 11.82 11.82 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24z"/></svg></div><div><b>WhatsApp</b><a id="wa-cont" href="#" target="_blank" rel="noopener">81 0000 0000 — pedir ahora</a></div></div>
-        <div class="cont-item"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f4efe7" stroke-width="2"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3 19.5 19.5 0 01-6-6 19.8 19.8 0 01-3-8.6A2 2 0 014.1 2h3a2 2 0 012 1.7c.1.9.3 1.8.6 2.6a2 2 0 01-.5 2.1L8.1 9.9a16 16 0 006 6l1.5-1.1a2 2 0 012.1-.5c.8.3 1.7.5 2.6.6a2 2 0 011.7 2z"/></svg></div><div><b>Teléfono</b><a href="tel:+528100000000">81 0000 0000</a></div></div>
-        <div class="cont-item"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f4efe7" stroke-width="2"><path d="M12 21s-7-5-7-11a7 7 0 1114 0c0 6-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></div><div><b>Dirección</b><span>Calle de muestra #000, Centro, Montemorelos, N.L.</span><a class="mapa-btn" href="https://www.google.com/maps/search/floreria+montemorelos" target="_blank" rel="noopener">Ver en Google Maps →</a></div></div>
-        <div class="cont-item"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f4efe7" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><div><b>Horario</b><span>Lun a Sáb, 9:00 am – 8:00 pm · Dom 10:00 am – 3:00 pm</span></div></div>
-        <div class="cont-item"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f4efe7" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="#f4efe7"/></svg></div><div><b>Instagram</b><a href="#" target="_blank" rel="noopener">@floreria.azahar</a></div></div>
+        <div class="cont-item"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="#25D366"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.945C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 018.413 3.488 11.82 11.82 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24z"/></svg></div><div><b>WhatsApp</b><a id="wa-cont" href="#" target="_blank" rel="noopener">618 319 9067 — pedir ahora</a></div></div>
+        <div class="cont-item"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f4efe7" stroke-width="2"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3 19.5 19.5 0 01-6-6 19.8 19.8 0 01-3-8.6A2 2 0 014.1 2h3a2 2 0 012 1.7c.1.9.3 1.8.6 2.6a2 2 0 01-.5 2.1L8.1 9.9a16 16 0 006 6l1.5-1.1a2 2 0 012.1-.5c.8.3 1.7.5 2.6.6a2 2 0 011.7 2z"/></svg></div><div><b>Teléfono</b><a href="tel:+526183199067">618 319 9067</a></div></div>
+        <div class="cont-item"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f4efe7" stroke-width="2"><path d="M12 21s-7-5-7-11a7 7 0 1114 0c0 6-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></div><div><b>Dirección</b><span>Florería en línea · Durango, Dgo. Entregas a domicilio.</span></div></div>
+                <div class="cont-item"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f4efe7" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="#f4efe7"/></svg></div><div><b>Instagram</b><a href="https://www.instagram.com/gema_flowers_/" target="_blank" rel="noopener">@gema_flowers_</a></div></div>
       </div>
       <div class="cont-cta">
-        <h3>¿Lista tu idea?</h3>
-        <p>Mándanos un mensaje y te armamos el arreglo. Respondemos rapidísimo.</p>
+        <h3>¿Ya tienes una idea?</h3>
+        <p>Mándanos un mensaje y te armamos el arreglo. Te respondemos lo antes posible.</p>
+        <p class="aviso">Solo atendemos por WhatsApp e Instagram. Si alguien te ofrece nuestros arreglos desde otra cuenta, confirma con nosotras.</p>
         <a class="btn" id="wa-footer" href="#" target="_blank" rel="noopener" style="width:100%">
           <svg class="wa-ico" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.945C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 018.413 3.488 11.82 11.82 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.82 9.82 0 001.516 5.26l-.999 3.648 3.973-1.607z"/></svg>
           Escribir por WhatsApp
@@ -353,8 +340,8 @@
       </div>
     </div>
     <div class="fine">
-      <span>© <span id="yr"></span> <span class="brandName2">Florería Azahar</span> · Montemorelos, N.L.</span>
-      <span>Hecho con cariño 🌿</span>
+      <span>© <span id="yr"></span> <span class="brandName2">Florería Gema Flowers</span> · Durango, Dgo.</span>
+      <span>Hecho con cariño 💐</span>
     </div>
   </div>
 </footer>
@@ -374,24 +361,29 @@
   /* ============================================================
      CONFIG — cambia SOLO estos valores por los reales
      ============================================================ */
-  const NEGOCIO   = "Azahar";              // nombre de la florería
-  const CIUDAD    = "Montemorelos";        // ciudad
-  const WA_NUMERO = "528100000000";        // 52 + 10 dígitos, sin espacios ni signos
-  const LOGO_IMG  = "";                    // ej. "assets/logo.png" (vacío = usa el ícono dibujado)
-  const HERO_IMG  = "";                    // ej. "assets/hero.jpg" (vacío = usa la ilustración)
+  const NEGOCIO   = "Gema Flowers";              // nombre de la florería
+  const CIUDAD    = "Durango";        // ciudad
+  const WA_NUMERO = "526183199067";        // 52 + 10 dígitos (única línea de atención según su Instagram)
+  const LOGO_IMG  = "assets/logo.png";                    // ej. "assets/logo.png" (vacío = usa el ícono dibujado)
+  const HERO_IMG  = "assets/ramo-rosas-rojas-listones.webp";                    // ej. "assets/hero.jpg" (vacío = usa la ilustración)
 
   /* Catálogo. Para usar foto real agrega  img:"assets/arreglo-1.jpg"
      Si no hay img, se dibuja una ilustración con los colores de abajo. */
   const arreglos = [
-    {n:"Ramo Pasión", p:450, t:"Mediano", o:["amor","aniversario"], et:"Más pedido", img:"", c:{f1:"#d14d57",f2:"#e0808a",ctr:"#c9a24b",leaf:"#6f8f6a"}, d:"Rosas rojas y follaje fresco. El clásico que nunca falla."},
-    {n:"Peonías de Ensueño", p:890, t:"Grande", o:["amor","aniversario"], et:"", img:"", c:{f1:"#e8a7a2",f2:"#f3cac6",ctr:"#c9a24b",leaf:"#6f8f6a"}, d:"Peonías rosadas de temporada, suaves y elegantes."},
-    {n:"Girasoles de Sol", p:380, t:"Mediano", o:["cumpleaños","gracias","porquesí"], et:"", img:"", c:{f1:"#d9a24b",f2:"#ecc87e",ctr:"#8a6a2a",leaf:"#6f8f6a"}, d:"Girasoles brillantes para alegrar el día de quien quieras."},
-    {n:"Fiesta de Colores", p:520, t:"Grande", o:["cumpleaños","porquesí"], et:"", img:"", c:{f1:"#d14d57",f2:"#d9a24b",ctr:"#6f8f6a",leaf:"#6f8f6a"}, d:"Mezcla vibrante de flores de temporada. Pura alegría."},
-    {n:"Serenidad Blanca", p:1200, t:"Grande", o:["condolencias"], et:"", img:"", c:{f1:"#f4f0e9",f2:"#ffffff",ctr:"#d9cfae",leaf:"#6f8f6a"}, d:"Arreglo blanco sobrio y respetuoso para acompañar."},
-    {n:"Bienvenido Bebé", p:650, t:"Mediano", o:["bebé"], et:"", img:"", c:{f1:"#e8a7a2",f2:"#cfe0ef",ctr:"#c9a24b",leaf:"#6f8f6a"}, d:"Tonos pastel suaves para recibir al nuevo integrante."},
-    {n:"Orquídea Serena", p:750, t:"En maceta", o:["gracias","aniversario","porquesí"], et:"Larga duración", img:"", c:{f1:"#c98b86",f2:"#efd7d4",ctr:"#8a6a2a",leaf:"#6f8f6a"}, d:"Orquídea en maceta que dura semanas. Un detalle que permanece."},
-    {n:"Tulipanes Primavera", p:580, t:"Mediano", o:["amor","cumpleaños","porquesí"], et:"", img:"", c:{f1:"#d14d57",f2:"#e8a7a2",ctr:"#d9a24b",leaf:"#6f8f6a"}, d:"Tulipanes frescos en caja. Delicados y modernos."},
-    {n:"Gracias de Corazón", p:420, t:"Pequeño", o:["gracias","porquesí"], et:"", img:"", c:{f1:"#d9a24b",f2:"#e8a7a2",ctr:"#6f8f6a",leaf:"#6f8f6a"}, d:"Un ramo cálido para decir gracias como se debe."},
+    {n:"Ramo rosas rojas con listones", p:null, t:"", o:["amor","aniversario"], et:"Favorito", img:"assets/ramo-rosas-rojas-listones.webp", alt:"Ramo grande de rosas rojas con listones y papel crema con borde dorado", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Rosas rojas en papel crema con listones, ramo grande de regalo."},
+    {n:"Ramo rosas rojas con gypsophila", p:null, t:"", o:["amor","aniversario"], et:"", img:"assets/ramo-rosas-rojas-gypsophila.webp", alt:"Ramo grande de rosas rojas rodeado de gypsophila en papel negro", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Rosas rojas con nube de gypsophila en papel negro."},
+    {n:"Ramo rosas rojas y rosadas", p:null, t:"", o:["amor","cumpleaños"], et:"", img:"assets/ramo-rosas-rojas-y-rosadas.webp", alt:"Ramo de rosas rojas y rosadas en papel oscuro", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Mezcla de rosas rojas y rosadas en papel envolvente."},
+    {n:"Ramo con corona y mariposa", p:null, t:"", o:["amor","cumpleaños","porquesí"], et:"Detalle especial", img:"assets/ramo-corona-mariposa.webp", alt:"Ramo de rosas rojas con corona dorada y mariposa sobre papel negro", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Rosas rojas en papel negro con corona y mariposa dorada."},
+    {n:"Caja de rosas fucsia", p:null, t:"", o:["amor","cumpleaños","porquesí"], et:"", img:"assets/caja-rosas-fucsia-mariposas.webp", alt:"Caja negra con rosas fucsia y mariposas doradas", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Rosas fucsia en caja negra con mariposas doradas."},
+    {n:"Ramo rosas rosadas y blancas", p:null, t:"", o:["amor","cumpleaños","gracias"], et:"", img:"assets/ramo-rosas-rosadas-y-blancas.webp", alt:"Ramo grande de rosas rosadas y blancas", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Rosas rosadas y blancas, suaves y delicadas."},
+    {n:"Ramo rosas fucsia y rosa", p:null, t:"", o:["amor","cumpleaños","gracias"], et:"", img:"assets/ramo-rosas-fucsia-y-rosa.webp", alt:"Ramo de rosas fucsia y rosa pálido", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Rosas fucsia y rosa pálido en papel traslúcido."},
+    {n:"Ramo de rosas rojo intenso", p:null, t:"", o:["amor","aniversario"], et:"", img:"assets/ramo-rosas-rojo-intenso.webp", alt:"Ramo redondo de rosas de rojo intenso en papel negro", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Rosas de un rojo intenso en papel negro."},
+    {n:"Ramo con chocolates", p:null, t:"", o:["cumpleaños","gracias","porquesí"], et:"", img:"assets/ramo-chocolates-ferrero.webp", alt:"Ramo con chocolates y flores en papel morado", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Rosas y chocolates en papel morado."},
+    {n:"Ramo de gerberas", p:null, t:"", o:["cumpleaños","gracias","porquesí"], et:"", img:"assets/ramo-gerberas-rosas.webp", alt:"Ramo de gerberas rosas con papel rosa", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Gerberas rosas en papel rosa."},
+    {n:"Ramo de lirios y rosas", p:null, t:"", o:["cumpleaños","gracias"], et:"", img:"assets/ramo-lirios-rosas.webp", alt:"Ramo de lirios y flores rosadas", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Lirios y rosas en tonos rosados."},
+    {n:"Ramo de girasoles", p:null, t:"", o:["cumpleaños","gracias","porquesí"], et:"", img:"assets/ramo-girasoles.webp", alt:"Ramo de girasoles con flores rosas y eucalipto", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Girasoles y flores rosadas con eucalipto."},
+    {n:"Ramo fucsia pequeño", p:null, t:"", o:["gracias","porquesí"], et:"", img:"assets/ramo-fucsia-pequeno.webp", alt:"Ramo pequeño de rosas fucsia envuelto en papel rosa", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Ramo pequeño de rosas fucsia, un detalle sencillo."},
+    {n:"Corazón de rosas", p:null, t:"", o:["amor","aniversario"], et:"", img:"assets/ramo-corazon-naranja.webp", alt:"Arreglo de rosas en forma de corazón sobre papel rosa", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Arreglo en forma de corazón con rosas."},
   ];
   /* ====================  fin de la zona editable  ==================== */
 
@@ -405,18 +397,18 @@
       <g style="--f1:${c.f1};--f2:${c.f2};--ctr:${c.ctr}"><use href="#bloom" x="172" y="112" width="82" height="82"/></g>
       <path d="M150 220 L136 285 M150 220 L164 285" stroke="${c.leaf}" stroke-width="5" fill="none" stroke-linecap="round"/>
     </svg>`;
-  const bg = (c) => `radial-gradient(130% 120% at 68% 18%, ${c.f2}55 0%, #f3ead9 55%, #e7eadd 100%)`;
+  const bg = (c) => `radial-gradient(130% 120% at 68% 18%, ${c.f2}55 0%, #f3e6e1 55%, #ead9d7 100%)`;
 
   function render(filtro="todos"){
     const grid = document.getElementById("catGrid");
     const lista = filtro==="todos" ? arreglos : arreglos.filter(a=>a.o.includes(filtro));
     grid.innerHTML = lista.map(a=>{
-      const msg = `Hola Florería ${NEGOCIO} 🌸, me interesa el arreglo "${a.n}" ($${a.p}). ¿Me ayudan?`;
+      const msg = `Hola Florería ${NEGOCIO} 🌸, me interesa el arreglo "${a.n}"${a.p?` ($${a.p})`:""}. ¿Me ayudan?`;
       const media = a.img
-        ? `<img src="${a.img}" alt="${a.n}" loading="lazy">`
+        ? `<img src="${a.img}" alt="${a.alt||a.n}" loading="lazy">`
         : bloomSVG(a.c);
       return `<article class="card">
-        <div class="ph" style="background:${a.img?'#f3ead9':bg(a.c)}">
+        <div class="ph" style="background:${a.img?'#f3e6e1':bg(a.c)}">
           ${a.et?`<span class="badge">${a.et}</span>`:""}
           ${media}
         </div>
@@ -424,15 +416,20 @@
           <h3>${a.n}</h3>
           <p class="meta">${a.d}</p>
           <div class="row">
-            <span class="price">$${a.p} <small>· ${a.t}</small></span>
+            <span class="price">${a.p?`$${a.p}`:`<small>Cotiza tu ramo</small>`}${a.p&&a.t?` <small>· ${a.t}</small>`:""}</span>
             <a class="btn" href="${waLink(msg)}" target="_blank" rel="noopener">Pedir</a>
           </div>
         </div>
       </article>`;
     }).join("");
-    if(!lista.length){grid.innerHTML=`<p style="color:var(--suave);grid-column:1/-1">Pronto más arreglos para esta ocasión. Escríbenos y te lo armamos a tu medida.</p>`;}
+    if(!lista.length){grid.innerHTML=`<p style="color:var(--color-suave);grid-column:1/-1">Pronto más arreglos para esta ocasión. Escríbenos y te lo armamos a tu medida.</p>`;}
   }
   render();
+  // Oculta ocasiones (chips y accesos) que todavía no tienen arreglos
+  const conArreglos = new Set(arreglos.flatMap(a=>a.o));
+  document.querySelectorAll("#filtros .chip:not([data-f='todos']), .ocas-card").forEach(el=>{
+    if(!conArreglos.has(el.dataset.f || el.dataset.ocas)) el.classList.add("hidden");
+  });
 
   document.getElementById("filtros").addEventListener("click", e=>{
     const b = e.target.closest(".chip"); if(!b) return;
@@ -455,11 +452,12 @@
   document.getElementById("brandName").textContent = NEGOCIO;
   document.querySelectorAll(".brandName2").forEach(e=>e.textContent = "Florería "+NEGOCIO);
   if(LOGO_IMG){
-    document.getElementById("logoMark").outerHTML = `<img class="mark" src="${LOGO_IMG}" alt="Logo ${NEGOCIO}">`;
+    document.getElementById("logoMark").outerHTML = `<img class="mark logo" src="${LOGO_IMG}" alt="Logo ${NEGOCIO}">`;
+    document.getElementById("brandText").classList.add("sr-only");
   }
   if(HERO_IMG){
     const art = document.getElementById("heroArt");
-    art.innerHTML = `<img src="${HERO_IMG}" alt="Arreglo floral"><div class="tag"><b>Ramo de temporada</b><span>desde $320</span></div>`;
+    art.innerHTML = `<img src="${HERO_IMG}" alt="Ramo grande de rosas rojas con listones, de Gema Flowers">`;
   }
   document.getElementById("yr").textContent = new Date().getFullYear();
 </script>
