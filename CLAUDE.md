@@ -64,8 +64,9 @@ Todo lo editable está en el bloque **CONFIG** al inicio del `<script>` en `inde
 - Decisiones de la dueña: horario 24/7; acepta transferencia, tarjeta y efectivo; pueblos y fuera de la ciudad
   (desde $300) van totalmente liquidados; eventos y empresas de cualquier tipo; SIN reseñas; la sección de
   ocasiones de la portada se quitó (el filtro por ocasión sigue en el Catálogo).
-- Fotos con fondo blanco recortado: ramo de mangos y corona fúnebre (el recorte del mango es rústico; pedir
-  foto sobre fondo liso).
+- Foto con fondo blanco recortado: ramo de mangos (el recorte es rústico; pedir foto sobre fondo liso).
+- NO se ofrecen coronas fúnebres ni condolencias: la dueña pidió quitarlas (el filtro de Condolencias se oculta
+  solo mientras no haya arreglos con esa ocasión).
 - Pendiente: panel de administración para que ella cambie precios y promociones de temporada (nueva sección;
   requiere guardar datos fuera del `index.html`, se hace cuando compre el dominio); dominio propio; lista de
   precios de fechas especiales (14 feb, 10 may); definir qué colonias son zona centro / cercana / lejos. No inventar datos del negocio.
