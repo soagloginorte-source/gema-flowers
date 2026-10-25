@@ -34,8 +34,11 @@ Todo lo editable está en el bloque **CONFIG** al inicio del `<script>` en `inde
   ni signos. Hoy: `526183199067` (única línea de atención según su Instagram; confirmar con la dueña).
 - `LOGO_IMG` — `"assets/logo.png"` (ya puesto). Vacío = usa el ícono dibujado.
 - `HERO_IMG` — foto grande del hero (hoy `assets/ramo-rosas-rojas-listones.webp`). Vacío = ilustración.
-- `ROSAS`, `COLORES`, `EXTRAS` — precios del armador "Arma tu ramo" (12/24/50/100 rosas y accesorios),
-  tomados de su historia de Instagram; **confirmar que siguen vigentes**.
+- Precios del cotizador "Arma tu ramo" (los pasó la dueña; vigentes del 26 oct al 9 nov 2026, después el
+  sitio avisa solo que pueden haber cambiado, ver `PRECIOS_HASTA`): `ROSAS` (24 a 400 rosas, `c` = cuántos
+  colores se pueden elegir), `COLORES`, `GYPSOPHILA` (precio según rosas), `EXTRAS` (`p:null` = por cotizar),
+  `ENVIOS`, `ANTICIPO` (50 %) y `ENVIO_GRATIS_DESDE` ($3,000). En fechas especiales (14 feb, 10 may) ella usa
+  OTRA lista: hay que reemplazar estos valores.
 - `arreglos[]` — el catálogo. Cada arreglo: `n` nombre, `p` precio (`null` = "Cotiza tu ramo"),
   `t` tamaño, `o` ocasiones (filtro; las ocasiones sin arreglos se ocultan solas),
   `et` etiqueta opcional, `img` ruta de la foto, `alt` texto alternativo, `c` colores de la
@@ -58,8 +61,9 @@ Todo lo editable está en el bloque **CONFIG** al inicio del `<script>` en `inde
   fija, responsive, accesible, respeta `prefers-reduced-motion`.
 - Hecho: armador de ramos con total, galería, sección Nosotros (misión y visión TEXTUALES de su Instagram:
   no se editan), eventos y empresas. Logo y 15 fotos reales (de su Instagram, con permiso pendiente de confirmar por la dueña).
-- Pendiente: precios y nombres reales, zonas de entrega y flete, formas de pago, horario,
-  reseñas reales, confirmar el WhatsApp. No inventar datos del negocio.
+- Pendiente: formas de pago exactas, horario, reseñas reales, confirmar el WhatsApp, definir qué
+  colonias son zona centro / cercana / lejos, foto del ramo de mangos ($700), confirmar el precio de zona
+  centro ($60) vs cercana ($30). No inventar datos del negocio.
 - La información detallada de las flores/catálogo la definirá el dueño por separado;
   no inventar precios ni nombres definitivos.
 

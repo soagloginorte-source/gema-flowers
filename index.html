@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Gema Flowers · florería en línea en Durango</title>
-<meta name="description" content="Gema Flowers, florería en línea en Durango. Ramos de rosas y regalos hechos a mano, con entrega a domicilio. Pide por WhatsApp.">
+<meta name="description" content="Cultiva sonrisas con el regalo perfecto. Gema Flowers, florería en línea en Durango: ramos de rosas y regalos hechos a mano, con entrega a domicilio. Pide por WhatsApp.">
 <meta name="theme-color" content="#8c1c2e">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Gema Flowers · florería en línea en Durango">
-<meta property="og:description" content="Ramos de rosas y regalos hechos a mano, con entrega a domicilio en Durango. Pide por WhatsApp.">
+<meta property="og:description" content="Cultiva sonrisas con el regalo perfecto. Ramos de rosas y regalos hechos a mano, con entrega a domicilio en Durango.">
 <meta property="og:image" content="https://soagloginorte-source.github.io/gema-flowers/assets/og.jpg">
 <link rel="icon" href="assets/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -238,6 +238,13 @@
   .total b{font-family:var(--serif);font-size:32px;color:var(--color-acento);font-variant-numeric:tabular-nums}
   .arma-res .nota{font-size:13px;color:var(--color-suave)}
   .arma-res .btn{width:100%}
+  .arma legend .hint{font-family:var(--sans);font-size:14px;color:var(--color-suave)}
+  .opt input:disabled{cursor:not-allowed}
+  .opt input:disabled + span{opacity:.4}
+  .arma-res li.falta{color:var(--color-suave)}
+  .anticipo{font-weight:700;font-size:15px;background:var(--rosa-claro);border-radius:12px;padding:10px 14px}
+  .anticipo:empty{display:none}
+  .arma-res .nota:empty{display:none}
 
   .galeria-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
   @media(min-width:720px){.galeria-grid{grid-template-columns:repeat(3,1fr);gap:18px}}
@@ -306,7 +313,7 @@
   <div class="wrap hero-in">
     <div>
       <div class="hero-eyebrow">Florería en línea · Durango</div>
-      <h1>Flores que dicen lo que <em>a veces no se alcanza a decir.</em></h1>
+      <h1>Cultiva sonrisas con <em>el regalo perfecto.</em></h1>
       <p class="lead">Ramos y regalos hechos a mano, con flor fresca. Entrega a domicilio en Durango. Pídelo en un minuto por WhatsApp.</p>
       <div class="hero-actions">
         <a class="btn" id="wa-hero" href="#" target="_blank" rel="noopener">
@@ -316,9 +323,9 @@
         <a class="btn btn-ghost" href="#catalogo">Ver catálogo</a>
       </div>
       <div class="hero-trust">
-        <div><b>A tu medida</b>Ramos y regalos personalizados</div>
-        <div><b>Fresca</b>Flor seleccionada</div>
-        <div><b>Durango</b>Entrega a domicilio · costo y horario al pedir</div>
+        <div><b id="tDesde"></b>Ramo de 24 rosas</div>
+        <div><b>Envío gratis</b><span id="tGratis"></span></div>
+        <div><b>Pick up gratis</b>Recoge tu pedido</div>
       </div>
     </div>
     <div class="hero-art" id="heroArt" role="img" aria-label="Ramo de flores frescas">
@@ -396,8 +403,9 @@
     <div class="arma-grid">
       <div class="arma-opc">
         <fieldset><legend>1. ¿Cuántas rosas?</legend><div class="opts" id="optRosas"></div></fieldset>
-        <fieldset><legend>2. Color</legend><div class="opts" id="optColor"></div></fieldset>
-        <fieldset><legend>3. Detalles extra <span>(opcional)</span></legend><div class="opts" id="optExtras"></div></fieldset>
+        <fieldset><legend>2. Color <span class="hint" id="hintColor"></span></legend><div class="opts" id="optColor"></div></fieldset>
+        <fieldset><legend>3. Detalles extra <span class="hint">(opcional)</span></legend><div class="opts" id="optExtras"></div></fieldset>
+        <fieldset><legend>4. ¿Cómo lo recibes? <span class="hint" id="hintEnvio"></span></legend><div class="opts" id="optEnvio"></div></fieldset>
     <div class="tarjeta">
       <label for="msgTarjeta">Mensaje para la tarjeta <span>(opcional, va en tu pedido)</span></label>
       <input id="msgTarjeta" type="text" maxlength="120" placeholder="Ej. Feliz cumpleaños, mamá. Te quiero mucho">
@@ -409,7 +417,9 @@
         <div id="resEstilo"></div>
         <ul id="resLista"></ul>
         <div class="total"><span>Total estimado</span><b id="resTotal"></b></div>
-        <p class="nota">Son precios de referencia. Te confirmamos el total y la fecha por WhatsApp.</p>
+        <p class="nota" id="resPend"></p>
+        <p class="anticipo" id="resAnticipo"></p>
+        <p class="nota" id="resVigencia"></p>
         <a class="btn" id="resWa" href="#" target="_blank" rel="noopener">Pedir este ramo por WhatsApp</a>
       </aside>
     </div>
@@ -456,9 +466,9 @@
       <div class="paso"><div class="n">3</div><div><h3>Nosotros lo entregamos</h3><p>Lo preparamos fresco y lo llevamos a domicilio. Te confirmamos cuando llegue.</p></div></div>
     </div>
     <div class="entrega">
-      <div class="e"><b><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8c1c2e" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Entrega a domicilio</b><p>Trabajamos con agenda: pide con anticipación y te confirmamos fecha y hora por WhatsApp.</p></div>
-      <div class="e"><b><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8c1c2e" stroke-width="2"><path d="M12 21s-7-5-7-11a7 7 0 1114 0c0 6-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg> Cobertura</b><p>Durango capital. Pregúntanos por tu colonia, el costo de envío y el pick up.</p></div>
-      <div class="e"><b><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8c1c2e" stroke-width="2"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg> Formas de pago</b><p>Te las compartimos por WhatsApp al confirmar tu pedido.</p></div>
+      <div class="e"><b><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8c1c2e" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Entrega a domicilio</b><p id="infoEnvio"></p></div>
+      <div class="e"><b><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8c1c2e" stroke-width="2"><path d="M12 21s-7-5-7-11a7 7 0 1114 0c0 6-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg> Cobertura</b><p>Durango capital y, fuera de la ciudad, con costo según el lugar. Dinos tu colonia y te confirmamos la zona. Trabajamos con agenda: pide con anticipación.</p></div>
+      <div class="e"><b><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8c1c2e" stroke-width="2"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg> Anticipo y pago</b><p>Apartas tu pedido con el 50 % de anticipo. Te compartimos las formas de pago por WhatsApp.</p></div>
     </div>
   </div>
 </section>
@@ -517,10 +527,39 @@
   const LOGO_IMG  = "assets/logo.png";                    // ej. "assets/logo.png" (vacío = usa el ícono dibujado)
   const HERO_IMG  = "assets/ramo-rosas-rojas-listones.webp";
 
-  /* Precios de su historia "Bouquet's Rosas" de Instagram (confirmar que siguen vigentes). */
-  const ROSAS = [{n:12,p:350},{n:24,p:650},{n:50,p:1100},{n:100,p:2100}];
-  const COLORES = [{id:"roja",n:"Roja",o:"rojo",c:"#b3202f"},{id:"rosa",n:"Rosa",o:"rosa",c:"#e8a0b0"},{id:"blanca",n:"Blanca",o:"blanco",c:"#f4efe9"},{id:"lila",n:"Lila",o:"lila",c:"#a98bc4"}];
-  const EXTRAS = [{n:"3 mariposas",p:60},{n:"Corona",p:130},{n:"Luz led",p:60},{n:"Moño",p:50},{n:"Jarrón",p:100}];                    // ej. "assets/hero.jpg" (vacío = usa la ilustración)
+  /* Precios que pasó la dueña, vigentes del 26 de octubre al 9 de noviembre de 2026.
+     En fechas especiales (14 de febrero, 10 de mayo) tiene otra lista de precios. */
+  const PRECIOS_HASTA = "2026-11-09";                     // después de esta fecha el sitio avisa que pueden haber cambiado
+  const PRECIOS_TEXTO = "del 26 de octubre al 9 de noviembre de 2026";
+  const ANTICIPO = 0.5;                                   // 50 % para apartar
+  const ENVIO_GRATIS_DESDE = 3000;                        // envío gratis en Durango capital desde este monto
+  /* c = cuántos colores puede elegir según la cantidad (0 = más de 4, sin límite) */
+  const ROSAS = [
+    {n:24,p:320,c:1},{n:36,p:490,c:2},{n:50,p:640,c:2},{n:75,p:1020,c:3},{n:100,p:1280,c:4},
+    {n:150,p:1920,c:0},{n:200,p:2560,c:0},{n:300,p:3840,c:0},{n:400,p:5000,c:0}
+  ];
+  const COLORES = [
+    {id:"roja",n:"Roja",o:"rojo",c:"#b3202f"},{id:"rosa",n:"Rosa",o:"rosa",c:"#e8a0b0"},
+    {id:"blanca",n:"Blanca",o:"blanco",c:"#f4efe9"},{id:"lila",n:"Lila",o:"lila",c:"#a98bc4"},
+    {id:"otro",n:"Otro color",o:"otro color (a definir)",c:"#ffffff"}
+  ];
+  /* Gypsophila: el precio depende de las rosas. Otras cantidades: por cotizar. */
+  const GYPSOPHILA = {24:200,50:220,75:250,100:300,150:450};
+  /* p:null = por cotizar · g = grupo (solo se elige una opción del grupo) */
+  const EXTRAS = [
+    {n:"3 mariposas",p:45},
+    {n:"Corona chica",p:120,g:"corona"},{n:"Corona mediana",p:220,g:"corona"},{n:"Corona extra grande",p:500,g:"corona"},
+    {n:"Luz led",p:60},{n:"Moño",p:60},{n:"Jarrón",p:120},
+    {n:"Gypsophila",gyp:true},
+    {n:"Diseño de papel especial",p:null},{n:"Caja en lugar de ramo",p:null}
+  ];
+  const ENVIOS = [
+    {id:"pickup",n:"Recoger (pick up)",p:0},
+    {id:"centro",n:"Zona centro",p:60},
+    {id:"cerca",n:"Zonas cercanas",p:30},
+    {id:"lejos",n:"Fraccionamientos o más lejos",p:120},
+    {id:"fuera",n:"Fuera de Durango capital",p:300,desde:true}
+  ];
 
   /* Catálogo. Para usar foto real agrega  img:"assets/arreglo-1.jpg"
      Si no hay img, se dibuja una ilustración con los colores de abajo. */
@@ -529,17 +568,17 @@
     {n:"Ramo rosas rojas con gypsophila", p:null, rosas:true, t:"", o:["amor","aniversario"], et:"", img:"assets/ramo-rosas-rojas-gypsophila.webp", alt:"Ramo grande de rosas rojas rodeado de gypsophila en papel negro", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Rosas rojas con nube de gypsophila en papel negro."},
     {n:"Ramo rosas rojas y rosadas", p:null, rosas:true, t:"", o:["amor","cumpleaños"], et:"", img:"assets/ramo-rosas-rojas-y-rosadas.webp", alt:"Ramo de rosas rojas y rosadas en papel oscuro", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Mezcla de rosas rojas y rosadas en papel envolvente."},
     {n:"Ramo con corona y mariposa", p:null, rosas:true, t:"", o:["amor","cumpleaños","porquesí"], et:"Detalle especial", img:"assets/ramo-corona-mariposa.webp", alt:"Ramo de rosas rojas con corona dorada y mariposa sobre papel negro", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Rosas rojas en papel negro con corona y mariposa dorada."},
-    {n:"Caja de rosas fucsia", p:null, t:"", o:["amor","cumpleaños","porquesí"], et:"", img:"assets/caja-rosas-fucsia-mariposas.webp", alt:"Caja negra con rosas fucsia y mariposas doradas", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Rosas fucsia en caja negra con mariposas doradas."},
+    {n:"Caja de rosas fucsia", p:1500, t:"", o:["amor","cumpleaños","porquesí"], et:"", img:"assets/caja-rosas-fucsia-mariposas.webp", alt:"Caja negra con rosas fucsia y mariposas doradas", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Rosas fucsia en caja negra con mariposas doradas."},
     {n:"Ramo rosas rosadas y blancas", p:null, rosas:true, t:"", o:["amor","cumpleaños","gracias"], et:"", img:"assets/ramo-rosas-rosadas-y-blancas.webp", alt:"Ramo grande de rosas rosadas y blancas", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Rosas rosadas y blancas, suaves y delicadas."},
     {n:"Ramo de rosas blancas con moño", p:null, rosas:true, t:"", o:["amor","aniversario","gracias"], et:"", img:"assets/ramo-rosas-blancas-mono.webp", alt:"Ramo de rosas blancas con un moño fucsia", c:{f1:"#f4f0e9",f2:"#ffffff",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Rosas blancas con moño fucsia, elegante y delicado."},
     {n:"Ramo rosas fucsia y rosa", p:null, rosas:true, t:"", o:["amor","cumpleaños","gracias"], et:"", img:"assets/ramo-rosas-fucsia-y-rosa.webp", alt:"Ramo de rosas fucsia y rosa pálido", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Rosas fucsia y rosa pálido en papel traslúcido."},
     {n:"Ramo de rosas rojo intenso", p:null, rosas:true, t:"", o:["amor","aniversario"], et:"", img:"assets/ramo-rosas-rojo-intenso.webp", alt:"Ramo redondo de rosas de rojo intenso en papel negro", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Rosas de un rojo intenso en papel negro."},
-    {n:"Ramo con chocolates", p:null, t:"", o:["cumpleaños","gracias","porquesí"], et:"", img:"assets/ramo-chocolates-ferrero.webp", alt:"Ramo con chocolates y flores en papel morado", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Rosas y chocolates en papel morado."},
-    {n:"Ramo de gerberas", p:null, t:"", o:["cumpleaños","gracias","porquesí"], et:"", img:"assets/ramo-gerberas-rosas.webp", alt:"Ramo de gerberas rosas con papel rosa", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Gerberas rosas en papel rosa."},
-    {n:"Ramo de lirios y rosas", p:null, t:"", o:["cumpleaños","gracias"], et:"", img:"assets/ramo-lirios-rosas.webp", alt:"Ramo de lirios y flores rosadas", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Lirios y rosas en tonos rosados."},
-    {n:"Ramo de girasoles", p:null, t:"", o:["cumpleaños","gracias","porquesí"], et:"", img:"assets/ramo-girasoles.webp", alt:"Ramo de girasoles con flores rosas y eucalipto", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Girasoles y flores rosadas con eucalipto."},
-    {n:"Ramo fucsia pequeño", p:null, rosas:true, t:"", o:["gracias","porquesí"], et:"", img:"assets/ramo-fucsia-pequeno.webp", alt:"Ramo pequeño de rosas fucsia envuelto en papel rosa", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Ramo pequeño de rosas fucsia, un detalle sencillo."},
-    {n:"Corazón de rosas", p:null, t:"", o:["amor","aniversario"], et:"", img:"assets/ramo-corazon-naranja.webp", alt:"Arreglo de rosas en forma de corazón sobre papel rosa", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Arreglo en forma de corazón con rosas."},
+    {n:"Ramo con chocolates", p:550, desde:true, t:"", o:["cumpleaños","gracias","porquesí"], et:"", img:"assets/ramo-chocolates-ferrero.webp", alt:"Ramo con chocolates y flores en papel morado", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Rosas y chocolates en papel morado."},
+    {n:"Ramo de gerberas", p:400, t:"12 gerberas", o:["cumpleaños","gracias","porquesí"], et:"", img:"assets/ramo-gerberas-rosas.webp", alt:"Ramo de gerberas rosas con papel rosa", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Gerberas rosas en papel rosa."},
+    {n:"Ramo de lirios y rosas", p:600, t:"", o:["cumpleaños","gracias"], et:"", img:"assets/ramo-lirios-rosas.webp", alt:"Ramo de lirios y flores rosadas", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Lirios y rosas en tonos rosados."},
+    {n:"Ramo de girasoles", p:1100, t:"", o:["cumpleaños","gracias","porquesí"], et:"", img:"assets/ramo-girasoles.webp", alt:"Ramo de girasoles con flores rosas y eucalipto", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Girasoles y flores rosadas con eucalipto."},
+    {n:"Ramo fucsia pequeño", p:350, t:"", o:["gracias","porquesí"], et:"", img:"assets/ramo-fucsia-pequeno.webp", alt:"Ramo pequeño de rosas fucsia envuelto en papel rosa", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Ramo pequeño de rosas fucsia, un detalle sencillo."},
+    {n:"Corazón de rosas", p:600, t:"", o:["amor","aniversario"], et:"", img:"assets/ramo-corazon-naranja.webp", alt:"Arreglo de rosas en forma de corazón sobre papel rosa", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Arreglo en forma de corazón con rosas."},
   ];
   /* ====================  fin de la zona editable  ==================== */
 
@@ -557,7 +596,7 @@
 
   function cardHTML(a){
       const tarjeta = document.getElementById("msgTarjeta").value.trim();
-      const msg = `Hola Florería ${NEGOCIO} 🌸, me interesa el arreglo "${a.n}"${a.p?` ($${a.p})`:""}.${tarjeta?` Mensaje para la tarjeta: "${tarjeta}".`:""} ¿Me ayudan?`;
+      const msg = `Hola Florería ${NEGOCIO} 🌸, me interesa el arreglo "${a.n}"${a.p?` (${a.desde?"desde ":""}$${a.p})`:""}.${tarjeta?` Mensaje para la tarjeta: "${tarjeta}".`:""} ¿Me ayudan?`;
       const media = a.img
         ? `<img src="${a.img}" alt="${a.alt||a.n}" loading="lazy">`
         : bloomSVG(a.c);
@@ -570,7 +609,7 @@
           <h3>${a.n}</h3>
           <p class="meta">${a.d}</p>
           <div class="row">
-            <span class="price">${a.rosas?`<small>Desde</small> $${ROSAS[0].p}`:a.p?`$${a.p}`:`<small>Cotiza tu ramo</small>`}</span>
+            <span class="price">${a.rosas?`<small>Desde</small> $${ROSAS[0].p}`:a.p?`${a.desde?"<small>Desde</small> ":""}$${a.p}${a.t?` <small>· ${a.t}</small>`:""}`:`<small>Cotiza tu ramo</small>`}</span>
             ${a.rosas?`<button type="button" class="btn" data-arma="${arreglos.indexOf(a)}">Armar este ramo</button>`:`<a class="btn" href="${waLink(msg)}" target="_blank" rel="noopener">Pedir</a>`}
           </div>
         </div>
@@ -595,35 +634,86 @@
   /* ---- Arma tu ramo ---- */
   const $ = id => document.getElementById(id);
   const peso = n => "$"+n.toLocaleString("es-MX");
-  const armar = {r:1, color:"roja", extras:new Set(), estilo:null};
+  const armar = {r:0, colores:new Set(["roja"]), extras:new Set(), envio:null, estilo:null};
+  const precioExtra = e => e.gyp ? (GYPSOPHILA[ROSAS[armar.r].n] ?? null) : e.p;
   function armaOpciones(){
-    $("optRosas").innerHTML = ROSAS.map((o,i)=>`<label class="opt"><input type="radio" name="rosas" value="${i}" ${i===armar.r?"checked":""}><span>${o.n} rosas <b>${peso(o.p)}</b></span></label>`).join("");
-    $("optColor").innerHTML = COLORES.map(c=>`<label class="opt"><input type="radio" name="color" value="${c.id}" ${c.id===armar.color?"checked":""}><span><i class="dot" style="background:${c.c}"></i>${c.n}</span></label>`).join("");
-    $("optExtras").innerHTML = EXTRAS.map((e,i)=>`<label class="opt"><input type="checkbox" name="extra" value="${i}"><span>${e.n} <b>+${peso(e.p)}</b></span></label>`).join("");
+    $("optRosas").innerHTML = ROSAS.map((o,i)=>`<label class="opt"><input type="radio" name="rosas" value="${i}"><span>${o.n} rosas <b>${peso(o.p)}</b></span></label>`).join("");
+    $("optColor").innerHTML = COLORES.map(c=>`<label class="opt"><input type="checkbox" name="color" value="${c.id}"><span><i class="dot" style="background:${c.c}"></i>${c.n}</span></label>`).join("");
+    $("optExtras").innerHTML = EXTRAS.map((e,i)=>`<label class="opt"><input type="checkbox" name="extra" value="${i}"><span>${e.n} <b id="px${i}"></b></span></label>`).join("");
+    $("optEnvio").innerHTML = ENVIOS.map(z=>`<label class="opt"><input type="radio" name="envio" value="${z.id}"><span>${z.n} <b>${z.p?(z.desde?"desde ":"")+peso(z.p):"gratis"}</b></span></label>`).join("");
+    $("hintEnvio").textContent = `(envío gratis en Durango desde ${peso(ENVIO_GRATIS_DESDE)})`;
+  }
+  /* Pone en pantalla el estado: marcados, desactivados y precios que dependen de la cantidad */
+  function armaSync(){
+    const lim = ROSAS[armar.r].c;
+    document.querySelectorAll("input[name=rosas]").forEach((i,k)=>{ i.checked = k===armar.r; });
+    document.querySelectorAll("input[name=color]").forEach(i=>{
+      i.checked = armar.colores.has(i.value);
+      i.disabled = lim>1 && !i.checked && armar.colores.size>=lim;
+    });
+    $("hintColor").textContent = lim===1 ? "(elige 1)" : lim ? `(elige hasta ${lim})` : "(más de 4: combina los que quieras)";
+    document.querySelectorAll("input[name=extra]").forEach(i=>{ i.checked = armar.extras.has(+i.value); });
+    EXTRAS.forEach((e,i)=>{ const pr = precioExtra(e); $("px"+i).textContent = pr==null ? "cotizar" : "+"+peso(pr); });
+    document.querySelectorAll("input[name=envio]").forEach(i=>{ i.checked = armar.envio===i.value; });
   }
   function armaResumen(){
-    const o = ROSAS[armar.r], col = COLORES.find(c=>c.id===armar.color);
-    const ex = [...armar.extras].sort().map(i=>EXTRAS[i]);
-    const total = o.p + ex.reduce((t,e)=>t+e.p,0);
+    armaSync();
+    const o = ROSAS[armar.r];
+    const cols = [...armar.colores].map(id=>COLORES.find(c=>c.id===id));
+    const ex = [...armar.extras].sort((a,b)=>a-b).map(i=>({e:EXTRAS[i], pr:precioExtra(EXTRAS[i])}));
+    const conPrecio = ex.filter(x=>x.pr!=null), porCotizar = ex.filter(x=>x.pr==null);
+    const subtotal = o.p + conPrecio.reduce((t,x)=>t+x.pr,0);
+    const z = ENVIOS.find(z=>z.id===armar.envio);
+    const gratis = !!z && z.id!=="fuera" && subtotal>=ENVIO_GRATIS_DESDE;
+    const envioCosto = z ? (gratis ? 0 : z.p) : 0;
+    const total = subtotal + envioCosto;
+    const pendiente = porCotizar.length>0 || (!!z && z.id==="fuera");
+    const anticipo = Math.ceil(total*ANTICIPO);
+    const envioTxt = z ? (gratis||!z.p ? "gratis" : (z.desde?"desde ":"")+peso(z.p)) : "";
     const tarjeta = $("msgTarjeta").value.trim();
     $("resEstilo").innerHTML = armar.estilo
       ? `<div class="estilo"><img src="${armar.estilo.img}" alt=""><div><small>Estilo que elegiste</small><b>${armar.estilo.n}</b><button type="button" id="quitaEstilo">Quitar</button></div></div>` : "";
-    $("resLista").innerHTML = `<li><span>${o.n} rosas · color ${col.o}</span><b>${peso(o.p)}</b></li>` + ex.map(e=>`<li><span>${e.n}</span><b>${peso(e.p)}</b></li>`).join("");
-    $("resTotal").textContent = peso(total);
-    const msg = `Hola Florería ${NEGOCIO} 🌸, quiero armar un ramo:\n• ${o.n} rosas, color ${col.o} (${peso(o.p)})`
+    $("resLista").innerHTML =
+        `<li><span>${o.n} rosas · ${cols.map(c=>c.o).join(", ")}</span><b>${peso(o.p)}</b></li>`
+      + ex.map(x=>`<li><span>${x.e.n}</span><b>${x.pr==null?"por cotizar":peso(x.pr)}</b></li>`).join("")
+      + (z ? `<li><span>${z.n}</span><b>${envioTxt==="gratis"?"gratis":envioTxt}</b></li>` : `<li class="falta"><span>Envío</span><b>por elegir</b></li>`);
+    $("resTotal").textContent = peso(total) + (pendiente ? "+" : "");
+    $("resPend").textContent = pendiente ? "Más lo que está por cotizar: te lo confirmamos por WhatsApp." : "";
+    $("resAnticipo").textContent = `Anticipo para apartar (${Math.round(ANTICIPO*100)}%): ${peso(anticipo)}${pendiente?"+":""}`;
+    const msg = `Hola Florería ${NEGOCIO} 🌸, quiero armar un ramo:\n• ${o.n} rosas, ${cols.map(c=>c.o).join(", ")} (${peso(o.p)})`
       + (armar.estilo ? `\n• Estilo: ${armar.estilo.n}` : "")
-      + (ex.length ? `\n• Extras: ${ex.map(e=>`${e.n} (${peso(e.p)})`).join(", ")}` : "")
-      + `\n• Total estimado: ${peso(total)}`
+      + (conPrecio.length ? `\n• Extras: ${conPrecio.map(x=>`${x.e.n} (${peso(x.pr)})`).join(", ")}` : "")
+      + (porCotizar.length ? `\n• Por cotizar: ${porCotizar.map(x=>x.e.n).join(", ")}` : "")
+      + `\n• Entrega: ${z ? `${z.n} (${envioTxt})` : "por definir"}`
+      + `\n• Total estimado: ${peso(total)}${pendiente?" + lo que está por cotizar":""}`
+      + `\n• Anticipo (${Math.round(ANTICIPO*100)}%): ${peso(anticipo)}`
       + (tarjeta ? `\n• Mensaje para la tarjeta: "${tarjeta}"` : "")
       + `\n¿Me ayudan?`;
     $("resWa").href = waLink(msg);
   }
   armaOpciones(); armaResumen();
+  const vigente = new Date().toLocaleDateString("en-CA") <= PRECIOS_HASTA;
+  $("resVigencia").textContent = vigente
+    ? `Precios vigentes ${PRECIOS_TEXTO}. En fechas especiales (14 de febrero, 10 de mayo) aplica otra lista. La tarjeta con mensaje es gratis.`
+    : `Estos precios eran de ${PRECIOS_TEXTO} y pueden haber cambiado. Confirma el total por WhatsApp.`;
   $("arma").addEventListener("change", e=>{
     const t = e.target;
-    if(t.name==="rosas") armar.r = +t.value;
-    else if(t.name==="color") armar.color = t.value;
-    else if(t.name==="extra") t.checked ? armar.extras.add(+t.value) : armar.extras.delete(+t.value);
+    if(t.name==="rosas"){
+      armar.r = +t.value;
+      const lim = ROSAS[armar.r].c;
+      if(lim && armar.colores.size>lim) armar.colores = new Set([...armar.colores].slice(0,lim));
+    } else if(t.name==="color"){
+      const lim = ROSAS[armar.r].c;
+      if(lim===1) armar.colores = new Set([t.value]);
+      else if(t.checked) armar.colores.add(t.value);
+      else if(armar.colores.size>1) armar.colores.delete(t.value);
+    } else if(t.name==="extra"){
+      const ex = EXTRAS[+t.value];
+      if(t.checked){
+        if(ex.g) EXTRAS.forEach((x,i)=>{ if(x.g===ex.g) armar.extras.delete(i); });
+        armar.extras.add(+t.value);
+      } else armar.extras.delete(+t.value);
+    } else if(t.name==="envio") armar.envio = t.value;
     armaResumen();
   });
   $("arma").addEventListener("click", e=>{
@@ -688,6 +778,10 @@
     if(tab) tab.parentElement.scrollTo({left: tab.offsetLeft-16});
     window.scrollTo(0,0);
   }
+  $("tDesde").textContent = "Desde " + peso(ROSAS[0].p);
+  $("tGratis").textContent = "En compras desde " + peso(ENVIO_GRATIS_DESDE);
+  $("infoEnvio").textContent = "Centro " + peso(ENVIOS[1].p) + " · zonas cercanas " + peso(ENVIOS[2].p) + " · fraccionamientos o más lejos " + peso(ENVIOS[3].p)
+    + " · fuera de Durango capital desde " + peso(ENVIOS[4].p) + ". Envío gratis en compras desde " + peso(ENVIO_GRATIS_DESDE) + ". Pick up gratis. El envío del mismo día no cuesta extra.";
   window.addEventListener("hashchange", ruta);
   ruta();
 </script>
