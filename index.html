@@ -569,7 +569,7 @@
 
   function cardHTML(a){
       const tarjeta = document.getElementById("msgTarjeta").value.trim();
-      const msg = `Hola Florería ${NEGOCIO} 🌸, me interesa el arreglo "${a.n}"${a.p?` (${a.desde?"desde ":""}$${a.p})`:""}.${tarjeta?` Mensaje para la tarjeta: "${tarjeta}".`:""} ¿Me ayudan?`;
+      const msg = `Hola, ${NEGOCIO} 🌸 Me interesa el arreglo "${a.n}"${a.p?` (${a.desde?"desde ":""}$${a.p})`:""}.${tarjeta?`\n\n• Mensaje para la tarjeta: "${tarjeta}"`:""}\n\n• Fecha y hora de entrega: \n• Colonia o pueblo: \n\n¿Me ayudan a cotizarlo?`;
       const media = a.img
         ? `<img src="${a.img}" alt="${a.alt||a.n}" loading="lazy">`
         : bloomSVG(a.c);
@@ -655,7 +655,7 @@
     $("resTotal").textContent = peso(total) + (pendiente ? "+" : "");
     $("resPend").textContent = pendiente ? "Más lo que está por cotizar: te lo confirmamos por WhatsApp." : "";
     $("resAnticipo").textContent = `${pagoTxt}: ${peso(anticipo)}${pendiente?"+":""}`;
-    const msg = `Hola Florería ${NEGOCIO} 🌸, quiero armar un ramo:\n• ${o.n} rosas, ${cols.map(c=>c.o).join(", ")} (${peso(o.p)})`
+    const msg = `Hola, ${NEGOCIO} 🌸 Quiero armar este ramo:\n\n• ${o.n} rosas, ${cols.map(c=>c.o).join(", ")} (${peso(o.p)})`
       + (armar.estilo ? `\n• Estilo: ${armar.estilo.n}` : "")
       + (conPrecio.length ? `\n• Extras: ${conPrecio.map(x=>`${x.e.n} (${peso(x.pr)})`).join(", ")}` : "")
       + (porCotizar.length ? `\n• Por cotizar: ${porCotizar.map(x=>x.e.n).join(", ")}` : "")
@@ -663,7 +663,7 @@
       + `\n• Total estimado: ${peso(total)}${pendiente?" + lo que está por cotizar":""}`
       + `\n• ${liquidar ? "Pago total por adelantado" : "Anticipo ("+Math.round(ANTICIPO*100)+"%)"}: ${peso(anticipo)}`
       + (tarjeta ? `\n• Mensaje para la tarjeta: "${tarjeta}"` : "")
-      + `\n¿Me ayudan?`;
+      + `\n\n• Fecha y hora de entrega: \n• Colonia o pueblo: \n\n¿Me ayudan a confirmarlo?`;
     $("resWa").href = waLink(msg);
   }
   armaOpciones(); armaResumen();
@@ -711,11 +711,11 @@
     b.classList.add("on"); render(b.dataset.f);
   });
 
-  const msgGen = `Hola Florería ${NEGOCIO} 🌸, me gustaría hacer un pedido / pregunta.`;
+  const msgGen = `Hola, ${NEGOCIO} 🌸 Quiero cotizar un arreglo.\n\n• Ocasión: \n• Fecha y hora de entrega: \n• Colonia o pueblo: \n• Cantidad de rosas o presupuesto: \n\n¡Gracias!`;
   ["wa-hero","wa-float","wa-bar","wa-cont","wa-footer"].forEach(id=>{
     const el=document.getElementById(id); if(el) el.href=waLink(msgGen);
   });
-  $("wa-eventos").href = waLink(`Hola Florería ${NEGOCIO} 🌸, me interesa cotizar flores para un evento o empresa.`);
+  $("wa-eventos").href = waLink(`Hola, ${NEGOCIO} 🌸 Quiero cotizar flores para un evento o empresa.\n\n• Tipo de evento: \n• Fecha: \n• Lugar: \n• Cantidad aproximada: \n\n¡Gracias!`);
 
   // Aplica nombre, logo y hero si se configuraron
   document.getElementById("brandName").textContent = NEGOCIO;
