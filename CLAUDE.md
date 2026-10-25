@@ -31,7 +31,7 @@ Todo lo editable está en el bloque **CONFIG** al inicio del `<script>` en `inde
 - `NEGOCIO` — nombre de la florería ("Gema Flowers").
 - `CIUDAD` — ciudad ("Durango").
 - `WA_NUMERO` — **número de WhatsApp real**, formato `52` + 10 dígitos, sin espacios
-  ni signos. Hoy: `526183199067` (única línea de atención según su Instagram; confirmar con la dueña).
+  ni signos. Hoy: `526181829246` (+52 1 618 182 9246), único WhatsApp para pedidos y cotizaciones. Ya NO se usa el 618 319 9067.
 - `LOGO_IMG` — `"assets/logo.png"` (ya puesto). Vacío = usa el ícono dibujado.
 - `HERO_IMG` — foto grande del hero (hoy `assets/ramo-rosas-rojas-listones.webp`). Vacío = ilustración.
 - Precios del cotizador "Arma tu ramo" (los pasó la dueña; vigentes del 26 oct al 9 nov 2026, después el
@@ -61,9 +61,14 @@ Todo lo editable está en el bloque **CONFIG** al inicio del `<script>` en `inde
   fija, responsive, accesible, respeta `prefers-reduced-motion`.
 - Hecho: armador de ramos con total, galería, sección Nosotros (misión y visión TEXTUALES de su Instagram:
   no se editan), eventos y empresas. Logo y 15 fotos reales (de su Instagram, con permiso pendiente de confirmar por la dueña).
-- Pendiente: formas de pago exactas, horario, reseñas reales, confirmar el WhatsApp, definir qué
-  colonias son zona centro / cercana / lejos, foto del ramo de mangos ($700), confirmar el precio de zona
-  centro ($60) vs cercana ($30). No inventar datos del negocio.
+- Decisiones de la dueña: horario 24/7; acepta transferencia, tarjeta y efectivo; pueblos y fuera de la ciudad
+  (desde $300) van totalmente liquidados; eventos y empresas de cualquier tipo; SIN reseñas; la sección de
+  ocasiones de la portada se quitó (el filtro por ocasión sigue en el Catálogo).
+- Fotos con fondo blanco recortado: ramo de mangos y corona fúnebre (el recorte del mango es rústico; pedir
+  foto sobre fondo liso).
+- Pendiente: panel de administración para que ella cambie precios y promociones de temporada (nueva sección;
+  requiere guardar datos fuera del `index.html`, se hace cuando compre el dominio); dominio propio; lista de
+  precios de fechas especiales (14 feb, 10 may); definir qué colonias son zona centro / cercana / lejos. No inventar datos del negocio.
 - La información detallada de las flores/catálogo la definirá el dueño por separado;
   no inventar precios ni nombres definitivos.
 

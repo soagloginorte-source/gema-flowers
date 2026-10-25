@@ -109,13 +109,6 @@
   .sec-head h2{font-size:clamp(28px,4.4vw,40px)}
   .sec-head p{color:var(--color-suave);margin-top:12px;font-size:17px}
 
-  .ocas{background:var(--superficie);border-top:1px solid var(--color-borde);border-bottom:1px solid var(--color-borde)}
-  .ocas-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-  @media(min-width:620px){.ocas-grid{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}}
-  .ocas-card{border:1px solid var(--color-borde);border-radius:16px;background:var(--fondo-crema);padding:18px 12px;text-align:center;cursor:pointer;text-decoration:none;color:inherit;transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease}
-  .ocas-card:hover{transform:translateY(-3px);box-shadow:var(--sombra);border-color:var(--color-acento)}
-  .ocas-card .ic{width:40px;height:40px;margin:0 auto 9px}
-  .ocas-card b{font-family:var(--serif);font-weight:500;font-size:16px;display:block}
 
   .tarjeta{display:grid;gap:6px;margin-bottom:22px;max-width:34em}
   .tarjeta label{font-weight:700;font-size:15px}
@@ -342,25 +335,6 @@
   </div>
 </section>
 
-<section class="ocas" id="ocasiones" data-vista="inicio">
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="kicker">Para cada momento</div>
-      <h2>¿Qué estás celebrando?</h2>
-      <p>Elige la ocasión y te mostramos los arreglos que mejor van. Toca una para filtrar el catálogo.</p>
-    </div>
-    <div class="ocas-grid">
-      <a class="ocas-card" href="#catalogo" data-ocas="amor"><svg class="ic" viewBox="0 0 24 24" fill="#c98b86"><path d="M12 21s-7-4.35-9.5-8.5C.5 9 2.5 5 6 5c2 0 3 1 4 2 1-1 2-2 4-2 3.5 0 5.5 4 3.5 7.5C19 16.65 12 21 12 21z"/></svg><b>Amor</b></a>
-      <a class="ocas-card" href="#catalogo" data-ocas="cumpleaños"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#8c1c2e" stroke-width="1.8"><path d="M4 16h16v5H4zM6 16v-5h12v5M12 11V7M12 4v1"/></svg><b>Cumpleaños</b></a>
-      <a class="ocas-card" href="#catalogo" data-ocas="aniversario"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#8c1c2e" stroke-width="1.8"><circle cx="12" cy="14" r="7"/><path d="M9 4h6M12 4v3"/></svg><b>Aniversario</b></a>
-      <a class="ocas-card" href="#catalogo" data-ocas="condolencias"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#8c1c2e" stroke-width="1.8"><path d="M12 3v18M5 10c0-4 3-7 7-7M19 10c0-4-3-7-7-7"/></svg><b>Condolencias</b></a>
-      <a class="ocas-card" href="#catalogo" data-ocas="bebé"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#8c1c2e" stroke-width="1.8"><circle cx="12" cy="9" r="4"/><path d="M5 21c0-4 3-6 7-6s7 2 7 6"/></svg><b>Nuevo bebé</b></a>
-      <a class="ocas-card" href="#catalogo" data-ocas="gracias"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#8c1c2e" stroke-width="1.8"><path d="M12 3l2.5 5 5.5.8-4 3.9 1 5.5-5-2.7-5 2.7 1-5.5-4-3.9 5.5-.8z"/></svg><b>Gracias</b></a>
-      <a class="ocas-card" href="#catalogo" data-ocas="porquesí"><svg class="ic" viewBox="0 0 24 24" fill="#8c1c2e"><circle cx="12" cy="12" r="4"/><g stroke="#8c1c2e" stroke-width="1.8"><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></g></svg><b>Solo porque sí</b></a>
-    </div>
-  </div>
-</section>
-
 <section id="destacados" data-vista="inicio">
   <div class="wrap">
     <div class="sec-head">
@@ -451,7 +425,7 @@
       <article><h3>Visión</h3><p>Consolidar la tienda en línea y posicionarse en el mercado local de la ciudad de Durango, como una opción confiable y moderna para la compra de flores con entrega a domicilio, asimismo, incorporar alianzas con eventos y empresas, y optimizar la logística y personalización de productos mediante tecnología para crear momentos inolvidables.</p></article>
     </div>
     <div class="eventos">
-      <div><h3>Eventos y empresas</h3><p>¿Tienes un evento o buscas flores para tu empresa? Cuéntanos qué necesitas y te cotizamos.</p></div>
+      <div><h3>Eventos y empresas</h3><p>Cotizamos flores para cualquier tipo de evento y para empresas. Cuéntanos qué necesitas.</p></div>
       <a class="btn btn-ghost" id="wa-eventos" href="#" target="_blank" rel="noopener">Cotizar por WhatsApp</a>
     </div>
   </div>
@@ -467,23 +441,22 @@
     </div>
     <div class="entrega">
       <div class="e"><b><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8c1c2e" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Entrega a domicilio</b><p id="infoEnvio"></p></div>
-      <div class="e"><b><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8c1c2e" stroke-width="2"><path d="M12 21s-7-5-7-11a7 7 0 1114 0c0 6-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg> Cobertura</b><p>Durango capital y, fuera de la ciudad, con costo según el lugar. Dinos tu colonia y te confirmamos la zona. Trabajamos con agenda: pide con anticipación.</p></div>
-      <div class="e"><b><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8c1c2e" stroke-width="2"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg> Anticipo y pago</b><p>Apartas tu pedido con el 50 % de anticipo. Te compartimos las formas de pago por WhatsApp.</p></div>
+      <div class="e"><b><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8c1c2e" stroke-width="2"><path d="M12 21s-7-5-7-11a7 7 0 1114 0c0 6-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg> Cobertura</b><p>Entregamos en cualquier zona. Dinos tu colonia o pueblo y te confirmamos la zona y el costo. Trabajamos con agenda: pide con anticipación.</p></div>
+      <div class="e"><b><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8c1c2e" stroke-width="2"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg> Anticipo y pago</b><p>Apartas tu pedido con el 50 % de anticipo. En pueblos y fuera de la ciudad el pedido va totalmente liquidado. Aceptamos transferencia, tarjeta y efectivo.</p></div>
     </div>
   </div>
 </section>
-
-<!-- Reseñas: agregar cuando haya testimonios reales de clientes (destacada "Referencias" de Instagram) -->
 
 <footer class="contacto" id="contacto" data-vista="contacto">
   <div class="wrap" style="padding:58px 20px">
     <div class="sec-head"><div class="kicker">Estamos para ti</div><h2>Contacto</h2><p>Escríbenos y con gusto te ayudamos a elegir el arreglo perfecto.</p></div>
     <div class="cont-grid">
       <div class="cont-list">
-        <div class="cont-item"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="#25D366"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.945C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 018.413 3.488 11.82 11.82 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24z"/></svg></div><div><b>WhatsApp</b><a id="wa-cont" href="#" target="_blank" rel="noopener">618 319 9067 — pedir ahora</a></div></div>
-        <div class="cont-item"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f4efe7" stroke-width="2"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3 19.5 19.5 0 01-6-6 19.8 19.8 0 01-3-8.6A2 2 0 014.1 2h3a2 2 0 012 1.7c.1.9.3 1.8.6 2.6a2 2 0 01-.5 2.1L8.1 9.9a16 16 0 006 6l1.5-1.1a2 2 0 012.1-.5c.8.3 1.7.5 2.6.6a2 2 0 011.7 2z"/></svg></div><div><b>Teléfono</b><a href="tel:+526183199067">618 319 9067</a></div></div>
+        <div class="cont-item"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="#25D366"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.945C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 018.413 3.488 11.82 11.82 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24z"/></svg></div><div><b>WhatsApp</b><a id="wa-cont" href="#" target="_blank" rel="noopener">618 182 9246 — pedir ahora</a></div></div>
+        <div class="cont-item"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f4efe7" stroke-width="2"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3 19.5 19.5 0 01-6-6 19.8 19.8 0 01-3-8.6A2 2 0 014.1 2h3a2 2 0 012 1.7c.1.9.3 1.8.6 2.6a2 2 0 01-.5 2.1L8.1 9.9a16 16 0 006 6l1.5-1.1a2 2 0 012.1-.5c.8.3 1.7.5 2.6.6a2 2 0 011.7 2z"/></svg></div><div><b>Teléfono</b><a href="tel:+526181829246">618 182 9246</a></div></div>
         <div class="cont-item"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f4efe7" stroke-width="2"><path d="M12 21s-7-5-7-11a7 7 0 1114 0c0 6-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></div><div><b>Dirección</b><span>Florería en línea · Durango, Dgo. Entregas a domicilio.</span></div></div>
-                <div class="cont-item"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f4efe7" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="#f4efe7"/></svg></div><div><b>Instagram</b><a href="https://www.instagram.com/gema_flowers_/" target="_blank" rel="noopener">@gema_flowers_</a></div></div>
+                <div class="cont-item"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f4efe7" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><div><b>Horario</b><span>Atención las 24 horas, todos los días</span></div></div>
+        <div class="cont-item"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f4efe7" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="#f4efe7"/></svg></div><div><b>Instagram</b><a href="https://www.instagram.com/gema_flowers_/" target="_blank" rel="noopener">@gema_flowers_</a></div></div>
       </div>
       <div class="cont-cta">
         <h3>¿Ya tienes una idea?</h3>
@@ -523,7 +496,7 @@
      ============================================================ */
   const NEGOCIO   = "Gema Flowers";              // nombre de la florería
   const CIUDAD    = "Durango";        // ciudad
-  const WA_NUMERO = "526183199067";        // 52 + 10 dígitos (única línea de atención según su Instagram)
+  const WA_NUMERO = "526181829246";        // 52 + 10 dígitos (pedidos y cotizaciones; el 1 de +52 1 es el formato viejo, wa.me usa 52 + 10 dígitos)
   const LOGO_IMG  = "assets/logo.png";                    // ej. "assets/logo.png" (vacío = usa el ícono dibujado)
   const HERO_IMG  = "assets/ramo-rosas-rojas-listones.webp";
 
@@ -558,7 +531,7 @@
     {id:"centro",n:"Zona centro",p:60},
     {id:"cerca",n:"Zonas cercanas",p:30},
     {id:"lejos",n:"Fraccionamientos o más lejos",p:120},
-    {id:"fuera",n:"Fuera de Durango capital",p:300,desde:true}
+    {id:"fuera",n:"Pueblos y fuera de Durango capital",p:300,desde:true,liquidar:true}
   ];
 
   /* Catálogo. Para usar foto real agrega  img:"assets/arreglo-1.jpg"
@@ -579,6 +552,8 @@
     {n:"Ramo de girasoles", p:1100, t:"", o:["cumpleaños","gracias","porquesí"], et:"", img:"assets/ramo-girasoles.webp", alt:"Ramo de girasoles con flores rosas y eucalipto", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Girasoles y flores rosadas con eucalipto."},
     {n:"Ramo fucsia pequeño", p:350, t:"", o:["gracias","porquesí"], et:"", img:"assets/ramo-fucsia-pequeno.webp", alt:"Ramo pequeño de rosas fucsia envuelto en papel rosa", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Ramo pequeño de rosas fucsia, un detalle sencillo."},
     {n:"Corazón de rosas", p:600, t:"", o:["amor","aniversario"], et:"", img:"assets/ramo-corazon-naranja.webp", alt:"Arreglo de rosas en forma de corazón sobre papel rosa", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Arreglo en forma de corazón con rosas."},
+    {n:"Ramo de mangos", p:700, t:"", o:["cumpleaños","gracias","porquesí"], et:"Diferente", img:"assets/ramo-mangos.webp", fondo:"#ffffff", alt:"Ramo de mangos frescos con flores amarillas en papel amarillo", c:{f1:"#d9a24b",f2:"#ecc87e",ctr:"#8a6a2a",leaf:"#6f8f6a"}, d:"Mangos frescos con flores amarillas en papel amarillo. Un detalle distinto."},
+    {n:"Corona fúnebre", p:null, t:"", o:["condolencias"], et:"", img:"assets/corona-funebre.webp", fondo:"#ffffff", alt:"Corona de flores variadas con listón, para acompañar en condolencias", c:{f1:"#e8e0d6",f2:"#ffffff",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Corona de flores variadas con listón. Dinos el texto que quieres en el listón. Cotiza por WhatsApp."},
   ];
   /* ====================  fin de la zona editable  ==================== */
 
@@ -601,7 +576,7 @@
         ? `<img src="${a.img}" alt="${a.alt||a.n}" loading="lazy">`
         : bloomSVG(a.c);
       return `<article class="card">
-        <div class="ph" style="background:${a.img?'#f3e6e1':bg(a.c)}">
+        <div class="ph" style="background:${a.img?(a.fondo||'#f3e6e1'):bg(a.c)}">
           ${a.et?`<span class="badge">${a.et}</span>`:""}
           ${media}
         </div>
@@ -668,7 +643,9 @@
     const envioCosto = z ? (gratis ? 0 : z.p) : 0;
     const total = subtotal + envioCosto;
     const pendiente = porCotizar.length>0 || (!!z && z.id==="fuera");
-    const anticipo = Math.ceil(total*ANTICIPO);
+    const liquidar = !!z && !!z.liquidar;            // pueblos: el pedido va totalmente liquidado
+    const anticipo = Math.ceil(total*(liquidar ? 1 : ANTICIPO));
+    const pagoTxt = liquidar ? "Pago total por adelantado" : `Anticipo para apartar (${Math.round(ANTICIPO*100)}%)`;
     const envioTxt = z ? (gratis||!z.p ? "gratis" : (z.desde?"desde ":"")+peso(z.p)) : "";
     const tarjeta = $("msgTarjeta").value.trim();
     $("resEstilo").innerHTML = armar.estilo
@@ -679,14 +656,14 @@
       + (z ? `<li><span>${z.n}</span><b>${envioTxt==="gratis"?"gratis":envioTxt}</b></li>` : `<li class="falta"><span>Envío</span><b>por elegir</b></li>`);
     $("resTotal").textContent = peso(total) + (pendiente ? "+" : "");
     $("resPend").textContent = pendiente ? "Más lo que está por cotizar: te lo confirmamos por WhatsApp." : "";
-    $("resAnticipo").textContent = `Anticipo para apartar (${Math.round(ANTICIPO*100)}%): ${peso(anticipo)}${pendiente?"+":""}`;
+    $("resAnticipo").textContent = `${pagoTxt}: ${peso(anticipo)}${pendiente?"+":""}`;
     const msg = `Hola Florería ${NEGOCIO} 🌸, quiero armar un ramo:\n• ${o.n} rosas, ${cols.map(c=>c.o).join(", ")} (${peso(o.p)})`
       + (armar.estilo ? `\n• Estilo: ${armar.estilo.n}` : "")
       + (conPrecio.length ? `\n• Extras: ${conPrecio.map(x=>`${x.e.n} (${peso(x.pr)})`).join(", ")}` : "")
       + (porCotizar.length ? `\n• Por cotizar: ${porCotizar.map(x=>x.e.n).join(", ")}` : "")
       + `\n• Entrega: ${z ? `${z.n} (${envioTxt})` : "por definir"}`
       + `\n• Total estimado: ${peso(total)}${pendiente?" + lo que está por cotizar":""}`
-      + `\n• Anticipo (${Math.round(ANTICIPO*100)}%): ${peso(anticipo)}`
+      + `\n• ${liquidar ? "Pago total por adelantado" : "Anticipo ("+Math.round(ANTICIPO*100)+"%)"}: ${peso(anticipo)}`
       + (tarjeta ? `\n• Mensaje para la tarjeta: "${tarjeta}"` : "")
       + `\n¿Me ayudan?`;
     $("resWa").href = waLink(msg);
@@ -724,22 +701,16 @@
     armar.estilo = arreglos[+b.dataset.arma]; armaResumen();
     location.hash = "#arma";
   });
-  // Oculta ocasiones (chips y accesos) que todavía no tienen arreglos
+  // Oculta ocasiones (chips del filtro) que todavía no tienen arreglos
   const conArreglos = new Set(arreglos.flatMap(a=>a.o));
-  document.querySelectorAll("#filtros .chip:not([data-f='todos']), .ocas-card").forEach(el=>{
-    if(!conArreglos.has(el.dataset.f || el.dataset.ocas)) el.classList.add("hidden");
+  document.querySelectorAll("#filtros .chip:not([data-f='todos'])").forEach(el=>{
+    if(!conArreglos.has(el.dataset.f)) el.classList.add("hidden");
   });
 
   document.getElementById("filtros").addEventListener("click", e=>{
     const b = e.target.closest(".chip"); if(!b) return;
     document.querySelectorAll("#filtros .chip").forEach(c=>c.classList.remove("on"));
     b.classList.add("on"); render(b.dataset.f);
-  });
-  document.querySelectorAll(".ocas-card").forEach(card=>{
-    card.addEventListener("click", ()=>{
-      const chip = document.querySelector(`#filtros .chip[data-f="${card.dataset.ocas}"]`);
-      if(chip) chip.click();
-    });
   });
 
   const msgGen = `Hola Florería ${NEGOCIO} 🌸, me gustaría hacer un pedido / pregunta.`;
@@ -781,7 +752,7 @@
   $("tDesde").textContent = "Desde " + peso(ROSAS[0].p);
   $("tGratis").textContent = "En compras desde " + peso(ENVIO_GRATIS_DESDE);
   $("infoEnvio").textContent = "Centro " + peso(ENVIOS[1].p) + " · zonas cercanas " + peso(ENVIOS[2].p) + " · fraccionamientos o más lejos " + peso(ENVIOS[3].p)
-    + " · fuera de Durango capital desde " + peso(ENVIOS[4].p) + ". Envío gratis en compras desde " + peso(ENVIO_GRATIS_DESDE) + ". Pick up gratis. El envío del mismo día no cuesta extra.";
+    + " · pueblos y fuera de Durango capital desde " + peso(ENVIOS[4].p) + ". Envío gratis en compras desde " + peso(ENVIO_GRATIS_DESDE) + ". Pick up gratis. El envío del mismo día no cuesta extra.";
   window.addEventListener("hashchange", ruta);
   ruta();
 </script>
