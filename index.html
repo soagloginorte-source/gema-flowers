@@ -417,7 +417,7 @@
               </div>
             </div>
             <div id="mapa" role="application" aria-label="Mapa de Durango. Toca para marcar el punto de entrega"></div>
-            <p class="nota" id="mapaEstado">Toca el mapa para poner el punto. Si no lo marcas, nos dices la dirección en el mensaje.</p>
+            <p class="nota" id="mapaEstado">Toca el mapa para poner el punto y te sugerimos la dirección, que podrás corregir. Si no lo marcas, escribe tu dirección abajo.</p>
           </div>
         </fieldset>
         <fieldset class="entrega-datos">
@@ -835,7 +835,38 @@
   /* ---- Mapa de entrega (Durango capital) ---- */
   const DURANGO = [24.0277, -104.6532];
   let mapa = null, marcador = null, pinIcono = null;
-  const mapaTexto = "Toca el mapa para poner el punto. Si no lo marcas, nos dices la dirección en el mensaje.";
+  const mapaTexto = "Toca el mapa para poner el punto y te sugerimos la dirección, que podrás corregir. Si no lo marcas, escribe tu dirección abajo.";
+  /* Sugiere la dirección del punto marcado. Solo escribe si el campo está vacío o si todavía tiene
+     la sugerencia anterior: lo que el cliente corrige a mano no se pisa. Las coordenadas se envían a
+     OpenStreetMap (Nominatim), que pide uso ligero: una consulta por punto, con espera. */
+  let geoTimer = null, geoId = 0, lugarAuto = "";
+  function buscaDireccion(lat, lng){
+    clearTimeout(geoTimer);
+    const id = ++geoId;
+    $("mapaEstado").textContent = "Punto marcado. Buscando la dirección…";
+    geoTimer = setTimeout(async ()=>{
+      try{
+        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&addressdetails=1&zoom=18&accept-language=es&lat=${lat}&lon=${lng}`, {headers:{Accept:"application/json"}});
+        if(!res.ok) throw new Error(res.status);
+        const d = await res.json();
+        if(id!==geoId) return;
+        const a = d.address || {};
+        const calle = [a.road || a.pedestrian || a.footway, a.house_number].filter(Boolean).join(" ");
+        const colonia = a.neighbourhood || a.suburb || a.quarter || a.city_district;
+        const lugar = a.city || a.town || a.village || a.municipality;
+        const texto = [calle, colonia, lugar].filter(Boolean).join(", ");
+        const campo = $("recLugar");
+        if(texto && (!campo.value.trim() || campo.value===lugarAuto)){ campo.value = texto; lugarAuto = texto; }
+        $("mapaEstado").textContent = texto
+          ? "Punto marcado. Revisa la dirección de abajo y corrígela si hace falta. Puedes arrastrar el punto para ajustarlo."
+          : "Punto marcado. No encontramos la dirección: escríbela abajo. Puedes arrastrar el punto para ajustarlo.";
+        armaResumen();
+      }catch(e){
+        if(id!==geoId) return;
+        $("mapaEstado").textContent = "Punto marcado. No pudimos sugerir la dirección: escríbela abajo.";
+      }
+    }, 600);
+  }
   function mapaPunto(lat, lng, acercar){
     armar.punto = {lat:+lat.toFixed(6), lng:+lng.toFixed(6)};
     if(!marcador){
@@ -844,8 +875,8 @@
     } else marcador.setLatLng([lat,lng]);
     if(acercar) mapa.setView([lat,lng], Math.max(mapa.getZoom(), 16));
     $("btnQuitaPunto").hidden = false;
-    $("mapaEstado").textContent = "Punto marcado. Puedes arrastrarlo para ajustarlo.";
     armaResumen();
+    buscaDireccion(lat, lng);
   }
   function mapaInit(){
     if(mapa){ mapa.invalidateSize(); return; }
@@ -865,6 +896,7 @@
   });
   $("btnQuitaPunto").addEventListener("click", ()=>{
     armar.punto = null;
+    geoId++; clearTimeout(geoTimer);
     if(marcador){ marcador.remove(); marcador = null; }
     $("btnQuitaPunto").hidden = true;
     $("mapaEstado").textContent = mapaTexto;

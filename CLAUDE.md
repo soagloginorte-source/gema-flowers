@@ -29,7 +29,8 @@ al final del `<script>` (`ruta()`). En móvil el menú son pestañas bajo el enc
 ## Mapa de entrega
 El cotizador (`#arma`) lleva un mapa de Durango capital con Leaflet 1.9.4 (cdnjs, con `integrity`) y mosaicos de
 OpenStreetMap, sin claves. El cliente marca el punto (o usa su ubicación) y el mensaje de WhatsApp lleva un enlace
-`google.com/maps?q=lat,lng`. Si elige "Recoger", se ocultan dirección, referencias y mapa. Si la librería no carga,
+`google.com/maps?q=lat,lng`. Al marcar el punto, la dirección se sugiere sola con Nominatim (OpenStreetMap, `buscaDireccion()`): solo rellena si el
+campo está vacío o sin editar, nunca pisa lo que el cliente corrigió. Si elige "Recoger", se ocultan dirección, referencias y mapa. Si la librería no carga,
 el mapa se oculta y el cotizador sigue funcionando. Los mosaicos públicos de OSM son para poco tráfico: si el sitio
 crece, cambiar de proveedor.
 **Datos bancarios:** NO se publican en el sitio ni en el repositorio (el sitio es público). Ella los manda por
