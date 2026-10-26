@@ -69,7 +69,7 @@ Todo lo editable está en el bloque **CONFIG** al inicio del `<script>` en `inde
   solo mientras no haya arreglos con esa ocasión).
 - Pendiente: panel de administración para que ella cambie precios y promociones de temporada (nueva sección;
   requiere guardar datos fuera del `index.html`, se hace cuando compre el dominio); dominio propio; lista de
-  precios de fechas especiales (14 feb, 10 may); definir qué colonias son zona centro / cercana / lejos. No inventar datos del negocio.
+  precios de fechas especiales (14 feb, 10 may); definir qué colonias son zona centro / cercana / alrededor de la ciudad. No inventar datos del negocio.
 - La información detallada de las flores/catálogo la definirá el dueño por separado;
   no inventar precios ni nombres definitivos.
 

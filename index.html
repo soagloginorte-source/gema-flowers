@@ -546,7 +546,7 @@
     {id:"pickup",n:"Recoger (pick up)",p:0},
     {id:"centro",n:"Zona centro",p:60},
     {id:"cerca",n:"Zonas cercanas",p:30},
-    {id:"lejos",n:"Fraccionamientos o más lejos",p:120},
+    {id:"lejos",n:"Alrededor de la ciudad",p:120},
     {id:"fuera",n:"Pueblos y fuera de Durango capital",p:300,desde:true,liquidar:true}
   ];
 
@@ -775,7 +775,7 @@
   }
   $("tDesde").textContent = "Desde " + peso(ROSAS[0].p);
   $("tGratis").textContent = "En compras desde " + peso(ENVIO_GRATIS_DESDE);
-  $("infoEnvio").textContent = "Centro " + peso(ENVIOS[1].p) + " · zonas cercanas " + peso(ENVIOS[2].p) + " · fraccionamientos o más lejos " + peso(ENVIOS[3].p)
+  $("infoEnvio").textContent = "Centro " + peso(ENVIOS[1].p) + " · zonas cercanas " + peso(ENVIOS[2].p) + " · alrededor de la ciudad " + peso(ENVIOS[3].p)
     + " · pueblos y fuera de Durango capital desde " + peso(ENVIOS[4].p) + ". Envío gratis en compras desde " + peso(ENVIO_GRATIS_DESDE) + ". Pick up gratis. El envío del mismo día no cuesta extra.";
   window.addEventListener("hashchange", ruta);
   ruta();
