@@ -36,6 +36,14 @@ crece, cambiar de proveedor.
 **Datos bancarios:** NO se publican en el sitio ni en el repositorio (el sitio es público). Ella los manda por
 WhatsApp después de la cotización.
 
+## Panel de administración (precios y promociones)
+`admin.html` + base de datos Supabase (`supabase/setup.sql`, guía en `supabase/LEEME.md`). El sitio lee los precios de
+Supabase al abrirse (`cargaPreciosRemotos()` → `aplicaConfig()`); si `SUPABASE_URL`/`SUPABASE_ANON` están vacíos o el
+servicio falla, usa los precios del CONFIG de `index.html`. El panel edita rosas, gypsophila, extras, envíos, anticipo,
+envío gratis, precio/agotado de ramos, vigencia, promociones por fechas y un aviso superior. La clave `anon` es pública
+por diseño; la `service_role` NUNCA va en el código. Si se cambia el CONFIG de precios en `index.html`, regenerar
+`supabase/seed.json` y `setup.sql` (solo sirve para una base nueva: la base ya creada se edita desde el panel).
+
 ## Dónde se edita el contenido
 Todo lo editable está en el bloque **CONFIG** al inicio del `<script>` en `index.html`:
 - `NEGOCIO` — nombre de la florería ("Gema Flowers").

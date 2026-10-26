@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Panel de Gema Flowers</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Mulish:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --fondo-crema:#faf5f2; --superficie:#ffffff; --color-texto:#2a2224; --color-suave:#6e6064; --color-borde:#ead9d7;
+    --color-acento:#8c1c2e; --acento-osc:#6f1424; --rosa-claro:#f4e3e1; --dorado:#b99440; --ok:#2f6b45; --error:#a3262f;
+    --serif:"Fraunces",Georgia,serif; --sans:"Mulish",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--fondo-crema);color:var(--color-texto);font-family:var(--sans);font-size:16px;line-height:1.5}
+  h1,h2,h3{font-family:var(--serif);font-weight:500;margin:0;line-height:1.15}
+  .wrap{max-width:980px;margin:0 auto;padding:0 18px}
+  header{background:var(--superficie);border-bottom:1px solid var(--color-borde);position:sticky;top:0;z-index:10}
+  header .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;height:64px}
+  header img{height:38px;width:auto;mix-blend-mode:multiply}
+  header small{color:var(--color-suave)}
+  main{padding:28px 0 120px}
+  button,input,select,textarea{font:inherit}
+  .btn{background:var(--color-acento);color:#fff;border:0;border-radius:999px;padding:12px 24px;font-weight:700;cursor:pointer}
+  .btn:hover{background:var(--acento-osc)}
+  .btn:disabled{opacity:.5;cursor:default}
+  .btn.sec{background:transparent;color:var(--acento-osc);border:1.5px solid var(--color-acento)}
+  .btn.mini{padding:7px 14px;font-size:14px}
+  .card{background:var(--superficie);border:1px solid var(--color-borde);border-radius:18px;padding:22px;margin-bottom:18px}
+  .card h2{font-size:24px;margin-bottom:4px}
+  .card .ayuda{color:var(--color-suave);font-size:15px;margin:0 0 16px}
+  label{font-weight:700;font-size:14px;display:grid;gap:5px}
+  input[type=text],input[type=number],input[type=date],input[type=email],input[type=password],textarea,select{
+    border:1.5px solid var(--color-borde);border-radius:12px;padding:10px 12px;background:#fff;color:var(--color-texto);width:100%;min-width:0}
+  input:focus,textarea:focus,select:focus{outline:2px solid var(--color-acento);outline-offset:1px;border-color:var(--color-acento)}
+  .fila{display:grid;gap:10px;align-items:end;padding:12px 0;border-bottom:1px dashed var(--color-borde)}
+  .fila:last-of-type{border-bottom:0}
+  @media(min-width:720px){
+    .f-rosas{grid-template-columns:1fr 1fr 1.4fr auto}
+    .f-gyp{grid-template-columns:1fr 1fr auto}
+    .f-extra{grid-template-columns:2fr 1fr 1fr auto}
+    .f-envio{grid-template-columns:2fr 1fr auto auto auto}
+    .f-ramo{grid-template-columns:2fr 1fr auto}
+    .f-promo{grid-template-columns:1fr 1fr}
+  }
+  .chk{display:flex;align-items:center;gap:8px;font-weight:600;padding-bottom:10px}
+  .chk input{width:20px;height:20px;accent-color:var(--color-acento)}
+  .dos{display:grid;gap:14px}
+  @media(min-width:720px){.dos{grid-template-columns:1fr 1fr}}
+  .nota-pie{color:var(--color-suave);font-size:13px}
+  .login{max-width:420px;margin:60px auto}
+  .login .card{padding:28px}
+  .login form{display:grid;gap:14px;margin-top:16px}
+  .msg{border-radius:12px;padding:12px 14px;font-size:15px;margin-top:12px}
+  .msg.ok{background:#e6f2ea;color:var(--ok)}
+  .msg.error{background:#fbe9ea;color:var(--error)}
+  .barra{position:fixed;left:0;right:0;bottom:0;background:var(--superficie);border-top:1px solid var(--color-borde);padding:12px 18px;display:flex;gap:12px;align-items:center;justify-content:space-between;z-index:20}
+  .barra .estado{font-size:14px;color:var(--color-suave)}
+  .oculto{display:none !important}
+  .solo-lectura{color:var(--color-suave);font-size:14px;padding-bottom:12px}
+  .promo-item{border:1px solid var(--color-borde);border-radius:14px;padding:14px;margin-bottom:12px;display:grid;gap:10px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div style="display:flex;align-items:center;gap:12px"><img src="assets/logo.png" alt="Gema Flowers"><small>Panel de administración</small></div>
+    <button class="btn sec mini oculto" id="btnSalir" type="button">Cerrar sesión</button>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ===== Entrar ===== -->
+  <section id="vistaLogin" class="login">
+    <div class="card">
+      <h1 style="font-size:30px">Entrar</h1>
+      <p class="ayuda" style="margin-top:6px">Solo para quien administra el sitio.</p>
+      <form id="formLogin">
+        <label for="correo">Correo<input id="correo" type="email" autocomplete="username" required></label>
+        <label for="clave">Contraseña<input id="clave" type="password" autocomplete="current-password" required></label>
+        <button class="btn" type="submit" id="btnEntrar">Entrar</button>
+      </form>
+      <div id="msgLogin" class="msg error oculto" role="alert"></div>
+    </div>
+  </section>
+
+  <!-- ===== Editor ===== -->
+  <section id="vistaEditor" class="oculto">
+    <h1 style="font-size:34px;margin-bottom:6px">Precios y promociones</h1>
+    <p class="ayuda" style="color:var(--color-suave);margin:0 0 22px">Cambia lo que necesites y toca <b>Guardar cambios</b> al final. El sitio se actualiza en segundos.</p>
+
+    <div class="card">
+      <h2>Rosas por cantidad</h2>
+      <p class="ayuda">Precio de cada ramo y cuántos colores puede elegir el cliente. Pon <b>0</b> en colores si puede combinar más de 4.</p>
+      <div id="listaRosas"></div>
+      <button class="btn sec mini" type="button" data-add="rosas">+ Agregar cantidad</button>
+    </div>
+
+    <div class="card">
+      <h2>Gypsophila</h2>
+      <p class="ayuda">Precio según las rosas del ramo. Las cantidades que no estén aquí se cotizan por WhatsApp.</p>
+      <div id="listaGyp"></div>
+      <button class="btn sec mini" type="button" data-add="gyp">+ Agregar cantidad</button>
+    </div>
+
+    <div class="card">
+      <h2>Detalles extra</h2>
+      <p class="ayuda">Deja el precio vacío si se cotiza por WhatsApp. En "grupo" escribe la misma palabra en las opciones de las que solo se puede elegir una (por ejemplo, los tamaños de corona).</p>
+      <div id="listaExtras"></div>
+      <button class="btn sec mini" type="button" data-add="extra">+ Agregar detalle</button>
+    </div>
+
+    <div class="card">
+      <h2>Envío</h2>
+      <p class="ayuda">Costo por zona. Marca "Desde" si el costo es mínimo, y "Liquidado" si en esa zona el pedido va pagado por completo.</p>
+      <div id="listaEnvios"></div>
+      <div class="dos" style="margin-top:14px">
+        <label for="envGratis">Envío gratis desde ($)<input id="envGratis" type="number" min="0" step="1"></label>
+        <label for="anticipo">Anticipo para apartar (%)<input id="anticipo" type="number" min="1" max="100" step="1"></label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Ramos del catálogo</h2>
+      <p class="ayuda">Precio fijo de los ramos que no se arman por cantidad de rosas. Márcalo como agotado y deja de poder pedirse.</p>
+      <div id="listaRamos"></div>
+    </div>
+
+    <div class="card">
+      <h2>Vigencia de los precios</h2>
+      <p class="ayuda">El sitio avisa a los clientes hasta cuándo valen estos precios. Pasada la fecha, avisa que pueden haber cambiado.</p>
+      <div class="dos">
+        <label for="vigHasta">Vigentes hasta<input id="vigHasta" type="date"></label>
+        <label for="vigTexto">Cómo se muestra<input id="vigTexto" type="text" placeholder="del 26 de octubre al 9 de noviembre de 2026"></label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Promociones</h2>
+      <p class="ayuda">Aparecen en la página de inicio solo entre las fechas que pongas. Déjalas vacías para que no caduquen.</p>
+      <div id="listaPromos"></div>
+      <button class="btn sec mini" type="button" data-add="promo">+ Agregar promoción</button>
+    </div>
+
+    <div class="card">
+      <h2>Aviso en la parte de arriba</h2>
+      <p class="ayuda">Una línea que se ve en todo el sitio. Por ejemplo: "Pedidos para el 10 de mayo hasta el día 5". Vacío = no se muestra.</p>
+      <label for="avTexto">Texto<input id="avTexto" type="text" maxlength="140"></label>
+      <div class="dos" style="margin-top:12px">
+        <label for="avDesde">Mostrar desde<input id="avDesde" type="date"></label>
+        <label for="avHasta">Mostrar hasta<input id="avHasta" type="date"></label>
+      </div>
+    </div>
+
+    <p class="nota-pie">Las fotos y los nombres de los ramos se cambian pidiéndolo a quien mantiene el sitio.</p>
+  </section>
+</main>
+
+<div class="barra oculto" id="barra">
+  <span class="estado" id="estado">Sin cambios</span>
+  <button class="btn" type="button" id="btnGuardar" disabled>Guardar cambios</button>
+</div>
+
+<script>
+  /* Los mismos datos públicos que usa el sitio. La clave anon es pública por diseño: la base de datos
+     solo deja escribir a quien inicia sesión. NUNCA pegues aquí la clave "service_role". */
+  const SUPABASE_URL  = "";
+  const SUPABASE_ANON = "";
+
+  const $ = id => document.getElementById(id);
+  const esc = t => String(t==null?"":t).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  let sesion = null;       // {token, correo}
+  let datos = null;        // la configuración que se está editando
+  let sucio = false;
+
+  /* ---------- sesión ---------- */
+  function leeSesion(){ try{ return JSON.parse(sessionStorage.getItem("gf_sesion")||"null"); }catch(e){ return null; } }
+  function guardaSesion(x){ try{ x ? sessionStorage.setItem("gf_sesion", JSON.stringify(x)) : sessionStorage.removeItem("gf_sesion"); }catch(e){} }
+  const cabecera = (token) => ({apikey:SUPABASE_ANON, Authorization:"Bearer "+(token||SUPABASE_ANON), "Content-Type":"application/json"});
+
+  function aviso(el, texto, tipo){ el.textContent = texto; el.className = "msg "+tipo+(texto?"":" oculto"); }
+
+  async function entrar(correo, clave){
+    const res = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {method:"POST", headers:cabecera(), body:JSON.stringify({email:correo, password:clave})});
+    const d = await res.json().catch(()=>({}));
+    if(!res.ok || !d.access_token) throw new Error(d.error_description || d.msg || "No se pudo entrar");
+    return {token:d.access_token, correo};
+  }
+
+  async function cargaDatos(){
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/config?id=eq.1&select=datos`, {headers:cabecera(sesion && sesion.token)});
+    if(res.status===401) throw new Error("sesion");
+    if(!res.ok) throw new Error("No se pudieron cargar los datos ("+res.status+")");
+    const filas = await res.json();
+    if(!filas[0]) throw new Error("La base de datos está vacía. Falta ejecutar supabase/setup.sql.");
+    return filas[0].datos;
+  }
+
+  async function guardaDatos(){
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/config?id=eq.1`, {method:"PATCH", headers:{...cabecera(sesion.token), Prefer:"return=representation"}, body:JSON.stringify({datos, updated_at:new Date().toISOString()})});
+    if(res.status===401) throw new Error("sesion");
+    if(!res.ok) throw new Error("No se pudo guardar ("+res.status+")");
+    const filas = await res.json();
+    if(!filas.length) throw new Error("La base de datos no aceptó el cambio. Revisa que tu usuario tenga permiso.");
+  }
+
+  /* ---------- formulario ---------- */
+  const num = v => (v===""||v==null||isNaN(+v)) ? null : +v;
+  const marca = () => { sucio = true; $("estado").textContent = "Hay cambios sin guardar"; $("btnGuardar").disabled = false; };
+
+  function pinta(){
+    datos.rosas = datos.rosas||[]; datos.extras = datos.extras||[]; datos.envios = datos.envios||[];
+    datos.promos = datos.promos||[]; datos.ramos = datos.ramos||{}; datos.gypsophila = datos.gypsophila||{};
+    datos.aviso = datos.aviso||{texto:"",desde:"",hasta:""}; datos.vigencia = datos.vigencia||{hasta:"",texto:""};
+
+    $("listaRosas").innerHTML = datos.rosas.map((x,i)=>`<div class="fila f-rosas">
+      <label>Rosas<input type="number" min="1" data-k="rosas" data-i="${i}" data-c="n" value="${esc(x.n)}"></label>
+      <label>Precio ($)<input type="number" min="0" data-k="rosas" data-i="${i}" data-c="p" value="${esc(x.p)}"></label>
+      <label>Colores a elegir (0 = más de 4)<input type="number" min="0" data-k="rosas" data-i="${i}" data-c="c" value="${esc(x.c)}"></label>
+      <button class="btn sec mini" type="button" data-del="rosas" data-i="${i}">Quitar</button></div>`).join("");
+
+    const gyp = Object.entries(datos.gypsophila).sort((a,b)=>a[0]-b[0]);
+    $("listaGyp").innerHTML = gyp.map(([k,v],i)=>`<div class="fila f-gyp">
+      <label>Rosas<input type="number" min="1" data-k="gyp" data-i="${i}" data-c="n" value="${esc(k)}"></label>
+      <label>Precio ($)<input type="number" min="0" data-k="gyp" data-i="${i}" data-c="p" value="${esc(v)}"></label>
+      <button class="btn sec mini" type="button" data-del="gyp" data-i="${i}">Quitar</button></div>`).join("");
+
+    $("listaExtras").innerHTML = datos.extras.map((x,i)=> x.gyp
+      ? `<div class="fila"><span class="solo-lectura"><b>${esc(x.n)}</b>: su precio sale de la tabla de Gypsophila de arriba.</span></div>`
+      : `<div class="fila f-extra">
+      <label>Nombre<input type="text" data-k="extras" data-i="${i}" data-c="n" value="${esc(x.n)}"></label>
+      <label>Precio ($, vacío = cotizar)<input type="number" min="0" data-k="extras" data-i="${i}" data-c="p" value="${x.p==null?"":esc(x.p)}"></label>
+      <label>Grupo (opcional)<input type="text" data-k="extras" data-i="${i}" data-c="g" value="${esc(x.g||"")}"></label>
+      <button class="btn sec mini" type="button" data-del="extras" data-i="${i}">Quitar</button></div>`).join("");
+
+    $("listaEnvios").innerHTML = datos.envios.map((x,i)=>`<div class="fila f-envio">
+      <label>Zona<input type="text" data-k="envios" data-i="${i}" data-c="n" value="${esc(x.n)}"></label>
+      <label>Costo ($, 0 = gratis)<input type="number" min="0" data-k="envios" data-i="${i}" data-c="p" value="${esc(x.p)}"></label>
+      <label class="chk"><input type="checkbox" data-k="envios" data-i="${i}" data-c="desde" ${x.desde?"checked":""}>Desde</label>
+      <label class="chk"><input type="checkbox" data-k="envios" data-i="${i}" data-c="liquidar" ${x.liquidar?"checked":""}>Liquidado</label>
+      <span></span></div>`).join("");
+    $("envGratis").value = datos.envioGratisDesde==null ? "" : datos.envioGratisDesde;
+    $("anticipo").value = datos.anticipo==null ? "" : Math.round(datos.anticipo*100);
+
+    $("listaRamos").innerHTML = Object.entries(datos.ramos).map(([n,o])=> ("p" in o)
+      ? `<div class="fila f-ramo"><label>${esc(n)}<input type="number" min="0" data-k="ramo" data-n="${esc(n)}" data-c="p" value="${o.p==null?"":esc(o.p)}" placeholder="Precio ($)"></label>
+         <span></span><label class="chk"><input type="checkbox" data-k="ramo" data-n="${esc(n)}" data-c="agotado" ${o.agotado?"checked":""}>Agotado</label></div>`
+      : `<div class="fila f-ramo"><span class="solo-lectura" style="padding:0"><b>${esc(n)}</b><br>Se arma por cantidad de rosas (precio de la primera tabla).</span>
+         <span></span><label class="chk"><input type="checkbox" data-k="ramo" data-n="${esc(n)}" data-c="agotado" ${o.agotado?"checked":""}>Agotado</label></div>`).join("");
+
+    $("vigHasta").value = datos.vigencia.hasta||""; $("vigTexto").value = datos.vigencia.texto||"";
+
+    $("listaPromos").innerHTML = datos.promos.map((x,i)=>`<div class="promo-item">
+      <label>Título<input type="text" maxlength="80" data-k="promos" data-i="${i}" data-c="titulo" value="${esc(x.titulo)}"></label>
+      <label>Texto<textarea rows="2" maxlength="240" data-k="promos" data-i="${i}" data-c="texto">${esc(x.texto||"")}</textarea></label>
+      <div class="dos">
+        <label>Desde<input type="date" data-k="promos" data-i="${i}" data-c="desde" value="${esc(x.desde||"")}"></label>
+        <label>Hasta<input type="date" data-k="promos" data-i="${i}" data-c="hasta" value="${esc(x.hasta||"")}"></label>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+        <label class="chk" style="padding:0"><input type="checkbox" data-k="promos" data-i="${i}" data-c="activa" ${x.activa===false?"":"checked"}>Activa</label>
+        <button class="btn sec mini" type="button" data-del="promos" data-i="${i}">Quitar</button></div></div>`).join("") || `<p class="solo-lectura">Todavía no hay promociones.</p>`;
+
+    $("avTexto").value = datos.aviso.texto||""; $("avDesde").value = datos.aviso.desde||""; $("avHasta").value = datos.aviso.hasta||"";
+  }
+
+  /* cambios en los campos */
+  document.addEventListener("input", e=>{
+    const t = e.target, k = t.dataset && t.dataset.k;
+    if(t.id==="envGratis"){ datos.envioGratisDesde = num(t.value); return marca(); }
+    if(t.id==="anticipo"){ const v = num(t.value); datos.anticipo = v==null ? null : v/100; return marca(); }
+    if(t.id==="vigHasta"){ datos.vigencia.hasta = t.value; return marca(); }
+    if(t.id==="vigTexto"){ datos.vigencia.texto = t.value; return marca(); }
+    if(t.id==="avTexto"){ datos.aviso.texto = t.value; return marca(); }
+    if(t.id==="avDesde"){ datos.aviso.desde = t.value; return marca(); }
+    if(t.id==="avHasta"){ datos.aviso.hasta = t.value; return marca(); }
+    if(!k) return;
+    const c = t.dataset.c, i = +t.dataset.i, valor = t.type==="checkbox" ? t.checked : t.value;
+    if(k==="rosas"){ datos.rosas[i][c] = c==="n"||c==="p"||c==="c" ? num(valor) : valor; }
+    else if(k==="gyp"){
+      const entradas = Object.entries(datos.gypsophila).sort((a,b)=>a[0]-b[0]);
+      if(c==="n") entradas[i][0] = valor; else entradas[i][1] = num(valor);
+      datos.gypsophila = Object.fromEntries(entradas.filter(([n])=>n!==""));
+    }
+    else if(k==="extras"){ datos.extras[i][c] = c==="p" ? num(valor) : valor; if(c==="g" && valor==="") delete datos.extras[i].g; }
+    else if(k==="envios"){ if(t.type==="checkbox"){ valor ? datos.envios[i][c]=true : delete datos.envios[i][c]; } else datos.envios[i][c] = c==="p" ? (num(valor)||0) : valor; }
+    else if(k==="ramo"){ const o = datos.ramos[t.dataset.n]; if(c==="agotado") o.agotado = valor; else o.p = num(valor); }
+    else if(k==="promos"){ if(c==="activa") datos.promos[i].activa = valor; else datos.promos[i][c] = valor; }
+    marca();
+  });
+  document.addEventListener("click", e=>{
+    const b = e.target.closest("button"); if(!b) return;
+    if(b.dataset.add){
+      const q = b.dataset.add;
+      if(q==="rosas") datos.rosas.push({n:null,p:null,c:0});
+      if(q==="gyp"){ let n = 1; while(datos.gypsophila[n]!==undefined) n++; datos.gypsophila[n] = null; }
+      if(q==="extra") datos.extras.push({n:"",p:null});
+      if(q==="promo") datos.promos.push({titulo:"",texto:"",desde:"",hasta:"",activa:true});
+      pinta(); marca();
+    }
+    if(b.dataset.del){
+      const q = b.dataset.del, i = +b.dataset.i;
+      if(q==="rosas") datos.rosas.splice(i,1);
+      if(q==="extras") datos.extras.splice(i,1);
+      if(q==="promos") datos.promos.splice(i,1);
+      if(q==="gyp"){ const k = Object.keys(datos.gypsophila).sort((a,b)=>a-b)[i]; delete datos.gypsophila[k]; }
+      pinta(); marca();
+    }
+  });
+
+  /* revisa antes de guardar */
+  function revisa(){
+    const errores = [];
+    if(datos.rosas.some(x=>x.n==null||x.p==null)) errores.push("Cada cantidad de rosas necesita su precio.");
+    if(new Set(datos.rosas.map(x=>x.n)).size !== datos.rosas.length) errores.push("Hay dos cantidades de rosas repetidas.");
+    if(datos.extras.some(x=>!x.gyp && !String(x.n||"").trim())) errores.push("Un detalle extra no tiene nombre.");
+    if(datos.envios.some(x=>!String(x.n||"").trim())) errores.push("Una zona de envío no tiene nombre.");
+    if(datos.promos.some(x=>!String(x.titulo||"").trim())) errores.push("Una promoción no tiene título.");
+    if(Object.values(datos.gypsophila).some(v=>v==null)) errores.push("A una cantidad de gypsophila le falta el precio.");
+    if(datos.anticipo!=null && !(datos.anticipo>0 && datos.anticipo<=1)) errores.push("El anticipo debe ir entre 1 y 100 %.");
+    return errores;
+  }
+
+  /* ---------- flujo ---------- */
+  function muestraEditor(){
+    $("vistaLogin").classList.add("oculto"); $("vistaEditor").classList.remove("oculto");
+    $("barra").classList.remove("oculto"); $("btnSalir").classList.remove("oculto");
+  }
+  function muestraLogin(texto){
+    guardaSesion(null); sesion = null; datos = null;
+    $("vistaEditor").classList.add("oculto"); $("barra").classList.add("oculto"); $("btnSalir").classList.add("oculto");
+    $("vistaLogin").classList.remove("oculto");
+    if(texto) aviso($("msgLogin"), texto, "error");
+  }
+  async function abre(){
+    try{ datos = await cargaDatos(); pinta(); muestraEditor(); sucio = false; $("estado").textContent = "Sin cambios"; $("btnGuardar").disabled = true; }
+    catch(err){ muestraLogin(err.message==="sesion" ? "Tu sesión terminó. Entra otra vez." : err.message); }
+  }
+
+  if(!SUPABASE_URL || !SUPABASE_ANON){
+    aviso($("msgLogin"), "El panel todavía no está conectado a la base de datos. Falta pegar SUPABASE_URL y SUPABASE_ANON en admin.html.", "error");
+    $("btnEntrar").disabled = true;
+  } else {
+    sesion = leeSesion();
+    if(sesion) abre();
+  }
+
+  $("formLogin").addEventListener("submit", async e=>{
+    e.preventDefault();
+    $("btnEntrar").disabled = true; aviso($("msgLogin"), "", "error");
+    try{ sesion = await entrar($("correo").value.trim(), $("clave").value); guardaSesion(sesion); $("clave").value = ""; await abre(); }
+    catch(err){ aviso($("msgLogin"), err.message==="Invalid login credentials" ? "Correo o contraseña incorrectos." : err.message, "error"); }
+    $("btnEntrar").disabled = false;
+  });
+  $("btnSalir").addEventListener("click", ()=>{ if(!sucio || confirm("Hay cambios sin guardar. ¿Salir de todos modos?")) muestraLogin(); });
+  $("btnGuardar").addEventListener("click", async ()=>{
+    const errores = revisa();
+    if(errores.length){ $("estado").textContent = errores[0]; return; }
+    $("btnGuardar").disabled = true; $("estado").textContent = "Guardando…";
+    try{ await guardaDatos(); sucio = false; $("estado").textContent = "Guardado. El sitio ya muestra los cambios."; }
+    catch(err){
+      if(err.message==="sesion"){ muestraLogin("Tu sesión terminó. Entra otra vez; tus cambios no se guardaron."); return; }
+      $("estado").textContent = err.message; $("btnGuardar").disabled = false;
+    }
+  });
+  window.addEventListener("beforeunload", e=>{ if(sucio){ e.preventDefault(); e.returnValue = ""; } });
+</script>
+</body>
+</html>

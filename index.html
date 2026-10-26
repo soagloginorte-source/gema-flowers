@@ -244,6 +244,17 @@
   .arma-res .nota{font-size:13px;color:var(--color-suave)}
   .arma-res .btn{width:100%}
   .oculto-pickup{display:none !important}
+  .aviso-top{background:var(--vino-profundo);color:#fff;text-align:center;font-size:14px;font-weight:600;padding:9px 16px}
+  .aviso-top[hidden],.promos[hidden]{display:none}
+  .promos{display:grid;gap:14px;margin-bottom:34px}
+  @media(min-width:760px){.promos{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}}
+  .promo{background:var(--rosa-claro);border:1px solid var(--color-borde);border-radius:18px;padding:20px 22px;display:grid;gap:6px;align-content:start}
+  .promo small{color:var(--color-acento);font-weight:700;letter-spacing:.4px;text-transform:uppercase;font-size:12px}
+  .promo h3{font-size:22px}
+  .promo p{color:var(--color-suave);font-size:15px}
+  .promo .hasta{font-size:13px}
+  .btn-agotado{pointer-events:none;opacity:.6}
+  .card .badge.badge-agotado{color:var(--color-suave)}
   .mapa-caja{display:grid;gap:10px;margin-top:14px;width:100%}
   .mapa-barra{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;font-weight:700;font-size:15px}
   .mapa-barra em{font-style:normal;font-weight:500;color:var(--color-suave)}
@@ -308,6 +319,8 @@
   </defs>
 </svg>
 
+<div class="aviso-top" id="avisoTop" role="status" hidden></div>
+
 <header class="nav">
   <div class="wrap nav-in">
     <a class="brand" href="#inicio">
@@ -370,6 +383,7 @@
       <div class="kicker">Para empezar</div>
       <h2>Algunos de nuestros ramos</h2>
     </div>
+    <div class="promos" id="promosBox" hidden></div>
     <div class="cat-grid" id="destGrid"></div>
     <p class="ver-todo"><a class="btn btn-ghost" href="#catalogo">Ver todo el catálogo</a></p>
   </div>
@@ -618,12 +632,19 @@
   const LOGO_IMG  = "assets/logo.png";                    // ej. "assets/logo.png" (vacío = usa el ícono dibujado)
   const HERO_IMG  = "assets/ramo-rosas-rojas-listones.webp";
 
+  /* Panel de administración (ver admin.html y supabase/LEEME.md). Mientras estén vacíos, el sitio usa
+     los precios de este archivo. SUPABASE_ANON es la clave PÚBLICA (anon): es segura porque la base de
+     datos solo deja LEER a los visitantes y solo escribir a la dueña con su contraseña. Nunca pegues aquí
+     la clave "service_role". */
+  const SUPABASE_URL  = "";     // ej. "https://abcdxyz.supabase.co"
+  const SUPABASE_ANON = "";     // clave pública "anon"
+
   /* Precios que pasó la dueña, vigentes del 26 de octubre al 9 de noviembre de 2026.
      En fechas especiales (14 de febrero, 10 de mayo) tiene otra lista de precios. */
-  const PRECIOS_HASTA = "2026-11-09";                     // después de esta fecha el sitio avisa que pueden haber cambiado
-  const PRECIOS_TEXTO = "del 26 de octubre al 9 de noviembre de 2026";
-  const ANTICIPO = 0.5;                                   // 50 % para apartar
-  const ENVIO_GRATIS_DESDE = 3000;                        // envío gratis en Durango capital desde este monto
+  let PRECIOS_HASTA = "2026-11-09";                     // después de esta fecha el sitio avisa que pueden haber cambiado
+  let PRECIOS_TEXTO = "del 26 de octubre al 9 de noviembre de 2026";
+  let ANTICIPO = 0.5;                                   // 50 % para apartar
+  let ENVIO_GRATIS_DESDE = 3000;                        // envío gratis en Durango capital desde este monto
   /* c = cuántos colores puede elegir según la cantidad (0 = más de 4, sin límite) */
   const ROSAS = [
     {n:24,p:320,c:1},{n:36,p:490,c:2},{n:50,p:640,c:2},{n:75,p:1020,c:3},{n:100,p:1280,c:4},
@@ -672,6 +693,7 @@
     {n:"Corazón de rosas", p:600, t:"", o:["amor","aniversario"], et:"", img:"assets/ramo-corazon-naranja.webp", alt:"Arreglo de rosas en forma de corazón sobre papel rosa", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Arreglo en forma de corazón con rosas."},
     {n:"Ramo de mangos", p:700, t:"", o:["cumpleaños","gracias","porquesí"], et:"Diferente", img:"assets/ramo-mangos.webp", fondo:"#ffffff", alt:"Ramo de mangos frescos con flores amarillas en papel amarillo", c:{f1:"#d9a24b",f2:"#ecc87e",ctr:"#8a6a2a",leaf:"#6f8f6a"}, d:"Mangos frescos con flores amarillas en papel amarillo. Un detalle distinto."},
   ];
+  let PROMOS = [], AVISO = null;       // los llena el panel de administración
   /* ====================  fin de la zona editable  ==================== */
 
   const waLink = (txt) => `https://wa.me/${WA_NUMERO}?text=${encodeURIComponent(txt)}`;
@@ -694,7 +716,7 @@
         : bloomSVG(a.c);
       return `<article class="card">
         <div class="ph" style="background:${a.img?(a.fondo||'#f3e6e1'):bg(a.c)}">
-          ${a.et?`<span class="badge">${a.et}</span>`:""}
+          ${a.agotado?`<span class="badge badge-agotado">Agotado</span>`:a.et?`<span class="badge">${a.et}</span>`:""}
           ${media}
         </div>
         <div class="body">
@@ -702,7 +724,7 @@
           <p class="meta">${a.d}</p>
           <div class="row">
             <span class="price">${a.rosas?`<small>Desde</small> $${ROSAS[0].p}`:a.p?`${a.desde?"<small>Desde</small> ":""}$${a.p}${a.t?` <small>· ${a.t}</small>`:""}`:`<small>Cotiza tu ramo</small>`}</span>
-            ${a.rosas?`<button type="button" class="btn" data-arma="${arreglos.indexOf(a)}">Armar este ramo</button>`:`<a class="btn" href="${waLink(msg)}" target="_blank" rel="noopener">Pedir</a>`}
+            ${a.agotado?`<span class="btn btn-ghost btn-agotado" aria-disabled="true">Agotado</span>`:a.rosas?`<button type="button" class="btn" data-arma="${arreglos.indexOf(a)}">Armar este ramo</button>`:`<a class="btn" href="${waLink(msg)}" target="_blank" rel="noopener">Pedir</a>`}
           </div>
         </div>
       </article>`;
@@ -798,10 +820,13 @@
     $("resWa").href = waLink(msg);
   }
   armaOpciones(); armaResumen();
-  const vigente = new Date().toLocaleDateString("en-CA") <= PRECIOS_HASTA;
-  $("resVigencia").textContent = vigente
-    ? `Precios vigentes ${PRECIOS_TEXTO}. En fechas especiales (14 de febrero, 10 de mayo) aplica otra lista. La tarjeta con mensaje es gratis.`
-    : `Estos precios eran de ${PRECIOS_TEXTO} y pueden haber cambiado. Confirma el total por WhatsApp.`;
+  function pintaVigencia(){
+    const vigente = new Date().toLocaleDateString("en-CA") <= PRECIOS_HASTA;
+    $("resVigencia").textContent = vigente
+      ? `Precios vigentes ${PRECIOS_TEXTO}. En fechas especiales (14 de febrero, 10 de mayo) aplica otra lista. La tarjeta con mensaje es gratis.`
+      : `Estos precios eran de ${PRECIOS_TEXTO} y pueden haber cambiado. Confirma el total por WhatsApp.`;
+  }
+  pintaVigencia();
   $("arma").addEventListener("change", e=>{
     const t = e.target;
     if(t.name==="rosas"){
@@ -952,12 +977,86 @@
     if(tab) tab.parentElement.scrollTo({left: tab.offsetLeft-16});
     window.scrollTo(0,0);
   }
-  $("tDesde").textContent = "Desde " + peso(ROSAS[0].p);
-  $("tGratis").textContent = "En compras desde " + peso(ENVIO_GRATIS_DESDE);
-  $("listaEnvios").innerHTML = ENVIOS.map(z=>`<li><span>${z.n}</span><b>${z.p ? (z.desde?"Desde ":"")+peso(z.p) : "Gratis"}</b></li>`).join("");
-  $("notaEnvio").textContent = `Envío gratis en compras desde ${peso(ENVIO_GRATIS_DESDE)} dentro de Durango capital.`;
+  const esc = t => String(t==null?"":t).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  function pintaTextosPrecio(){
+    $("tDesde").textContent = "Desde " + peso(ROSAS[0].p);
+    $("tGratis").textContent = "En compras desde " + peso(ENVIO_GRATIS_DESDE);
+    $("listaEnvios").innerHTML = ENVIOS.map(z=>`<li><span>${esc(z.n)}</span><b>${z.p ? (z.desde?"Desde ":"")+peso(z.p) : "Gratis"}</b></li>`).join("");
+    $("notaEnvio").textContent = `Envío gratis en compras desde ${peso(ENVIO_GRATIS_DESDE)} dentro de Durango capital.`;
+  }
+  pintaTextosPrecio();
   window.addEventListener("hashchange", ruta);
   ruta();
+
+  /* ---- Promociones y avisos (vienen del panel de administración) ---- */
+  const fechaCorta = f => f.split("-").reverse().map(n=>+n).join("/");
+  const vigenteHoy = x => {
+    if(!x || x.activa===false) return false;
+    const h = new Date().toLocaleDateString("en-CA");
+    return (!x.desde || x.desde<=h) && (!x.hasta || h<=x.hasta);
+  };
+  function pintaPromos(){
+    const lista = PROMOS.filter(vigenteHoy);
+    $("promosBox").innerHTML = lista.map(x=>`<article class="promo"><small>Promoción</small><h3>${esc(x.titulo)}</h3>${x.texto?`<p>${esc(x.texto)}</p>`:""}${x.hasta?`<p class="hasta">Válida hasta el ${fechaCorta(x.hasta)}</p>`:""}</article>`).join("");
+    $("promosBox").hidden = !lista.length;
+    const av = AVISO && AVISO.texto && vigenteHoy(AVISO) ? AVISO.texto : "";
+    $("avisoTop").textContent = av;
+    $("avisoTop").hidden = !av;
+  }
+  function pintaPrecios(){
+    render();
+    $("destGrid").innerHTML = arreglos.slice(0,3).map(cardHTML).join("");
+    armaOpciones(); armaResumen();
+    pintaVigencia(); pintaTextosPrecio(); pintaPromos();
+  }
+  /* Aplica la configuración que guardó la dueña. Solo toma lo que viene bien formado; lo demás se queda como está. */
+  function aplicaConfig(d){
+    if(!d || typeof d!=="object") return;
+    const num = v => (v===null||v===""||isNaN(+v)) ? null : +v;
+    if(num(d.anticipo)!=null && d.anticipo>0 && d.anticipo<=1) ANTICIPO = +d.anticipo;
+    if(num(d.envioGratisDesde)!=null) ENVIO_GRATIS_DESDE = +d.envioGratisDesde;
+    if(d.vigencia){ if(d.vigencia.hasta) PRECIOS_HASTA = String(d.vigencia.hasta); if(d.vigencia.texto) PRECIOS_TEXTO = String(d.vigencia.texto); }
+    if(Array.isArray(d.rosas) && d.rosas.length){
+      const lista = d.rosas.filter(x=>num(x.n)>0 && num(x.p)>=0).map(x=>({n:+x.n, p:+x.p, c:+x.c||0})).sort((a,b)=>a.n-b.n);
+      if(lista.length) ROSAS.splice(0, ROSAS.length, ...lista);
+    }
+    if(d.gypsophila && typeof d.gypsophila==="object"){
+      Object.keys(GYPSOPHILA).forEach(k=>delete GYPSOPHILA[k]);
+      Object.entries(d.gypsophila).forEach(([k,v])=>{ if(num(v)!=null) GYPSOPHILA[k] = +v; });
+    }
+    if(Array.isArray(d.extras) && d.extras.length){
+      EXTRAS.splice(0, EXTRAS.length, ...d.extras.filter(x=>x && x.n).map(x=>({n:String(x.n), p:num(x.p), ...(x.g?{g:String(x.g)}:{}), ...(x.gyp?{gyp:true}:{})})));
+    }
+    if(Array.isArray(d.envios) && d.envios.length){
+      ENVIOS.splice(0, ENVIOS.length, ...d.envios.filter(x=>x && x.id && x.n).map(x=>({id:String(x.id), n:String(x.n), p:num(x.p)||0, ...(x.desde?{desde:true}:{}), ...(x.liquidar?{liquidar:true}:{})})));
+    }
+    if(d.ramos && typeof d.ramos==="object"){
+      arreglos.forEach(a=>{
+        const o = d.ramos[a.n]; if(!o) return;
+        if("p" in o && !a.rosas) a.p = num(o.p);
+        if("agotado" in o) a.agotado = !!o.agotado;
+      });
+    }
+    PROMOS = Array.isArray(d.promos) ? d.promos.filter(x=>x && x.titulo) : [];
+    AVISO = d.aviso && typeof d.aviso==="object" ? d.aviso : null;
+    // lo que el cliente ya había elegido debe seguir existiendo
+    armar.r = Math.min(armar.r, ROSAS.length-1);
+    armar.extras = new Set([...armar.extras].filter(i=>i<EXTRAS.length));
+    if(armar.envio && !ENVIOS.find(z=>z.id===armar.envio)) armar.envio = null;
+    const lim = ROSAS[armar.r].c;
+    if(lim && armar.colores.size>lim) armar.colores = new Set([...armar.colores].slice(0,lim));
+    pintaPrecios();
+  }
+  async function cargaPreciosRemotos(){
+    if(!SUPABASE_URL || !SUPABASE_ANON) return;                // sin base de datos: se usan los precios de este archivo
+    try{
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/config?id=eq.1&select=datos`, {headers:{apikey:SUPABASE_ANON, Authorization:`Bearer ${SUPABASE_ANON}`}});
+      if(!res.ok) throw new Error(res.status);
+      const filas = await res.json();
+      if(filas[0] && filas[0].datos) aplicaConfig(filas[0].datos);
+    }catch(e){ /* si falla, el sitio sigue con los precios que ya trae */ }
+  }
+  cargaPreciosRemotos();
 </script>
 </body>
 </html>
