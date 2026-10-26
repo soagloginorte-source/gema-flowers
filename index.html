@@ -231,6 +231,13 @@
   .total b{font-family:var(--serif);font-size:32px;color:var(--color-acento);font-variant-numeric:tabular-nums}
   .arma-res .nota{font-size:13px;color:var(--color-suave)}
   .arma-res .btn{width:100%}
+  .entrega-datos{display:grid;gap:14px}
+  .campo{display:grid;gap:6px;min-width:0}
+  .campo label{font-weight:700;font-size:15px}
+  .campo label span{font-weight:500;color:var(--color-suave)}
+  .campo input{font:inherit;font-size:16px;padding:12px 16px;border:1.5px solid var(--color-borde);border-radius:14px;background:var(--superficie);color:var(--color-texto);min-width:0;width:100%}
+  .campo input:focus{outline:2px solid var(--color-acento);outline-offset:1px;border-color:var(--color-acento)}
+  .campo-fila{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   .arma legend .hint{font-family:var(--sans);font-size:14px;color:var(--color-suave)}
   .opt input:disabled{cursor:not-allowed}
   .opt input:disabled + span{opacity:.4}
@@ -379,6 +386,16 @@
         <fieldset><legend>2. Color <span class="hint" id="hintColor"></span></legend><div class="opts" id="optColor"></div></fieldset>
         <fieldset><legend>3. Detalles extra <span class="hint">(opcional)</span></legend><div class="opts" id="optExtras"></div></fieldset>
         <fieldset><legend>4. ¿Cómo lo recibes? <span class="hint" id="hintEnvio"></span></legend><div class="opts" id="optEnvio"></div></fieldset>
+        <fieldset class="entrega-datos">
+          <legend>5. ¿A quién y adónde va?</legend>
+          <div class="campo"><label for="recNombre">Nombre de quien recibe</label><input id="recNombre" type="text" maxlength="60" autocomplete="off" placeholder="Ej. María López"></div>
+          <div class="campo"><label for="deParte">De parte de <span>(opcional)</span></label><input id="deParte" type="text" maxlength="60" autocomplete="off" placeholder="Ej. Tu nombre, o déjalo vacío si es sorpresa"></div>
+          <div class="campo"><label for="recLugar">Lugar de entrega</label><input id="recLugar" type="text" maxlength="160" autocomplete="off" placeholder="Colonia o pueblo, calle, número y referencias"></div>
+          <div class="campo-fila">
+            <div class="campo"><label for="recFecha">Fecha</label><input id="recFecha" type="date"></div>
+            <div class="campo"><label for="recHora">Hora aproximada</label><input id="recHora" type="time"></div>
+          </div>
+        </fieldset>
     <div class="tarjeta">
       <label for="msgTarjeta">Mensaje para la tarjeta <span>(opcional, va en tu pedido)</span></label>
       <input id="msgTarjeta" type="text" maxlength="120" placeholder="Ej. Feliz cumpleaños, mamá. Te quiero mucho">
@@ -646,6 +663,9 @@
     const pagoTxt = liquidar ? "Pago total por adelantado" : `Anticipo para apartar (${Math.round(ANTICIPO*100)}%)`;
     const envioTxt = z ? (gratis||!z.p ? "gratis" : (z.desde?"desde ":"")+peso(z.p)) : "";
     const tarjeta = $("msgTarjeta").value.trim();
+    const nombre = $("recNombre").value.trim(), dePar = $("deParte").value.trim(), lugar = $("recLugar").value.trim();
+    const fecha = $("recFecha").value ? $("recFecha").value.split("-").reverse().join("/") : "";
+    const cuando = [fecha, $("recHora").value].filter(Boolean).join(", ");
     $("resEstilo").innerHTML = armar.estilo
       ? `<div class="estilo"><img src="${armar.estilo.img}" alt=""><div><small>Estilo que elegiste</small><b>${armar.estilo.n}</b><button type="button" id="quitaEstilo">Quitar</button></div></div>` : "";
     $("resLista").innerHTML =
@@ -662,8 +682,12 @@
       + `\n• Entrega: ${z ? `${z.n} (${envioTxt})` : "por definir"}`
       + `\n• Total estimado: ${peso(total)}${pendiente?" + lo que está por cotizar":""}`
       + `\n• ${liquidar ? "Pago total por adelantado" : "Anticipo ("+Math.round(ANTICIPO*100)+"%)"}: ${peso(anticipo)}`
+      + `\n\n• Para (quien recibe): ${nombre}`
+      + (dePar ? `\n• De parte de: ${dePar}` : "")
+      + `\n• Lugar de entrega: ${lugar}`
+      + `\n• Fecha y hora: ${cuando}`
       + (tarjeta ? `\n• Mensaje para la tarjeta: "${tarjeta}"` : "")
-      + `\n\n• Fecha y hora de entrega: \n• Colonia o pueblo: \n\n¿Me ayudan a confirmarlo?`;
+      + `\n\n¿Me ayudan a confirmarlo?`;
     $("resWa").href = waLink(msg);
   }
   armaOpciones(); armaResumen();
@@ -691,6 +715,8 @@
     } else if(t.name==="envio") armar.envio = t.value;
     armaResumen();
   });
+  $("recFecha").min = new Date().toLocaleDateString("en-CA");
+  ["recNombre","deParte","recLugar","recFecha","recHora"].forEach(id=>$(id).addEventListener("input", armaResumen));
   $("arma").addEventListener("click", e=>{
     if(e.target.id==="quitaEstilo"){ armar.estilo = null; armaResumen(); }
   });
