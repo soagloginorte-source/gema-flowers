@@ -142,17 +142,27 @@
   @media(max-width:719px){.card .row{flex-direction:column;align-items:stretch;gap:8px}.card .btn{width:100%}.card .body{padding:14px 14px 16px}.card h3{font-size:18px}}
 
   .pasos{background:var(--superficie);border-top:1px solid var(--color-borde);border-bottom:1px solid var(--color-borde)}
-  .pasos-grid{display:grid;gap:22px}
-  @media(min-width:760px){.pasos-grid{grid-template-columns:repeat(3,1fr);gap:28px}}
-  .paso{display:flex;gap:16px;align-items:flex-start}
-  .paso .n{width:42px;height:42px;flex:none;border-radius:50%;background:var(--fondo-crema);border:1.5px solid var(--color-acento);color:var(--acento-osc);display:grid;place-items:center;font-family:var(--serif);font-size:20px;font-weight:600}
-  .paso h3{font-size:19px;margin-bottom:5px}
-  .paso p{color:var(--color-suave);font-size:15px}
-  .entrega{display:grid;gap:14px;margin-top:40px}
-  @media(min-width:680px){.entrega{grid-template-columns:repeat(3,1fr)}}
+  .pasos-lista{list-style:none;margin:0;padding:0;max-width:46em}
+  .paso2{display:grid;grid-template-columns:44px 1fr;gap:16px;padding-bottom:26px;position:relative}
+  .paso2:not(:last-child)::before{content:"";position:absolute;left:21px;top:48px;bottom:4px;width:2px;background:var(--color-borde)}
+  .paso2 .n{width:44px;height:44px;border-radius:50%;background:var(--fondo-crema);border:1.5px solid var(--color-acento);color:var(--acento-osc);display:grid;place-items:center;font-family:var(--serif);font-size:20px;font-weight:600}
+  .paso2 h3{font-size:21px;margin:8px 0 6px}
+  .paso2 p{color:var(--color-suave);font-size:16px}
+  .paso2 .aparte{margin-top:10px;font-size:14px}
+  .datos-lista{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+  .datos-lista li{background:var(--rosa-claro);border-radius:999px;padding:7px 14px;font-size:14px;font-weight:600;color:var(--color-texto)}
+  .entrega{display:grid;gap:14px;margin-top:20px}
+  @media(min-width:900px){.entrega{grid-template-columns:repeat(3,1fr);align-items:start}}
   .entrega .e{background:var(--fondo-crema);border:1px solid var(--color-borde);border-radius:16px;padding:20px}
   .entrega .e b{font-family:var(--serif);font-size:18px;display:flex;align-items:center;gap:9px}
   .entrega .e p{color:var(--color-suave);font-size:15px;margin-top:7px}
+  .entrega .e .aparte{font-size:14px;margin-top:12px}
+  .costos,.puntos{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:10px}
+  .costos li{display:flex;justify-content:space-between;align-items:baseline;gap:14px;border-bottom:1px dashed var(--color-borde);padding-bottom:9px;font-size:15px}
+  .costos li:last-child{border-bottom:0;padding-bottom:0}
+  .costos li b{display:block;font-family:var(--sans);font-size:15px;text-align:right;color:var(--color-texto)}
+  .puntos li{font-size:15px;color:var(--color-suave);padding-left:16px;position:relative}
+  .puntos li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--dorado)}
 
   
 
@@ -476,16 +486,81 @@
 
 <section class="pasos" id="pedir" data-vista="pedir">
   <div class="wrap">
-    <div class="sec-head"><div class="kicker">Fácil y rápido</div><h2>Cómo pedir</h2></div>
-    <div class="pasos-grid">
-      <div class="paso"><div class="n">1</div><div><h3>Elige o arma tu ramo</h3><p>Mira el catálogo o arma el tuyo: rosas, color y detalles. O cuéntanos tu idea y lo hacemos a tu medida.</p></div></div>
-      <div class="paso"><div class="n">2</div><div><h3>Escríbenos por WhatsApp</h3><p>Nos llega el arreglo ya escrito. Solo agregas la fecha, la dirección y el mensaje que quieres en la tarjeta.</p></div></div>
-      <div class="paso"><div class="n">3</div><div><h3>Nosotros lo entregamos</h3><p>Lo preparamos fresco y lo llevamos a domicilio. Te confirmamos cuando llegue.</p></div></div>
+    <div class="sec-head">
+      <div class="kicker">Fácil y rápido</div>
+      <h2>Cómo pedir</h2>
+      <p>Son 5 pasos. Si ya llenaste todo en Cotizar, tu mensaje de WhatsApp ya lleva tus datos.</p>
     </div>
+
+    <ol class="pasos-lista">
+      <li class="paso2">
+        <span class="n" aria-hidden="true">1</span>
+        <div>
+          <h3>Elige o arma tu ramo</h3>
+          <p>Mira el catálogo o arma el tuyo en Cotizar: cantidad de rosas, color y detalles. También puedes contarnos tu idea y la hacemos a tu medida.</p>
+        </div>
+      </li>
+      <li class="paso2">
+        <span class="n" aria-hidden="true">2</span>
+        <div>
+          <h3>Envíanos tu cotización por WhatsApp</h3>
+          <p>El mensaje sale ya escrito, con tu ramo, el total y los datos de entrega. Solo revisa que todo esté bien y envíalo.</p>
+        </div>
+      </li>
+      <li class="paso2">
+        <span class="n" aria-hidden="true">3</span>
+        <div>
+          <h3>Recibe los datos para pagar</h3>
+          <p>Te respondemos con la cuenta para la transferencia y confirmamos si tenemos agenda para tu fecha.</p>
+        </div>
+      </li>
+      <li class="paso2">
+        <span class="n" aria-hidden="true">4</span>
+        <div>
+          <h3>Paga y envíanos tu comprobante</h3>
+          <p>Con el anticipo apartas tu pedido. Junto con el comprobante, necesitamos estos datos:</p>
+          <ul class="datos-lista">
+            <li>Mensaje de la nota</li>
+            <li>Dirección exacta</li>
+            <li>Referencias del domicilio</li>
+            <li>Nombre y teléfono de quien recibe</li>
+            <li>Fecha y horario de entrega</li>
+          </ul>
+          <p class="aparte">Si vas a recoger tu pedido, no necesitas la dirección ni las referencias.</p>
+        </div>
+      </li>
+      <li class="paso2">
+        <span class="n" aria-hidden="true">5</span>
+        <div>
+          <h3>Lo preparamos y lo entregamos</h3>
+          <p>Armamos tu ramo con flor fresca y lo llevamos a domicilio, o lo recoges sin costo. Te confirmamos cuando llegue.</p>
+        </div>
+      </li>
+    </ol>
+
     <div class="entrega">
-      <div class="e"><b><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8c1c2e" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Entrega a domicilio</b><p id="infoEnvio"></p></div>
-      <div class="e"><b><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8c1c2e" stroke-width="2"><path d="M12 21s-7-5-7-11a7 7 0 1114 0c0 6-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg> Cobertura</b><p>Entregamos en cualquier zona. Dinos tu colonia o pueblo y te confirmamos la zona y el costo. Trabajamos con agenda: pide con anticipación.</p></div>
-      <div class="e"><b><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8c1c2e" stroke-width="2"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg> Anticipo y pago</b><p>Apartas tu pedido con el 50 % de anticipo. En pueblos y fuera de la ciudad el pedido va totalmente liquidado. Aceptamos transferencia, tarjeta y efectivo.</p></div>
+      <div class="e">
+        <b><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8c1c2e" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Costos de envío</b>
+        <ul class="costos" id="listaEnvios"></ul>
+        <p class="aparte" id="notaEnvio"></p>
+      </div>
+      <div class="e">
+        <b><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8c1c2e" stroke-width="2" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg> Pago</b>
+        <ul class="costos">
+          <li><span>Para apartar tu pedido</span><b>50 % de anticipo</b></li>
+          <li><span>Pueblos y fuera de la ciudad</span><b>Pago total por adelantado</b></li>
+          <li><span>Formas de pago</span><b>Transferencia, tarjeta o efectivo</b></li>
+        </ul>
+      </div>
+      <div class="e">
+        <b><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8c1c2e" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-5-7-11a7 7 0 1114 0c0 6-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg> Entregas y agenda</b>
+        <ul class="puntos">
+          <li>Entregamos en cualquier zona. Dinos tu colonia o pueblo y te confirmamos la zona y el costo.</li>
+          <li>Trabajamos con agenda: pide con anticipación.</li>
+          <li>La entrega del mismo día no tiene costo extra, según disponibilidad.</li>
+          <li>Atendemos las 24 horas, todos los días.</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
@@ -847,8 +922,8 @@
   }
   $("tDesde").textContent = "Desde " + peso(ROSAS[0].p);
   $("tGratis").textContent = "En compras desde " + peso(ENVIO_GRATIS_DESDE);
-  $("infoEnvio").textContent = "Centro " + peso(ENVIOS[1].p) + " · zonas cercanas " + peso(ENVIOS[2].p) + " · alrededor de la ciudad " + peso(ENVIOS[3].p)
-    + " · pueblos y fuera de Durango capital desde " + peso(ENVIOS[4].p) + ". Envío gratis en compras desde " + peso(ENVIO_GRATIS_DESDE) + ". Pick up gratis. El envío del mismo día no cuesta extra.";
+  $("listaEnvios").innerHTML = ENVIOS.map(z=>`<li><span>${z.n}</span><b>${z.p ? (z.desde?"Desde ":"")+peso(z.p) : "Gratis"}</b></li>`).join("");
+  $("notaEnvio").textContent = `Envío gratis en compras desde ${peso(ENVIO_GRATIS_DESDE)} dentro de Durango capital.`;
   window.addEventListener("hashchange", ruta);
   ruta();
 </script>
