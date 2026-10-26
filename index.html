@@ -11,6 +11,8 @@
 <meta property="og:description" content="Cultiva sonrisas con el regalo perfecto. Ramos de rosas y regalos hechos a mano, con entrega a domicilio en Durango.">
 <meta property="og:image" content="https://soagloginorte-source.github.io/gema-flowers/assets/og.jpg">
 <link rel="icon" href="assets/logo.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" integrity="sha512-h9FcoyWjHcOcmEVkxOfTLnmZFWIH0iZhZT1H2TbOq55xssQGEJHEaIm+PgoUaZbRvQTNTluNOEfb1ZRy6D3BOw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" integrity="sha512-puJW3E/qXDqYp9IfhAI54BJEaWIfloJ7JWs7OeD5i6ruC9JZL1gERT1wjtwXFlh7CjE7ZJ+/vcRZRkIYIb6p4g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -231,6 +233,16 @@
   .total b{font-family:var(--serif);font-size:32px;color:var(--color-acento);font-variant-numeric:tabular-nums}
   .arma-res .nota{font-size:13px;color:var(--color-suave)}
   .arma-res .btn{width:100%}
+  .oculto-pickup{display:none !important}
+  .mapa-caja{display:grid;gap:10px;margin-top:14px;width:100%}
+  .mapa-barra{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;font-weight:700;font-size:15px}
+  .mapa-barra em{font-style:normal;font-weight:500;color:var(--color-suave)}
+  .mapa-botones{display:flex;flex-wrap:wrap;gap:8px}
+  #mapa{height:300px;border-radius:16px;border:1px solid var(--color-borde);overflow:hidden;isolation:isolate;background:var(--rosa-claro)}
+  @media(min-width:900px){#mapa{height:340px}}
+  #mapa.leaflet-container{font-family:var(--sans)}
+  .pin span{display:block;width:26px;height:26px;background:var(--color-acento);border:3px solid #fff;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 3px 8px rgba(42,34,36,.4)}
+  .mapa-caja .nota{font-size:13px;color:var(--color-suave)}
   .entrega-datos{display:grid;gap:14px}
   .campo{display:grid;gap:6px;min-width:0}
   .campo label{font-weight:700;font-size:15px}
@@ -385,14 +397,28 @@
         <fieldset><legend>1. ¿Cuántas rosas?</legend><div class="opts" id="optRosas"></div></fieldset>
         <fieldset><legend>2. Color <span class="hint" id="hintColor"></span></legend><div class="opts" id="optColor"></div></fieldset>
         <fieldset><legend>3. Detalles extra <span class="hint">(opcional)</span></legend><div class="opts" id="optExtras"></div></fieldset>
-        <fieldset><legend>4. ¿Cómo lo recibes? <span class="hint" id="hintEnvio"></span></legend><div class="opts" id="optEnvio"></div></fieldset>
+        <fieldset><legend>4. ¿Cómo lo recibes? <span class="hint" id="hintEnvio"></span></legend><div class="opts" id="optEnvio"></div>
+          <div class="mapa-caja solo-domicilio" id="mapaCaja">
+            <div class="mapa-barra">
+              <span>Marca en el mapa dónde entregamos <em>(opcional)</em></span>
+              <div class="mapa-botones">
+                <button type="button" class="chip" id="btnUbicacion">Usar mi ubicación</button>
+                <button type="button" class="chip" id="btnQuitaPunto" hidden>Quitar punto</button>
+              </div>
+            </div>
+            <div id="mapa" role="application" aria-label="Mapa de Durango. Toca para marcar el punto de entrega"></div>
+            <p class="nota" id="mapaEstado">Toca el mapa para poner el punto. Si no lo marcas, nos dices la dirección en el mensaje.</p>
+          </div>
+        </fieldset>
         <fieldset class="entrega-datos">
           <legend>5. ¿A quién y adónde va?</legend>
           <div class="campo"><label for="recNombre">Nombre de quien recibe</label><input id="recNombre" type="text" maxlength="60" autocomplete="off" placeholder="Ej. María López"></div>
+          <div class="campo"><label for="recTel">Teléfono de quien recibe</label><input id="recTel" type="tel" inputmode="tel" maxlength="20" autocomplete="off" placeholder="10 dígitos"></div>
           <div class="campo"><label for="deParte">De parte de <span>(opcional)</span></label><input id="deParte" type="text" maxlength="60" autocomplete="off" placeholder="Ej. Tu nombre, o déjalo vacío si es sorpresa"></div>
-          <div class="campo"><label for="recLugar">Lugar de entrega</label><input id="recLugar" type="text" maxlength="160" autocomplete="off" placeholder="Colonia o pueblo, calle, número y referencias"></div>
+          <div class="campo solo-domicilio"><label for="recLugar">Dirección exacta</label><input id="recLugar" type="text" maxlength="160" autocomplete="off" placeholder="Calle, número, colonia o pueblo"></div>
+          <div class="campo solo-domicilio"><label for="recRefs">Referencias del domicilio</label><input id="recRefs" type="text" maxlength="160" autocomplete="off" placeholder="Ej. portón negro, frente a la tienda"></div>
           <div class="campo-fila">
-            <div class="campo"><label for="recFecha">Fecha</label><input id="recFecha" type="date"></div>
+            <div class="campo"><label for="recFecha">Fecha de entrega</label><input id="recFecha" type="date"></div>
             <div class="campo"><label for="recHora">Hora aproximada</label><input id="recHora" type="time"></div>
           </div>
         </fieldset>
@@ -410,6 +436,7 @@
         <p class="nota" id="resPend"></p>
         <p class="anticipo" id="resAnticipo"></p>
         <p class="nota" id="resVigencia"></p>
+        <p class="nota">Después de enviarnos tu cotización por WhatsApp, te mandamos los datos para el pago por transferencia. Cuando pagues, envíanos tu comprobante.</p>
         <a class="btn" id="resWa" href="#" target="_blank" rel="noopener">Pedir este ramo por WhatsApp</a>
       </aside>
     </div>
@@ -624,7 +651,7 @@
   /* ---- Arma tu ramo ---- */
   const $ = id => document.getElementById(id);
   const peso = n => "$"+n.toLocaleString("es-MX");
-  const armar = {r:0, colores:new Set(["roja"]), extras:new Set(), envio:null, estilo:null};
+  const armar = {r:0, colores:new Set(["roja"]), extras:new Set(), envio:null, estilo:null, punto:null};
   const precioExtra = e => e.gyp ? (GYPSOPHILA[ROSAS[armar.r].n] ?? null) : e.p;
   function armaOpciones(){
     $("optRosas").innerHTML = ROSAS.map((o,i)=>`<label class="opt"><input type="radio" name="rosas" value="${i}"><span>${o.n} rosas <b>${peso(o.p)}</b></span></label>`).join("");
@@ -663,7 +690,10 @@
     const pagoTxt = liquidar ? "Pago total por adelantado" : `Anticipo para apartar (${Math.round(ANTICIPO*100)}%)`;
     const envioTxt = z ? (gratis||!z.p ? "gratis" : (z.desde?"desde ":"")+peso(z.p)) : "";
     const tarjeta = $("msgTarjeta").value.trim();
-    const nombre = $("recNombre").value.trim(), dePar = $("deParte").value.trim(), lugar = $("recLugar").value.trim();
+    const nombre = $("recNombre").value.trim(), tel = $("recTel").value.trim(), dePar = $("deParte").value.trim();
+    const lugar = $("recLugar").value.trim(), refs = $("recRefs").value.trim();
+    const pickup = !!z && z.id==="pickup";                       // recoger: no hace falta dirección
+    document.querySelectorAll(".solo-domicilio").forEach(el=>el.classList.toggle("oculto-pickup", pickup));
     const fecha = $("recFecha").value ? $("recFecha").value.split("-").reverse().join("/") : "";
     const cuando = [fecha, $("recHora").value].filter(Boolean).join(", ");
     $("resEstilo").innerHTML = armar.estilo
@@ -671,7 +701,8 @@
     $("resLista").innerHTML =
         `<li><span>${o.n} rosas · ${cols.map(c=>c.o).join(", ")}</span><b>${peso(o.p)}</b></li>`
       + ex.map(x=>`<li><span>${x.e.n}</span><b>${x.pr==null?"por cotizar":peso(x.pr)}</b></li>`).join("")
-      + (z ? `<li><span>${z.n}</span><b>${envioTxt==="gratis"?"gratis":envioTxt}</b></li>` : `<li class="falta"><span>Envío</span><b>por elegir</b></li>`);
+      + (z ? `<li><span>${z.n}</span><b>${envioTxt==="gratis"?"gratis":envioTxt}</b></li>` : `<li class="falta"><span>Envío</span><b>por elegir</b></li>`)
+      + (armar.punto ? `<li><span>Punto en el mapa</span><b>marcado</b></li>` : "");
     $("resTotal").textContent = peso(total) + (pendiente ? "+" : "");
     $("resPend").textContent = pendiente ? "Más lo que está por cotizar: te lo confirmamos por WhatsApp." : "";
     $("resAnticipo").textContent = `${pagoTxt}: ${peso(anticipo)}${pendiente?"+":""}`;
@@ -682,11 +713,12 @@
       + `\n• Entrega: ${z ? `${z.n} (${envioTxt})` : "por definir"}`
       + `\n• Total estimado: ${peso(total)}${pendiente?" + lo que está por cotizar":""}`
       + `\n• ${liquidar ? "Pago total por adelantado" : "Anticipo ("+Math.round(ANTICIPO*100)+"%)"}: ${peso(anticipo)}`
-      + `\n\n• Para (quien recibe): ${nombre}`
+      + `\n\n• Nombre y teléfono de quien recibe: ${[nombre, tel].filter(Boolean).join(" · ")}`
       + (dePar ? `\n• De parte de: ${dePar}` : "")
-      + `\n• Lugar de entrega: ${lugar}`
-      + `\n• Fecha y hora: ${cuando}`
-      + (tarjeta ? `\n• Mensaje para la tarjeta: "${tarjeta}"` : "")
+      + (pickup ? "" : `\n• Dirección exacta: ${lugar}\n• Referencias del domicilio: ${refs}`
+          + (armar.punto ? `\n• Ubicación en el mapa: https://www.google.com/maps?q=${armar.punto.lat},${armar.punto.lng}` : ""))
+      + `\n• Fecha y horario de entrega: ${cuando}`
+      + (tarjeta ? `\n• Mensaje de la nota: "${tarjeta}"` : "")
       + `\n\n¿Me ayudan a confirmarlo?`;
     $("resWa").href = waLink(msg);
   }
@@ -716,7 +748,7 @@
     armaResumen();
   });
   $("recFecha").min = new Date().toLocaleDateString("en-CA");
-  ["recNombre","deParte","recLugar","recFecha","recHora"].forEach(id=>$(id).addEventListener("input", armaResumen));
+  ["recNombre","recTel","deParte","recLugar","recRefs","recFecha","recHora"].forEach(id=>$(id).addEventListener("input", armaResumen));
   $("arma").addEventListener("click", e=>{
     if(e.target.id==="quitaEstilo"){ armar.estilo = null; armaResumen(); }
   });
@@ -725,6 +757,45 @@
     armar.estilo = arreglos[+b.dataset.arma]; armaResumen();
     location.hash = "#arma";
   });
+  /* ---- Mapa de entrega (Durango capital) ---- */
+  const DURANGO = [24.0277, -104.6532];
+  let mapa = null, marcador = null, pinIcono = null;
+  const mapaTexto = "Toca el mapa para poner el punto. Si no lo marcas, nos dices la dirección en el mensaje.";
+  function mapaPunto(lat, lng, acercar){
+    armar.punto = {lat:+lat.toFixed(6), lng:+lng.toFixed(6)};
+    if(!marcador){
+      marcador = L.marker([lat,lng], {icon:pinIcono, draggable:true}).addTo(mapa);
+      marcador.on("dragend", e=>{ const q = e.target.getLatLng(); mapaPunto(q.lat, q.lng, false); });
+    } else marcador.setLatLng([lat,lng]);
+    if(acercar) mapa.setView([lat,lng], Math.max(mapa.getZoom(), 16));
+    $("btnQuitaPunto").hidden = false;
+    $("mapaEstado").textContent = "Punto marcado. Puedes arrastrarlo para ajustarlo.";
+    armaResumen();
+  }
+  function mapaInit(){
+    if(mapa){ mapa.invalidateSize(); return; }
+    if(typeof L==="undefined"){ $("mapaCaja").classList.add("hidden"); return; }   // sin librería: el cotizador sigue funcionando
+    pinIcono = L.divIcon({className:"pin", html:"<span></span>", iconSize:[26,34], iconAnchor:[13,32]});
+    mapa = L.map("mapa", {scrollWheelZoom:false}).setView(DURANGO, 12);
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {maxZoom:19, attribution:"© OpenStreetMap"}).addTo(mapa);
+    mapa.on("click", e=>mapaPunto(e.latlng.lat, e.latlng.lng, false));
+  }
+  $("btnUbicacion").addEventListener("click", ()=>{
+    if(!navigator.geolocation){ $("mapaEstado").textContent = "Tu navegador no permite usar la ubicación. Toca el mapa para marcar el punto."; return; }
+    $("mapaEstado").textContent = "Buscando tu ubicación…";
+    navigator.geolocation.getCurrentPosition(
+      pos=>{ mapaInit(); if(mapa) mapaPunto(pos.coords.latitude, pos.coords.longitude, true); },
+      ()=>{ $("mapaEstado").textContent = "No pudimos obtener tu ubicación. Toca el mapa para marcar el punto."; },
+      {enableHighAccuracy:true, timeout:10000});
+  });
+  $("btnQuitaPunto").addEventListener("click", ()=>{
+    armar.punto = null;
+    if(marcador){ marcador.remove(); marcador = null; }
+    $("btnQuitaPunto").hidden = true;
+    $("mapaEstado").textContent = mapaTexto;
+    armaResumen();
+  });
+
   // Oculta ocasiones (chips del filtro) que todavía no tienen arreglos
   const conArreglos = new Set(arreglos.flatMap(a=>a.o));
   document.querySelectorAll("#filtros .chip:not([data-f='todos'])").forEach(el=>{
@@ -769,6 +840,7 @@
     document.querySelectorAll(".nav-links a, .tabs a").forEach(a=>{
       if(a.getAttribute("href")==="#"+v) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current");
     });
+    if(v==="arma") setTimeout(mapaInit, 60);
     const tab = document.querySelector('.tabs a[href="#'+v+'"]');
     if(tab) tab.parentElement.scrollTo({left: tab.offsetLeft-16});
     window.scrollTo(0,0);

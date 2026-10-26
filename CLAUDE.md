@@ -26,6 +26,15 @@ Un solo `index.html` con **vistas** (una "página" por botón del menú, vía `#
 Cotizar (`#arma`), Nosotros, Cómo pedir y Contacto. Cada sección lleva `data-vista="…"`; el router está
 al final del `<script>` (`ruta()`). En móvil el menú son pestañas bajo el encabezado.
 
+## Mapa de entrega
+El cotizador (`#arma`) lleva un mapa de Durango capital con Leaflet 1.9.4 (cdnjs, con `integrity`) y mosaicos de
+OpenStreetMap, sin claves. El cliente marca el punto (o usa su ubicación) y el mensaje de WhatsApp lleva un enlace
+`google.com/maps?q=lat,lng`. Si elige "Recoger", se ocultan dirección, referencias y mapa. Si la librería no carga,
+el mapa se oculta y el cotizador sigue funcionando. Los mosaicos públicos de OSM son para poco tráfico: si el sitio
+crece, cambiar de proveedor.
+**Datos bancarios:** NO se publican en el sitio ni en el repositorio (el sitio es público). Ella los manda por
+WhatsApp después de la cotización.
+
 ## Dónde se edita el contenido
 Todo lo editable está en el bloque **CONFIG** al inicio del `<script>` en `index.html`:
 - `NEGOCIO` — nombre de la florería ("Gema Flowers").
