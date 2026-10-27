@@ -18,7 +18,8 @@ Los datos viven en Supabase (base de datos gratuita). El sitio los lee cada vez 
    - Region: la más cercana a México (por ejemplo East US o South America).
    - Plan: Free.
 3. En el menú izquierdo, **SQL Editor > New query**: pegar todo el contenido de `supabase/setup.sql` y tocar **Run**.
-   Debe decir "Success". Crea la tabla con los precios actuales.
+   Debe decir "Success". Crea la tabla con los precios actuales. Después corre `supabase/storage.sql` igual: crea el espacio
+   de fotos. En ambos archivos, cambiar `gemaflowers8@gmail.com` por el correo de quien administrará el sitio.
 4. **Authentication > Sign In / Providers** (o Settings): **apagar "Allow new users to sign up"**.
    Esto es importante: así nadie más puede crearse una cuenta.
 5. **Authentication > Users > Add user > Create new user**: correo y contraseña de la dueña, con

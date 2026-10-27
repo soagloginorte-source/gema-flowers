@@ -36,13 +36,18 @@ crece, cambiar de proveedor.
 **Datos bancarios:** NO se publican en el sitio ni en el repositorio (el sitio es público). Ella los manda por
 WhatsApp después de la cotización.
 
-## Panel de administración (precios y promociones)
-`admin.html` + base de datos Supabase (`supabase/setup.sql`, guía en `supabase/LEEME.md`). El sitio lee los precios de
-Supabase al abrirse (`cargaPreciosRemotos()` → `aplicaConfig()`); si `SUPABASE_URL`/`SUPABASE_ANON` están vacíos o el
-servicio falla, usa los precios del CONFIG de `index.html`. El panel edita rosas, gypsophila, extras, envíos, anticipo,
-envío gratis, precio/agotado de ramos, vigencia, promociones por fechas y un aviso superior. La clave `anon` es pública
-por diseño; la `service_role` NUNCA va en el código. Si se cambia el CONFIG de precios en `index.html`, regenerar
-`supabase/seed.json` y `setup.sql` (solo sirve para una base nueva: la base ya creada se edita desde el panel).
+## Panel de administración (precios, promociones, fotos y ramos)
+`admin.html` + Supabase (guía en `supabase/LEEME.md`). El sitio lee la configuración al abrirse (`cargaPreciosRemotos()` →
+`aplicaConfig()`); si Supabase falla, usa los precios del CONFIG de `index.html`. El panel edita: foto de portada, precios
+de rosas/gypsophila/extras/envíos, anticipo, envío gratis, ramos del catálogo (foto, precio, cantidad de rosas, agotado,
+ocultar), **ramos nuevos** (nombre, descripción, precio o cantidad de rosas, ocasiones, foto), **descuentos** (porcentaje
+con fechas: bajan solos el precio de ramos, no de extras ni envío; si hay dos vale el mayor), promociones (con foto),
+vigencia y aviso superior. Las fotos se suben a Supabase Storage (bucket público `fotos`), reducidas a 1200 px en WebP.
+Todo lo que viene de la base se escapa (`esc`) y las URL solo se aceptan `https://` o `assets/` (`urlSegura`).
+**Seguridad:** la clave `anon` es pública por diseño; la `service_role` NUNCA va en el código. Solo los correos de las listas
+en `supabase/setup.sql` (tabla) y `supabase/storage.sql` (fotos) pueden escribir; hoy `gemaflowers8@gmail.com`. Para sumar a
+alguien, agregar su correo a esas listas y volver a correrlas en el SQL Editor. Si se cambia el CONFIG de precios en
+`index.html`, regenerar `seed.json`/`setup.sql` solo sirve para una base nueva; la base existente se edita desde el panel.
 
 ## Dónde se edita el contenido
 Todo lo editable está en el bloque **CONFIG** al inicio del `<script>` en `index.html`:
