@@ -170,8 +170,8 @@
 <script>
   /* Los mismos datos públicos que usa el sitio. La clave anon es pública por diseño: la base de datos
      solo deja escribir a quien inicia sesión. NUNCA pegues aquí la clave "service_role". */
-  const SUPABASE_URL  = "";
-  const SUPABASE_ANON = "";
+  const SUPABASE_URL  = "https://nqxneqixdrohakjimozc.supabase.co";
+  const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5xeG5lcWl4ZHJvaGFramltb3pjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI5Nzk0ODcsImV4cCI6MjEwODU1NTQ4N30.dexhxZkoDCiy_1pAjHO3Ge7gdhoS_yT0X-y19U0o0cI";
 
   const $ = id => document.getElementById(id);
   const esc = t => String(t==null?"":t).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
