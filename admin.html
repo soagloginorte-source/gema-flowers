@@ -182,7 +182,13 @@
   /* ---------- sesión ---------- */
   function leeSesion(){ try{ return JSON.parse(sessionStorage.getItem("gf_sesion")||"null"); }catch(e){ return null; } }
   function guardaSesion(x){ try{ x ? sessionStorage.setItem("gf_sesion", JSON.stringify(x)) : sessionStorage.removeItem("gf_sesion"); }catch(e){} }
-  const cabecera = (token) => ({apikey:SUPABASE_ANON, Authorization:"Bearer "+(token||SUPABASE_ANON), "Content-Type":"application/json"});
+  /* La clave antigua "anon" (eyJ…) también va como Bearer; la nueva "sb_publishable_…" solo va como apikey.
+     Con sesión iniciada, el Bearer es siempre el token del usuario. */
+  const cabecera = (token) => {
+    const h = {apikey:SUPABASE_ANON, "Content-Type":"application/json"};
+    if(token) h.Authorization = "Bearer "+token; else if(SUPABASE_ANON.startsWith("eyJ")) h.Authorization = "Bearer "+SUPABASE_ANON;
+    return h;
+  };
 
   function aviso(el, texto, tipo){ el.textContent = texto; el.className = "msg "+tipo+(texto?"":" oculto"); }
 

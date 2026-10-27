@@ -1029,7 +1029,9 @@
   async function cargaPreciosRemotos(){
     if(!SUPABASE_URL || !SUPABASE_ANON) return;                // sin base de datos: se usan los precios de este archivo
     try{
-      const res = await fetch(`${SUPABASE_URL}/rest/v1/config?id=eq.1&select=datos`, {headers:{apikey:SUPABASE_ANON, Authorization:`Bearer ${SUPABASE_ANON}`}});
+      // la clave antigua "anon" (eyJ…) también va como Bearer; la nueva "sb_publishable_…" solo va como apikey
+      const cab = {apikey:SUPABASE_ANON}; if(SUPABASE_ANON.startsWith("eyJ")) cab.Authorization = `Bearer ${SUPABASE_ANON}`;
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/config?id=eq.1&select=datos`, {headers:cab});
       if(!res.ok) throw new Error(res.status);
       const filas = await res.json();
       if(filas[0] && filas[0].datos) aplicaConfig(filas[0].datos);
