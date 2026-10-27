@@ -251,6 +251,10 @@
   .promo p{color:var(--color-suave);font-size:15px}
   .promo .hasta{font-size:13px}
   .btn-agotado{pointer-events:none;opacity:.6}
+  s.tachado{color:var(--color-suave);font-weight:400;font-size:.72em;margin-right:4px;text-decoration-thickness:1px}
+  .promo img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:12px;display:block;margin-bottom:6px}
+  .promo-desc{background:var(--vino-profundo);border-color:var(--vino-profundo)}
+  .promo-desc small,.promo-desc h3,.promo-desc p{color:#fff}
   .card .badge.badge-agotado{color:var(--color-suave)}
   .mapa-caja{display:grid;gap:10px;margin-top:14px;width:100%}
   .mapa-barra{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;font-weight:700;font-size:15px}
@@ -609,7 +613,7 @@
   const CIUDAD    = "Durango";        // ciudad
   const WA_NUMERO = "526181829246";        // 52 + 10 dígitos (pedidos y cotizaciones; el 1 de +52 1 es el formato viejo, wa.me usa 52 + 10 dígitos)
   const LOGO_IMG  = "assets/logo.png";                    // ej. "assets/logo.png" (vacío = usa el ícono dibujado)
-  const HERO_IMG  = "assets/ramo-rosas-rojas-listones.webp";
+  let HERO_IMG  = "assets/ramo-rosas-rojas-listones.webp";
 
   /* Panel de administración (ver admin.html y supabase/LEEME.md). Mientras estén vacíos, el sitio usa
      los precios de este archivo. SUPABASE_ANON es la clave PÚBLICA (anon): es segura porque la base de
@@ -672,9 +676,23 @@
     {n:"Corazón de rosas", p:600, t:"", o:["amor","aniversario"], et:"", img:"assets/ramo-corazon-naranja.webp", alt:"Arreglo de rosas en forma de corazón sobre papel rosa", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, d:"Arreglo en forma de corazón con rosas."},
     {n:"Ramo de mangos", p:700, t:"", o:["cumpleaños","gracias","porquesí"], et:"Diferente", img:"assets/ramo-mangos.webp", fondo:"#ffffff", alt:"Ramo de mangos frescos con flores amarillas en papel amarillo", c:{f1:"#d9a24b",f2:"#ecc87e",ctr:"#8a6a2a",leaf:"#6f8f6a"}, d:"Mangos frescos con flores amarillas en papel amarillo. Un detalle distinto."},
   ];
-  let PROMOS = [], AVISO = null;       // los llena el panel de administración
+  const ARREGLOS_BASE = arreglos.slice();
+  let PROMOS = [], AVISO = null, DESCUENTOS = [];       // los llena el panel de administración
   /* ====================  fin de la zona editable  ==================== */
 
+  /* ---- Ayudas ---- */
+  function esc(t){ return String(t==null?"":t).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+  function urlSegura(u){ u = String(u||""); return /^(https:\/\/|assets\/)/.test(u) ? u : ""; }   // solo https o archivos del propio sitio
+  const fmt = n => n.toLocaleString("es-MX");
+  /* Descuento: el mayor porcentaje vigente hoy. Se aplica a los ramos (rosas y catálogo), no a extras ni envío. */
+  function descuentoActivo(){
+    const h = new Date().toLocaleDateString("en-CA");
+    const v = DESCUENTOS.filter(x=>x && x.activa!==false && x.porcentaje>0 && x.porcentaje<=90 && (!x.desde||x.desde<=h) && (!x.hasta||h<=x.hasta));
+    return v.length ? v.reduce((a,b)=>b.porcentaje>a.porcentaje?b:a) : null;
+  }
+  function conDescuento(p){ const d = descuentoActivo(); return d ? Math.round(p*(1-d.porcentaje/100)) : p; }
+  function precioHTML(p){ return descuentoActivo() ? `<s class="tachado">$${fmt(p)}</s> $${fmt(conDescuento(p))}` : `$${fmt(p)}`; }
+  function visibles(){ return arreglos.filter(a=>!a.oculto); }
   const waLink = (txt) => `https://wa.me/${WA_NUMERO}?text=${encodeURIComponent(txt)}`;
   const bloomSVG = (c) => `
     <svg viewBox="0 0 300 300" style="--leaf:${c.leaf}" aria-hidden="true">
@@ -691,25 +709,25 @@
      lista de ROSAS. Si no, se aclara que el precio es el del ramo más chico, para no engañar. */
   function precioRosas(a){
     const k = a.cant ? ROSAS.find(r=>r.n===a.cant) : null;
-    if(k) return `$${k.p.toLocaleString("es-MX")} <small>· ${k.n} rosas</small>`;
-    return `<small>Desde</small> $${ROSAS[0].p.toLocaleString("es-MX")} <small>· ${ROSAS[0].n} rosas</small>`;
+    if(k) return `${precioHTML(k.p)} <small>· ${k.n} rosas</small>`;
+    return `<small>Desde</small> ${precioHTML(ROSAS[0].p)} <small>· ${ROSAS[0].n} rosas</small>`;
   }
   function cardHTML(a){
       const tarjeta = document.getElementById("msgTarjeta").value.trim();
-      const msg = `Hola, ${NEGOCIO} 🌸 Me interesa el arreglo "${a.n}"${a.p?` (${a.desde?"desde ":""}$${a.p})`:""}.${tarjeta?`\n\n• Mensaje para la tarjeta: "${tarjeta}"`:""}\n\n• Fecha y hora de entrega: \n• Colonia o pueblo: \n\n¿Me ayudan a cotizarlo?`;
-      const media = a.img
-        ? `<img src="${a.img}" alt="${a.alt||a.n}" loading="lazy">`
+      const msg = `Hola, ${NEGOCIO} 🌸 Me interesa el arreglo "${a.n}"${a.p?` (${a.desde?"desde ":""}$${conDescuento(a.p)}${descuentoActivo()?` con ${descuentoActivo().porcentaje} % de descuento`:""})`:""}.${tarjeta?`\n\n• Mensaje para la tarjeta: "${tarjeta}"`:""}\n\n• Fecha y hora de entrega: \n• Colonia o pueblo: \n\n¿Me ayudan a cotizarlo?`;
+      const media = urlSegura(a.img)
+        ? `<img src="${esc(urlSegura(a.img))}" alt="${esc(a.alt||a.n)}" loading="lazy">`
         : bloomSVG(a.c);
       return `<article class="card">
         <div class="ph" style="background:${a.img?(a.fondo||'#f3e6e1'):bg(a.c)}">
-          ${a.agotado?`<span class="badge badge-agotado">Agotado</span>`:a.et?`<span class="badge">${a.et}</span>`:""}
+          ${a.agotado?`<span class="badge badge-agotado">Agotado</span>`:a.et?`<span class="badge">${esc(a.et)}</span>`:""}
           ${media}
         </div>
         <div class="body">
-          <h3>${a.n}</h3>
-          <p class="meta">${a.d}</p>
+          <h3>${esc(a.n)}</h3>
+          <p class="meta">${esc(a.d)}</p>
           <div class="row">
-            <span class="price">${a.rosas?precioRosas(a):a.p?`${a.desde?"<small>Desde</small> ":""}$${a.p}${a.t?` <small>· ${a.t}</small>`:""}`:`<small>Cotiza tu ramo</small>`}</span>
+            <span class="price">${a.rosas?precioRosas(a):a.p?`${a.desde?"<small>Desde</small> ":""}${precioHTML(a.p)}${a.t?` <small>· ${esc(a.t)}</small>`:""}`:`<small>Cotiza tu ramo</small>`}</span>
             ${a.agotado?`<span class="btn btn-ghost btn-agotado" aria-disabled="true">Agotado</span>`:a.rosas?`<button type="button" class="btn" data-arma="${arreglos.indexOf(a)}">Armar este ramo</button>`:`<a class="btn" href="${waLink(msg)}" target="_blank" rel="noopener">Pedir</a>`}
           </div>
         </div>
@@ -720,7 +738,7 @@
   function render(filtro=filtroActual){
     filtroActual = filtro;
     const grid = document.getElementById("catGrid");
-    const lista = filtro==="todos" ? arreglos : arreglos.filter(a=>a.o.includes(filtro));
+    const lista = filtro==="todos" ? visibles() : visibles().filter(a=>a.o.includes(filtro));
     grid.innerHTML = lista.map(cardHTML).join("");
     if(!lista.length){grid.innerHTML=`<p style="color:var(--color-suave);grid-column:1/-1">Pronto más arreglos para esta ocasión. Escríbenos y te lo armamos a tu medida.</p>`;}
   }
@@ -729,7 +747,7 @@
     render(); armaResumen();
   });
   render();
-  document.getElementById("destGrid").innerHTML = arreglos.slice(0,3).map(cardHTML).join("");
+  document.getElementById("destGrid").innerHTML = visibles().slice(0,3).map(cardHTML).join("");
 
   /* ---- Arma tu ramo ---- */
   const $ = id => document.getElementById(id);
@@ -737,7 +755,7 @@
   const armar = {r:0, colores:new Set(["roja"]), extras:new Set(), envio:null, estilo:null, punto:null};
   const precioExtra = e => e.gyp ? (GYPSOPHILA[ROSAS[armar.r].n] ?? null) : e.p;
   function armaOpciones(){
-    $("optRosas").innerHTML = ROSAS.map((o,i)=>`<label class="opt"><input type="radio" name="rosas" value="${i}"><span>${o.n} rosas <b>${peso(o.p)}</b></span></label>`).join("");
+    $("optRosas").innerHTML = ROSAS.map((o,i)=>`<label class="opt"><input type="radio" name="rosas" value="${i}"><span>${o.n} rosas <b>${descuentoActivo()?`<s class="tachado">${peso(o.p)}</s> ${peso(conDescuento(o.p))}`:peso(o.p)}</b></span></label>`).join("");
     $("optColor").innerHTML = COLORES.map(c=>`<label class="opt"><input type="checkbox" name="color" value="${c.id}"><span><i class="dot" style="background:${c.c}"></i>${c.n}</span></label>`).join("");
     $("optExtras").innerHTML = EXTRAS.map((e,i)=>`<label class="opt"><input type="checkbox" name="extra" value="${i}"><span>${e.n} <b id="px${i}"></b></span></label>`).join("");
     $("optEnvio").innerHTML = ENVIOS.map(z=>`<label class="opt"><input type="radio" name="envio" value="${z.id}"><span>${z.n} <b>${z.p?(z.desde?"desde ":"")+peso(z.p):"gratis"}</b></span></label>`).join("");
@@ -762,7 +780,8 @@
     const cols = [...armar.colores].map(id=>COLORES.find(c=>c.id===id));
     const ex = [...armar.extras].sort((a,b)=>a-b).map(i=>({e:EXTRAS[i], pr:precioExtra(EXTRAS[i])}));
     const conPrecio = ex.filter(x=>x.pr!=null), porCotizar = ex.filter(x=>x.pr==null);
-    const subtotal = o.p + conPrecio.reduce((t,x)=>t+x.pr,0);
+    const dsc = descuentoActivo(), pRosas = conDescuento(o.p);
+    const subtotal = pRosas + conPrecio.reduce((t,x)=>t+x.pr,0);
     const z = ENVIOS.find(z=>z.id===armar.envio);
     const gratis = !!z && z.id!=="fuera" && subtotal>=ENVIO_GRATIS_DESDE;
     const envioCosto = z ? (gratis ? 0 : z.p) : 0;
@@ -782,14 +801,14 @@
     $("resEstilo").innerHTML = armar.estilo
       ? `<div class="estilo"><img src="${armar.estilo.img}" alt=""><div><small>Estilo que elegiste</small><b>${armar.estilo.n}</b><button type="button" id="quitaEstilo">Quitar</button></div></div>` : "";
     $("resLista").innerHTML =
-        `<li><span>${o.n} rosas · ${cols.map(c=>c.o).join(", ")}</span><b>${peso(o.p)}</b></li>`
+        `<li><span>${o.n} rosas · ${cols.map(c=>c.o).join(", ")}</span><b>${dsc?`<s class="tachado">${peso(o.p)}</s> `:""}${peso(pRosas)}</b></li>`
       + ex.map(x=>`<li><span>${x.e.n}</span><b>${x.pr==null?"por cotizar":peso(x.pr)}</b></li>`).join("")
       + (z ? `<li><span>${z.n}</span><b>${envioTxt==="gratis"?"gratis":envioTxt}</b></li>` : `<li class="falta"><span>Envío</span><b>por elegir</b></li>`)
       + (armar.punto ? `<li><span>Punto en el mapa</span><b>marcado</b></li>` : "");
     $("resTotal").textContent = peso(total) + (pendiente ? "+" : "");
     $("resPend").textContent = pendiente ? "Más lo que está por cotizar: te lo confirmamos por WhatsApp." : "";
     $("resAnticipo").textContent = `${pagoTxt}: ${peso(anticipo)}${pendiente?"+":""}`;
-    const msg = `Hola, ${NEGOCIO} 🌸 Quiero armar este ramo:\n\n• ${o.n} rosas, ${cols.map(c=>c.o).join(", ")} (${peso(o.p)})`
+    const msg = `Hola, ${NEGOCIO} 🌸 Quiero armar este ramo:\n\n• ${o.n} rosas, ${cols.map(c=>c.o).join(", ")} (${peso(pRosas)}${dsc?` con ${dsc.porcentaje} % de descuento`:""})`
       + (armar.estilo ? `\n• Estilo: ${armar.estilo.n}` : "")
       + (conPrecio.length ? `\n• Extras: ${conPrecio.map(x=>`${x.e.n} (${peso(x.pr)})`).join(", ")}` : "")
       + (porCotizar.length ? `\n• Por cotizar: ${porCotizar.map(x=>x.e.n).join(", ")}` : "")
@@ -921,11 +940,12 @@
     armaResumen();
   });
 
-  // Oculta ocasiones (chips del filtro) que todavía no tienen arreglos
-  const conArreglos = new Set(arreglos.flatMap(a=>a.o));
-  document.querySelectorAll("#filtros .chip:not([data-f='todos'])").forEach(el=>{
-    if(!conArreglos.has(el.dataset.f)) el.classList.add("hidden");
-  });
+  // Oculta ocasiones (chips del filtro) que todavía no tienen arreglos visibles
+  function pintaFiltros(){
+    const con = new Set(visibles().flatMap(a=>a.o));
+    document.querySelectorAll("#filtros .chip:not([data-f='todos'])").forEach(el=>el.classList.toggle("hidden", !con.has(el.dataset.f)));
+  }
+  pintaFiltros();
 
   document.getElementById("filtros").addEventListener("click", e=>{
     const b = e.target.closest(".chip"); if(!b) return;
@@ -946,10 +966,11 @@
     document.getElementById("logoMark").outerHTML = `<img class="mark logo" src="${LOGO_IMG}" alt="Logo ${NEGOCIO}">`;
     document.getElementById("brandText").classList.add("sr-only");
   }
-  if(HERO_IMG){
-    const art = document.getElementById("heroArt");
-    art.innerHTML = `<img src="${HERO_IMG}" alt="Ramo grande de rosas rojas con listones, de Gema Flowers">`;
+  function pintaHero(){
+    if(!urlSegura(HERO_IMG)) return;
+    document.getElementById("heroArt").innerHTML = `<img src="${esc(urlSegura(HERO_IMG))}" alt="Ramo de flores de Gema Flowers">`;
   }
+  pintaHero();
   document.getElementById("yr").textContent = document.getElementById("yr2").textContent = new Date().getFullYear();
 
   /* ---- Vistas: cada botón del menú abre su propia "página" ---- */
@@ -970,9 +991,8 @@
     if(tab) tab.parentElement.scrollTo({left: tab.offsetLeft-16});
     window.scrollTo(0,0);
   }
-  const esc = t => String(t==null?"":t).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   function pintaTextosPrecio(){
-    $("tDesde").textContent = "Desde " + peso(ROSAS[0].p);
+    $("tDesde").textContent = "Desde " + peso(conDescuento(ROSAS[0].p));
     $("tGratis").textContent = "En compras desde " + peso(ENVIO_GRATIS_DESDE);
     $("listaEnvios").innerHTML = ENVIOS.map(z=>`<li><span>${esc(z.n)}</span><b>${z.p ? (z.desde?"Desde ":"")+peso(z.p) : "Gratis"}</b></li>`).join("");
     $("notaEnvio").textContent = `Envío gratis desde ${peso(ENVIO_GRATIS_DESDE)} en Durango capital.`;
@@ -989,18 +1009,21 @@
     return (!x.desde || x.desde<=h) && (!x.hasta || h<=x.hasta);
   };
   function pintaPromos(){
-    const lista = PROMOS.filter(vigenteHoy);
-    $("promosBox").innerHTML = lista.map(x=>`<article class="promo"><small>Promoción</small><h3>${esc(x.titulo)}</h3>${x.texto?`<p>${esc(x.texto)}</p>`:""}${x.hasta?`<p class="hasta">Válida hasta el ${fechaCorta(x.hasta)}</p>`:""}</article>`).join("");
-    $("promosBox").hidden = !lista.length;
+    const dsc = descuentoActivo();
+    const tarjetas = [];
+    if(dsc) tarjetas.push(`<article class="promo promo-desc"><small>Descuento</small><h3>${esc(dsc.titulo||"Descuento especial")}</h3><p>${dsc.porcentaje} % de descuento en ramos de rosas y del catálogo.</p>${dsc.hasta?`<p class="hasta">Válido hasta el ${fechaCorta(dsc.hasta)}</p>`:""}</article>`);
+    PROMOS.filter(vigenteHoy).forEach(x=>tarjetas.push(`<article class="promo">${urlSegura(x.img)?`<img src="${esc(urlSegura(x.img))}" alt="">`:""}<small>Promoción</small><h3>${esc(x.titulo)}</h3>${x.texto?`<p>${esc(x.texto)}</p>`:""}${x.hasta?`<p class="hasta">Válida hasta el ${fechaCorta(x.hasta)}</p>`:""}</article>`));
+    $("promosBox").innerHTML = tarjetas.join("");
+    $("promosBox").hidden = !tarjetas.length;
     const av = AVISO && AVISO.texto && vigenteHoy(AVISO) ? AVISO.texto : "";
     $("avisoTop").textContent = av;
     $("avisoTop").hidden = !av;
   }
   function pintaPrecios(){
     render();
-    $("destGrid").innerHTML = arreglos.slice(0,3).map(cardHTML).join("");
+    $("destGrid").innerHTML = visibles().slice(0,3).map(cardHTML).join("");
     armaOpciones(); armaResumen();
-    pintaVigencia(); pintaTextosPrecio(); pintaPromos();
+    pintaVigencia(); pintaTextosPrecio(); pintaPromos(); pintaHero(); pintaFiltros();
   }
   /* Aplica la configuración que guardó la dueña. Solo toma lo que viene bien formado; lo demás se queda como está. */
   function aplicaConfig(d){
@@ -1023,16 +1046,29 @@
     if(Array.isArray(d.envios) && d.envios.length){
       ENVIOS.splice(0, ENVIOS.length, ...d.envios.filter(x=>x && x.id && x.n).map(x=>({id:String(x.id), n:String(x.n), p:num(x.p)||0, ...(x.desde?{desde:true}:{}), ...(x.liquidar?{liquidar:true}:{})})));
     }
+    // ramos nuevos que agregó la dueña (se suman a los del código)
+    const OCAS = [...document.querySelectorAll("#filtros .chip[data-f]")].map(c=>c.dataset.f).filter(f=>f!=="todos");
+    const nuevos = (Array.isArray(d.nuevos) ? d.nuevos : []).filter(x=>x && String(x.n||"").trim()).map(x=>({
+      n:String(x.n).trim(), p:num(x.p), t:String(x.t||""), o:(Array.isArray(x.o)?x.o:[]).filter(f=>OCAS.includes(f)),
+      et:String(x.et||""), img:urlSegura(x.img), alt:String(x.alt||x.n), d:String(x.d||""), desde:!!x.desde,
+      ...(x.rosas?{rosas:true, cant:num(x.cant)>0?+x.cant:null}:{}), ...(x.agotado?{agotado:true}:{}), ...(x.oculto?{oculto:true}:{}),
+      fondo:"#ffffff", c:{f1:"#8c1c2e",f2:"#d98a95",ctr:"#b99440",leaf:"#6f8f6a"}, nuevo:true
+    }));
+    arreglos.splice(0, arreglos.length, ...ARREGLOS_BASE, ...nuevos);
     if(d.ramos && typeof d.ramos==="object"){
       arreglos.forEach(a=>{
         const o = d.ramos[a.n]; if(!o) return;
         if("p" in o && !a.rosas) a.p = num(o.p);
         if("agotado" in o) a.agotado = !!o.agotado;
+        if("oculto" in o) a.oculto = !!o.oculto;
+        if(o.img && urlSegura(o.img)) a.img = urlSegura(o.img);
         if("cant" in o && a.rosas) a.cant = num(o.cant) > 0 ? +o.cant : null;
       });
     }
     PROMOS = Array.isArray(d.promos) ? d.promos.filter(x=>x && x.titulo) : [];
     AVISO = d.aviso && typeof d.aviso==="object" ? d.aviso : null;
+    DESCUENTOS = Array.isArray(d.descuentos) ? d.descuentos.filter(x=>x && +x.porcentaje>0).map(x=>({...x, porcentaje:+x.porcentaje})) : [];
+    if(d.hero && urlSegura(d.hero)) HERO_IMG = urlSegura(d.hero);
     // lo que el cliente ya había elegido debe seguir existiendo
     armar.r = Math.min(armar.r, ROSAS.length-1);
     armar.extras = new Set([...armar.extras].filter(i=>i<EXTRAS.length));

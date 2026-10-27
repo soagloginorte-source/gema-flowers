@@ -61,6 +61,14 @@
   .barra{position:fixed;left:0;right:0;bottom:0;background:var(--superficie);border-top:1px solid var(--color-borde);padding:12px 18px;display:flex;gap:12px;align-items:center;justify-content:space-between;z-index:20}
   .barra .estado{font-size:14px;color:var(--color-suave)}
   .oculto{display:none !important}
+  .mini-foto{width:70px;height:88px;object-fit:cover;border-radius:10px;background:var(--rosa-claro);display:grid;place-items:center;font-size:11px;line-height:1.2;color:var(--color-suave);text-align:center;padding:4px}
+  .fila.f-ramo2{grid-template-columns:70px 1fr;align-items:start}
+  .acciones{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:8px}
+  .acciones .chk{padding-bottom:0}
+  label.subir{display:inline-block;cursor:pointer;text-align:center}
+  .hero-edit{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+  .hero-edit .mini-foto{width:110px;height:138px}
+  .ocas{display:flex;flex-wrap:wrap;gap:6px 16px}
   .solo-lectura{color:var(--color-suave);font-size:14px;padding-bottom:12px}
   .promo-item{border:1px solid var(--color-borde);border-radius:14px;padding:14px;margin-bottom:12px;display:grid;gap:10px}
 </style>
@@ -96,6 +104,12 @@
     <p class="ayuda" style="color:var(--color-suave);margin:0 0 22px">Cambia lo que necesites y toca <b>Guardar cambios</b> al final. El sitio se actualiza en segundos.</p>
 
     <div class="card">
+      <h2>Foto de la portada</h2>
+      <p class="ayuda">La foto grande que ven los clientes al abrir el sitio. Mejor una foto vertical, nítida y con buena luz. Se ajusta sola para que cargue rápido.</p>
+      <div class="hero-edit" id="heroBox"></div>
+    </div>
+
+    <div class="card">
       <h2>Rosas por cantidad</h2>
       <p class="ayuda">Precio de cada ramo y cuántos colores puede elegir el cliente. Pon <b>0</b> en colores si puede combinar más de 4.</p>
       <div id="listaRosas"></div>
@@ -128,8 +142,22 @@
 
     <div class="card">
       <h2>Ramos del catálogo</h2>
-      <p class="ayuda">Los ramos de rosas llevan la <b>cantidad de rosas</b> de su foto (el sitio muestra el precio de esa cantidad). Los demás tienen precio fijo. Márcalo como agotado y deja de poder pedirse.</p>
+      <p class="ayuda">Aquí cambias la <b>foto</b>, el precio, o marcas un ramo como <b>agotado</b> (no se puede pedir) u <b>ocultar</b> (desaparece del sitio). Los ramos de rosas llevan la cantidad de rosas de su foto, y el sitio muestra el precio de esa cantidad.</p>
       <div id="listaRamos"></div>
+    </div>
+
+    <div class="card">
+      <h2>Ramos nuevos</h2>
+      <p class="ayuda">Agrega ramos que no están en el catálogo, con su foto, nombre y precio. Aparecen al momento en el sitio.</p>
+      <div id="listaNuevos"></div>
+      <button class="btn sec mini" type="button" data-add="nuevo">+ Agregar ramo nuevo</button>
+    </div>
+
+    <div class="card">
+      <h2>Descuentos</h2>
+      <p class="ayuda">Un descuento baja solo el precio de los <b>ramos</b> (de rosas y del catálogo) entre las fechas que pongas, y aparece como promoción en el inicio. No aplica a extras ni al envío. Si hay dos a la vez, vale el mayor.</p>
+      <div id="listaDescuentos"></div>
+      <button class="btn sec mini" type="button" data-add="desc">+ Agregar descuento</button>
     </div>
 
     <div class="card">
@@ -158,7 +186,7 @@
       </div>
     </div>
 
-    <p class="nota-pie">Las fotos y los nombres de los ramos se cambian pidiéndolo a quien mantiene el sitio.</p>
+    <p class="nota-pie">Las fotos se ajustan solas a un tamaño ligero. Si algo no sale como esperabas, avisa a quien mantiene el sitio.</p>
   </section>
 </main>
 
@@ -220,6 +248,39 @@
   const num = v => (v===""||v==null||isNaN(+v)) ? null : +v;
   const marca = () => { sucio = true; $("estado").textContent = "Hay cambios sin guardar"; $("btnGuardar").disabled = false; };
 
+  const OCASIONES = [["amor","Amor"],["cumpleaños","Cumpleaños"],["aniversario","Aniversario"],["gracias","Gracias"],["porquesí","Solo porque sí"],["bebé","Nuevo bebé"]];
+  const urlOk = u => /^https:\/\//.test(String(u||""));
+  const fotoMini = u => urlOk(u) ? `<img class="mini-foto" src="${esc(u)}" alt="">` : `<span class="mini-foto">Foto original</span>`;
+  const botonFoto = destino => `<label class="btn sec mini subir">Cambiar foto<input type="file" accept="image/*" hidden data-foto="${esc(destino)}"></label>`;
+
+  /* Sube una foto a Supabase Storage: la reduce a 1200 px y la guarda ligera (WebP). Devuelve su dirección pública. */
+  async function subeFoto(archivo, carpeta){
+    if(!archivo.type.startsWith("image/")) throw new Error("Ese archivo no es una imagen.");
+    if(archivo.size > 25*1024*1024) throw new Error("La foto pesa demasiado (máximo 25 MB).");
+    let bmp;
+    try{ bmp = await createImageBitmap(archivo); }catch(e){ throw new Error("No se pudo leer esa foto. Prueba con una en formato JPG o PNG."); }
+    const k = Math.min(1, 1200/Math.max(bmp.width, bmp.height));
+    const lienzo = document.createElement("canvas");
+    lienzo.width = Math.max(1, Math.round(bmp.width*k)); lienzo.height = Math.max(1, Math.round(bmp.height*k));
+    lienzo.getContext("2d").drawImage(bmp, 0, 0, lienzo.width, lienzo.height);
+    const blob = await new Promise(ok=>lienzo.toBlob(ok, "image/webp", 0.85));
+    if(!blob) throw new Error("No se pudo preparar la foto.");
+    const tipo = blob.type==="image/webp" ? "image/webp" : "image/png";      // algunos navegadores no crean WebP: se guarda como PNG
+    const nombre = `${carpeta}/${Date.now()}-${Math.random().toString(36).slice(2,8)}.${tipo==="image/webp"?"webp":"png"}`;
+    const res = await fetch(`${SUPABASE_URL}/storage/v1/object/fotos/${nombre}`, {method:"POST", headers:{apikey:SUPABASE_ANON, Authorization:"Bearer "+sesion.token, "Content-Type":tipo}, body:blob});
+    if(res.status===401) throw new Error("sesion");
+    if(res.status===403) throw new Error("Tu usuario no tiene permiso para subir fotos.");
+    if(!res.ok) throw new Error("No se pudo subir la foto ("+res.status+")");
+    return `${SUPABASE_URL}/storage/v1/object/public/fotos/${nombre}`;
+  }
+  function asignaFoto(destino, url){
+    const [tipo, id] = [destino.split(":")[0], destino.split(":").slice(1).join(":")];
+    if(tipo==="hero") datos.hero = url;
+    else if(tipo==="ramo") datos.ramos[id].img = url;
+    else if(tipo==="nuevo") datos.nuevos[+id].img = url;
+    else if(tipo==="promo") datos.promos[+id].img = url;
+  }
+
   function pinta(){
     datos.rosas = datos.rosas||[]; datos.extras = datos.extras||[]; datos.envios = datos.envios||[];
     datos.promos = datos.promos||[]; datos.ramos = datos.ramos||{}; datos.gypsophila = datos.gypsophila||{};
@@ -254,17 +315,61 @@
     $("envGratis").value = datos.envioGratisDesde==null ? "" : datos.envioGratisDesde;
     $("anticipo").value = datos.anticipo==null ? "" : Math.round(datos.anticipo*100);
 
-    $("listaRamos").innerHTML = Object.entries(datos.ramos).map(([n,o])=> ("p" in o)
-      ? `<div class="fila f-ramo"><label>${esc(n)}<input type="number" min="0" data-k="ramo" data-n="${esc(n)}" data-c="p" value="${o.p==null?"":esc(o.p)}" placeholder="Precio ($)"></label>
-         <span></span><label class="chk"><input type="checkbox" data-k="ramo" data-n="${esc(n)}" data-c="agotado" ${o.agotado?"checked":""}>Agotado</label></div>`
-      : `<div class="fila f-ramo"><label>${esc(n)}<input type="number" min="1" data-k="ramo" data-n="${esc(n)}" data-c="cant" value="${o.cant==null?"":esc(o.cant)}" placeholder="Rosas que lleva este ramo"></label>
-         <span class="solo-lectura" style="padding:0">Su precio sale de la tabla de rosas.</span><label class="chk"><input type="checkbox" data-k="ramo" data-n="${esc(n)}" data-c="agotado" ${o.agotado?"checked":""}>Agotado</label></div>`).join("");
+    datos.nuevos = datos.nuevos||[]; datos.descuentos = datos.descuentos||[];
+
+    $("heroBox").innerHTML = `${fotoMini(datos.hero)}<div class="acciones">${botonFoto("hero")}${datos.hero?`<button class="btn sec mini" type="button" data-del="hero">Volver a la foto original</button>`:""}</div>`;
+
+    $("listaRamos").innerHTML = Object.entries(datos.ramos).map(([n,o])=>{
+      const nombre = esc(n);
+      const campo = ("p" in o)
+        ? `<label>${nombre}<input type="number" min="0" data-k="ramo" data-n="${nombre}" data-c="p" value="${o.p==null?"":esc(o.p)}" placeholder="Precio ($)"></label>`
+        : `<label>${nombre}<input type="number" min="1" data-k="ramo" data-n="${nombre}" data-c="cant" value="${o.cant==null?"":esc(o.cant)}" placeholder="Rosas que lleva este ramo"></label><span class="solo-lectura" style="padding:0">Su precio sale de la tabla de rosas.</span>`;
+      return `<div class="fila f-ramo2">${fotoMini(o.img)}<div>${campo}<div class="acciones">${botonFoto("ramo:"+n)}
+        <label class="chk"><input type="checkbox" data-k="ramo" data-n="${nombre}" data-c="agotado" ${o.agotado?"checked":""}>Agotado</label>
+        <label class="chk"><input type="checkbox" data-k="ramo" data-n="${nombre}" data-c="oculto" ${o.oculto?"checked":""}>Ocultar</label></div></div></div>`;
+    }).join("");
+
+    $("listaNuevos").innerHTML = datos.nuevos.map((x,i)=>`<div class="promo-item">
+      <div class="dos">
+        <label>Nombre<input type="text" maxlength="60" data-k="nuevos" data-i="${i}" data-c="n" value="${esc(x.n)}"></label>
+        <label>Etiqueta (opcional)<input type="text" maxlength="24" data-k="nuevos" data-i="${i}" data-c="et" value="${esc(x.et||"")}" placeholder="Ej. Nuevo"></label>
+      </div>
+      <label>Descripción<textarea rows="2" maxlength="160" data-k="nuevos" data-i="${i}" data-c="d">${esc(x.d||"")}</textarea></label>
+      <div class="dos">
+        <label class="chk"><input type="checkbox" data-k="nuevos" data-i="${i}" data-c="rosas" ${x.rosas?"checked":""}>Se arma por cantidad de rosas</label>
+        ${x.rosas
+          ? `<label>Rosas que lleva<input type="number" min="1" data-k="nuevos" data-i="${i}" data-c="cant" value="${x.cant==null?"":esc(x.cant)}"></label>`
+          : `<label>Precio ($)<input type="number" min="0" data-k="nuevos" data-i="${i}" data-c="p" value="${x.p==null?"":esc(x.p)}"></label>`}
+      </div>
+      <div><b style="font-size:14px">Ocasiones</b><div class="ocas">${OCASIONES.map(([v,t])=>`<label class="chk"><input type="checkbox" data-k="nuevos" data-i="${i}" data-c="oc" data-v="${v}" ${(x.o||[]).includes(v)?"checked":""}>${t}</label>`).join("")}</div></div>
+      <div class="hero-edit">${fotoMini(x.img)}<div class="acciones">${botonFoto("nuevo:"+i)}</div></div>
+      <div class="acciones" style="justify-content:space-between">
+        <span style="display:flex;gap:14px;flex-wrap:wrap">
+          <label class="chk"><input type="checkbox" data-k="nuevos" data-i="${i}" data-c="agotado" ${x.agotado?"checked":""}>Agotado</label>
+          <label class="chk"><input type="checkbox" data-k="nuevos" data-i="${i}" data-c="oculto" ${x.oculto?"checked":""}>Ocultar</label>
+        </span>
+        <button class="btn sec mini" type="button" data-del="nuevos" data-i="${i}">Quitar</button>
+      </div></div>`).join("") || `<p class="solo-lectura">Todavía no hay ramos nuevos.</p>`;
+
+    $("listaDescuentos").innerHTML = datos.descuentos.map((x,i)=>`<div class="promo-item">
+      <div class="dos">
+        <label>Nombre (lo ven los clientes)<input type="text" maxlength="60" data-k="desc" data-i="${i}" data-c="titulo" value="${esc(x.titulo||"")}" placeholder="Ej. Semana del cariño"></label>
+        <label>Descuento (%)<input type="number" min="1" max="90" data-k="desc" data-i="${i}" data-c="porcentaje" value="${x.porcentaje==null?"":esc(x.porcentaje)}"></label>
+      </div>
+      <div class="dos">
+        <label>Desde<input type="date" data-k="desc" data-i="${i}" data-c="desde" value="${esc(x.desde||"")}"></label>
+        <label>Hasta<input type="date" data-k="desc" data-i="${i}" data-c="hasta" value="${esc(x.hasta||"")}"></label>
+      </div>
+      <div class="acciones" style="justify-content:space-between">
+        <label class="chk"><input type="checkbox" data-k="desc" data-i="${i}" data-c="activa" ${x.activa===false?"":"checked"}>Activo</label>
+        <button class="btn sec mini" type="button" data-del="desc" data-i="${i}">Quitar</button></div></div>`).join("") || `<p class="solo-lectura">Todavía no hay descuentos.</p>`;
 
     $("vigHasta").value = datos.vigencia.hasta||""; $("vigTexto").value = datos.vigencia.texto||"";
 
     $("listaPromos").innerHTML = datos.promos.map((x,i)=>`<div class="promo-item">
       <label>Título<input type="text" maxlength="80" data-k="promos" data-i="${i}" data-c="titulo" value="${esc(x.titulo)}"></label>
       <label>Texto<textarea rows="2" maxlength="240" data-k="promos" data-i="${i}" data-c="texto">${esc(x.texto||"")}</textarea></label>
+      <div class="hero-edit">${fotoMini(x.img)}<div class="acciones">${botonFoto("promo:"+i)}${x.img?`<button class="btn sec mini" type="button" data-quitafoto="promo:${i}">Quitar foto</button>`:""}</div></div>
       <div class="dos">
         <label>Desde<input type="date" data-k="promos" data-i="${i}" data-c="desde" value="${esc(x.desde||"")}"></label>
         <label>Hasta<input type="date" data-k="promos" data-i="${i}" data-c="hasta" value="${esc(x.hasta||"")}"></label>
@@ -296,7 +401,16 @@
     }
     else if(k==="extras"){ datos.extras[i][c] = c==="p" ? num(valor) : valor; if(c==="g" && valor==="") delete datos.extras[i].g; }
     else if(k==="envios"){ if(t.type==="checkbox"){ valor ? datos.envios[i][c]=true : delete datos.envios[i][c]; } else datos.envios[i][c] = c==="p" ? (num(valor)||0) : valor; }
-    else if(k==="ramo"){ const o = datos.ramos[t.dataset.n]; if(c==="agotado") o.agotado = valor; else if(c==="cant") o.cant = num(valor); else o.p = num(valor); }
+    else if(k==="ramo"){ const o = datos.ramos[t.dataset.n]; if(c==="agotado") o.agotado = valor; else if(c==="oculto") o.oculto = valor; else if(c==="cant") o.cant = num(valor); else o.p = num(valor); }
+    else if(k==="nuevos"){
+      const x = datos.nuevos[i];
+      if(c==="oc"){ const v = t.dataset.v; x.o = (x.o||[]).filter(y=>y!==v); if(valor) x.o.push(v); }
+      else if(c==="rosas"){ x.rosas = valor; marca(); return pinta(); }
+      else if(c==="agotado"||c==="oculto") x[c] = valor;
+      else if(c==="p"||c==="cant") x[c] = num(valor);
+      else x[c] = valor;
+    }
+    else if(k==="desc"){ const x = datos.descuentos[i]; if(c==="activa") x.activa = valor; else if(c==="porcentaje") x.porcentaje = num(valor); else x[c] = valor; }
     else if(k==="promos"){ if(c==="activa") datos.promos[i].activa = valor; else datos.promos[i][c] = valor; }
     marca();
   });
@@ -308,6 +422,8 @@
       if(q==="gyp"){ let n = 1; while(datos.gypsophila[n]!==undefined) n++; datos.gypsophila[n] = null; }
       if(q==="extra") datos.extras.push({n:"",p:null});
       if(q==="promo") datos.promos.push({titulo:"",texto:"",desde:"",hasta:"",activa:true});
+      if(q==="nuevo") datos.nuevos.push({n:"",d:"",p:null,o:[],et:"",img:"",rosas:false});
+      if(q==="desc") datos.descuentos.push({titulo:"",porcentaje:10,desde:"",hasta:"",activa:true});
       pinta(); marca();
     }
     if(b.dataset.del){
@@ -315,8 +431,34 @@
       if(q==="rosas") datos.rosas.splice(i,1);
       if(q==="extras") datos.extras.splice(i,1);
       if(q==="promos") datos.promos.splice(i,1);
+      if(q==="nuevos") datos.nuevos.splice(i,1);
+      if(q==="desc") datos.descuentos.splice(i,1);
+      if(q==="hero") delete datos.hero;
       if(q==="gyp"){ const k = Object.keys(datos.gypsophila).sort((a,b)=>a-b)[i]; delete datos.gypsophila[k]; }
       pinta(); marca();
+    }
+  });
+
+  /* quitar la foto de una promoción */
+  document.addEventListener("click", e=>{
+    const b = e.target.closest("button[data-quitafoto]"); if(!b) return;
+    const [tipo, id] = b.dataset.quitafoto.split(":");
+    if(tipo==="promo") delete datos.promos[+id].img;
+    pinta(); marca();
+  });
+  /* subir una foto */
+  document.addEventListener("change", async e=>{
+    const t = e.target, destino = t.dataset && t.dataset.foto; if(!destino) return;
+    const archivo = t.files && t.files[0]; if(!archivo) return;
+    const carpeta = {hero:"portada", ramo:"ramos", nuevo:"ramos", promo:"promos"}[destino.split(":")[0]] || "otras";
+    $("estado").textContent = "Subiendo foto…"; $("btnGuardar").disabled = true;
+    try{
+      const url = await subeFoto(archivo, carpeta);
+      asignaFoto(destino, url); pinta(); marca();
+      $("estado").textContent = "Foto lista. Toca Guardar cambios para publicarla.";
+    }catch(err){
+      if(err.message==="sesion"){ muestraLogin("Tu sesión terminó. Entra otra vez; la foto no se subió."); return; }
+      $("estado").textContent = err.message; $("btnGuardar").disabled = !sucio;
     }
   });
 
@@ -330,6 +472,11 @@
     if(datos.promos.some(x=>!String(x.titulo||"").trim())) errores.push("Una promoción no tiene título.");
     if(Object.values(datos.gypsophila).some(v=>v==null)) errores.push("A una cantidad de gypsophila le falta el precio.");
     if(datos.anticipo!=null && !(datos.anticipo>0 && datos.anticipo<=1)) errores.push("El anticipo debe ir entre 1 y 100 %.");
+    if(datos.nuevos.some(x=>!String(x.n||"").trim())) errores.push("Un ramo nuevo no tiene nombre.");
+    if(datos.nuevos.some(x=>!x.rosas && (x.p==null || x.p<0))) errores.push("A un ramo nuevo le falta el precio (o marca que se arma por cantidad de rosas).");
+    if(datos.nuevos.some(x=>!(x.o||[]).length)) errores.push("Elige al menos una ocasión para cada ramo nuevo.");
+    if(datos.descuentos.some(x=>!(x.porcentaje>=1 && x.porcentaje<=90))) errores.push("Un descuento debe ir entre 1 y 90 %.");
+    if(datos.descuentos.some(x=>x.desde && x.hasta && x.hasta<x.desde)) errores.push("Un descuento termina antes de empezar.");
     return errores;
   }
 
