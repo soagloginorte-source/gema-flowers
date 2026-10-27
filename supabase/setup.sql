@@ -13,10 +13,20 @@ alter table public.config enable row level security;
 drop policy if exists "lectura publica" on public.config;
 create policy "lectura publica" on public.config for select to anon, authenticated using (true);
 
--- Solo una persona con sesión iniciada (la dueña) puede CAMBIAR los precios.
+-- Solo los correos de la lista pueden CAMBIAR los precios, aunque el registro público de usuarios esté abierto.
+-- Para agregar a otra persona, agrega su correo (en minúsculas) a las DOS listas de abajo y vuelve a correr este bloque.
 -- No hay políticas de insert ni delete: nadie puede crear ni borrar filas desde el navegador.
 drop policy if exists "solo dueña modifica" on public.config;
-create policy "solo dueña modifica" on public.config for update to authenticated using (true) with check (id = 1);
+create policy "solo dueña modifica" on public.config
+  for update to authenticated
+  using (
+    lower(auth.jwt() ->> 'email') in ('gemaflowers8@gmail.com')
+    and coalesce((auth.jwt() ->> 'is_anonymous')::boolean, false) = false
+  )
+  with check (
+    id = 1
+    and lower(auth.jwt() ->> 'email') in ('gemaflowers8@gmail.com')
+  );
 
 -- Precios de partida: son los mismos que ya tiene publicado el sitio.
 insert into public.config (id, datos) values (1, $json$
