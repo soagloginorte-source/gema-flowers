@@ -687,6 +687,13 @@
     </svg>`;
   const bg = (c) => `radial-gradient(130% 120% at 68% 18%, ${c.f2}55 0%, #f3e6e1 55%, #ead9d7 100%)`;
 
+  /* Ramos de rosas: si se sabe cuántas rosas lleva el ramo de la foto (a.cant), se muestra su precio real de la
+     lista de ROSAS. Si no, se aclara que el precio es el del ramo más chico, para no engañar. */
+  function precioRosas(a){
+    const k = a.cant ? ROSAS.find(r=>r.n===a.cant) : null;
+    if(k) return `$${k.p.toLocaleString("es-MX")} <small>· ${k.n} rosas</small>`;
+    return `<small>Desde</small> $${ROSAS[0].p.toLocaleString("es-MX")} <small>· ${ROSAS[0].n} rosas</small>`;
+  }
   function cardHTML(a){
       const tarjeta = document.getElementById("msgTarjeta").value.trim();
       const msg = `Hola, ${NEGOCIO} 🌸 Me interesa el arreglo "${a.n}"${a.p?` (${a.desde?"desde ":""}$${a.p})`:""}.${tarjeta?`\n\n• Mensaje para la tarjeta: "${tarjeta}"`:""}\n\n• Fecha y hora de entrega: \n• Colonia o pueblo: \n\n¿Me ayudan a cotizarlo?`;
@@ -702,7 +709,7 @@
           <h3>${a.n}</h3>
           <p class="meta">${a.d}</p>
           <div class="row">
-            <span class="price">${a.rosas?`<small>Desde</small> $${ROSAS[0].p}`:a.p?`${a.desde?"<small>Desde</small> ":""}$${a.p}${a.t?` <small>· ${a.t}</small>`:""}`:`<small>Cotiza tu ramo</small>`}</span>
+            <span class="price">${a.rosas?precioRosas(a):a.p?`${a.desde?"<small>Desde</small> ":""}$${a.p}${a.t?` <small>· ${a.t}</small>`:""}`:`<small>Cotiza tu ramo</small>`}</span>
             ${a.agotado?`<span class="btn btn-ghost btn-agotado" aria-disabled="true">Agotado</span>`:a.rosas?`<button type="button" class="btn" data-arma="${arreglos.indexOf(a)}">Armar este ramo</button>`:`<a class="btn" href="${waLink(msg)}" target="_blank" rel="noopener">Pedir</a>`}
           </div>
         </div>
@@ -833,7 +840,14 @@
   });
   document.addEventListener("click", e=>{
     const b = e.target.closest("[data-arma]"); if(!b) return;
-    armar.estilo = arreglos[+b.dataset.arma]; armaResumen();
+    armar.estilo = arreglos[+b.dataset.arma];
+    const k = armar.estilo.cant ? ROSAS.findIndex(r=>r.n===armar.estilo.cant) : -1;
+    if(k>=0){
+      armar.r = k;
+      const lim = ROSAS[k].c;
+      if(lim && armar.colores.size>lim) armar.colores = new Set([...armar.colores].slice(0,lim));
+    }
+    armaResumen();
     location.hash = "#arma";
   });
   /* ---- Mapa de entrega (Durango capital) ---- */
@@ -1014,6 +1028,7 @@
         const o = d.ramos[a.n]; if(!o) return;
         if("p" in o && !a.rosas) a.p = num(o.p);
         if("agotado" in o) a.agotado = !!o.agotado;
+        if("cant" in o && a.rosas) a.cant = num(o.cant) > 0 ? +o.cant : null;
       });
     }
     PROMOS = Array.isArray(d.promos) ? d.promos.filter(x=>x && x.titulo) : [];

@@ -128,7 +128,7 @@
 
     <div class="card">
       <h2>Ramos del catálogo</h2>
-      <p class="ayuda">Precio fijo de los ramos que no se arman por cantidad de rosas. Márcalo como agotado y deja de poder pedirse.</p>
+      <p class="ayuda">Los ramos de rosas llevan la <b>cantidad de rosas</b> de su foto (el sitio muestra el precio de esa cantidad). Los demás tienen precio fijo. Márcalo como agotado y deja de poder pedirse.</p>
       <div id="listaRamos"></div>
     </div>
 
@@ -257,8 +257,8 @@
     $("listaRamos").innerHTML = Object.entries(datos.ramos).map(([n,o])=> ("p" in o)
       ? `<div class="fila f-ramo"><label>${esc(n)}<input type="number" min="0" data-k="ramo" data-n="${esc(n)}" data-c="p" value="${o.p==null?"":esc(o.p)}" placeholder="Precio ($)"></label>
          <span></span><label class="chk"><input type="checkbox" data-k="ramo" data-n="${esc(n)}" data-c="agotado" ${o.agotado?"checked":""}>Agotado</label></div>`
-      : `<div class="fila f-ramo"><span class="solo-lectura" style="padding:0"><b>${esc(n)}</b><br>Se arma por cantidad de rosas (precio de la primera tabla).</span>
-         <span></span><label class="chk"><input type="checkbox" data-k="ramo" data-n="${esc(n)}" data-c="agotado" ${o.agotado?"checked":""}>Agotado</label></div>`).join("");
+      : `<div class="fila f-ramo"><label>${esc(n)}<input type="number" min="1" data-k="ramo" data-n="${esc(n)}" data-c="cant" value="${o.cant==null?"":esc(o.cant)}" placeholder="Rosas que lleva este ramo"></label>
+         <span class="solo-lectura" style="padding:0">Su precio sale de la tabla de rosas.</span><label class="chk"><input type="checkbox" data-k="ramo" data-n="${esc(n)}" data-c="agotado" ${o.agotado?"checked":""}>Agotado</label></div>`).join("");
 
     $("vigHasta").value = datos.vigencia.hasta||""; $("vigTexto").value = datos.vigencia.texto||"";
 
@@ -296,7 +296,7 @@
     }
     else if(k==="extras"){ datos.extras[i][c] = c==="p" ? num(valor) : valor; if(c==="g" && valor==="") delete datos.extras[i].g; }
     else if(k==="envios"){ if(t.type==="checkbox"){ valor ? datos.envios[i][c]=true : delete datos.envios[i][c]; } else datos.envios[i][c] = c==="p" ? (num(valor)||0) : valor; }
-    else if(k==="ramo"){ const o = datos.ramos[t.dataset.n]; if(c==="agotado") o.agotado = valor; else o.p = num(valor); }
+    else if(k==="ramo"){ const o = datos.ramos[t.dataset.n]; if(c==="agotado") o.agotado = valor; else if(c==="cant") o.cant = num(valor); else o.p = num(valor); }
     else if(k==="promos"){ if(c==="activa") datos.promos[i].activa = valor; else datos.promos[i][c] = valor; }
     marca();
   });
